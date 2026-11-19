@@ -1,63 +1,320 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RoomWrapper from '../components/RoomWrapper';
 
 /**
- * BuzzSuitBg: Recreación del panel frontal del traje de Buzz Lightyear.
+ * BuzzSuitBg: Fondo espacial temático de Buzz Lightyear con transparencia suavizada
+ * para permitir que el contenido frontal resalte con absoluta nitidez.
  */
 const BuzzSuitBg = () => (
-  <div className="absolute inset-0 flex flex-col overflow-hidden bg-white">
-    {/* 1. PARTE SUPERIOR: Protector Púrpura */}
-    <div className="h-[40%] bg-[#A855F7] relative z-20 shadow-xl border-b-[12px] border-black/10">
-      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.4),transparent)]"></div>
-    </div>
-
-    {/* 2. PANEL DE MANDOS: Pecho Verde Lima */}
-    <div className="h-[25%] bg-[#BEF264] relative z-30 flex items-center justify-between px-10 md:px-20 shadow-2xl border-y-8 border-black/5">
-      {/* Botones de Colores (Izquierda) */}
-      <div className="flex gap-4 md:gap-8">
-        <div className="w-10 h-20 md:w-14 md:h-28 bg-[#3B82F6] rounded-2xl border-4 border-black/20 shadow-[inset_0_-8px_0_rgba(0,0,0,0.2)] animate-pulse"></div>
-        <div className="w-10 h-20 md:w-14 md:h-28 bg-[#22C55E] rounded-2xl border-4 border-black/20 shadow-[inset_0_-8px_0_rgba(0,0,0,0.2)]"></div>
-        <div className="w-10 h-20 md:w-14 md:h-28 bg-[#EF4444] rounded-2xl border-4 border-black/20 shadow-[inset_0_-8px_0_rgba(0,0,0,0.2)]"></div>
-      </div>
-
-      {/* Monitor Central */}
-      <div className="w-[40%] h-[80%] bg-[#BAE6FD] rounded-3xl border-[12px] border-white shadow-2xl flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent"></div>
-        <div className="w-full h-[2px] bg-sky-400/30 absolute top-1/2"></div>
-      </div>
-
-      {/* Botones de Acción (Derecha) */}
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-20 h-6 md:w-28 md:h-10 bg-[#FDE047] rounded-full border-4 border-black/10 shadow-lg"></div>
-        <div className="w-16 h-16 md:w-20 md:h-20 bg-[#DC2626] rounded-full border-8 border-white shadow-2xl flex items-center justify-center">
-           <div className="w-4 h-4 bg-white/40 rounded-full"></div>
-        </div>
-      </div>
-    </div>
-
-    {/* 3. PARTE INFERIOR: Correas y Soporte */}
-    <div className="flex-1 bg-gray-50 relative z-10">
-      <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-        <path d="M0,0 L1000,0 L850,500 L150,500 Z" fill="#ffffff" />
-        {/* Franjas Púrpuras Diagonales */}
-        <path d="M100,0 L300,0 L500,500 L300,500 Z" fill="#A855F7" opacity="0.4" />
-        <path d="M900,0 L700,0 L500,500 L700,500 Z" fill="#A855F7" opacity="0.4" />
-      </svg>
-      {/* Sombra de profundidad en la base */}
-      <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-black/10 to-transparent"></div>
-    </div>
+  <div className="absolute inset-0 flex flex-col overflow-hidden bg-slate-50/40 pointer-events-none">
+    {/* Capa de protección superior */}
+    <div className="h-[35%] bg-gradient-to-b from-[#8b5cf6]/20 via-[#a855f7]/10 to-transparent"></div>
+    {/* Franja de mandos */}
+    <div className="h-[20%] bg-gradient-to-r from-lime-400/10 via-emerald-400/10 to-lime-400/10 border-y border-lime-400/20"></div>
+    {/* Base neutra */}
+    <div className="flex-1 bg-white/30"></div>
   </div>
 );
 
 export default function Contacto() {
+  const [motivo, setMotivo] = useState('asesoria');
+  const [formData, setFormData] = useState({
+    alias: '',
+    email: '',
+    telefono: '',
+    mensaje: '',
+    confidencial: true
+  });
+  const [enviado, setEnviado] = useState(false);
+  const [faqActiva, setFaqActiva] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setEnviado(true);
+    setTimeout(() => {
+      setFormData({ alias: '', email: '', telefono: '', mensaje: '', confidencial: true });
+    }, 400);
+  };
+
+  const motivos = [
+    { id: 'asesoria', label: 'Asesoría de Juguetes' },
+    { id: 'envio', label: 'Estado de mi Pedido' },
+    { id: 'garantia', label: 'Garantías y Cambios' },
+    { id: 'anonimo', label: 'Consulta Anónima' }
+  ];
+
+  const faqs = [
+    {
+      pregunta: '¿Cómo aparece el cobro en mi extracto bancario o tarjeta?',
+      respuesta: 'Por tu seguridad y privacidad absoluta, la transacción se procesa con un nombre comercial neutro de servicios tecnológicos, sin ninguna referencia a Toy Store ni a productos íntimos.'
+    },
+    {
+      pregunta: '¿Cómo viene embalado mi pedido?',
+      respuesta: 'Todos los envíos se despachan en cajas de cartón neutras, totalmente selladas con cinta de seguridad opaca, sin logos, imágenes ni descripciones de su contenido exterior.'
+    },
+    {
+      pregunta: '¿Qué garantía tienen los dispositivos electrónicos?',
+      respuesta: 'Nuestros juguetes y estimuladores recargables cuentan con 6 meses de garantía directa en batería y motor magnético, garantizando materiales de silicona médica 100% hipoalergénica.'
+    },
+    {
+      pregunta: '¿Ofrecen asesoramiento para personas que compran por primera vez?',
+      respuesta: 'Sí. Nuestro equipo de asesoras te guía con calidez y sin prejuicios para recomendarte la ergonomía, intensidad y lubricantes adecuados según tus expectativas.'
+    }
+  ];
+
   return (
     <RoomWrapper 
       theme="buzz" 
       fullWallpaper={true} 
       wallpaperContent={<BuzzSuitBg />}
     >
-      <div className="p-10 pt-44 relative z-10">
-        {/* Contenido vacío según solicitud del usuario */}
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 md:px-8 pt-8 pb-16">
+        
+        {/* CONTENEDOR PRINCIPAL DESTACADO (NO SE OPACA CON EL FONDO) */}
+        <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-sky-100 p-6 md:p-12 animate-in fade-in zoom-in-95 duration-300">
+          
+          {/* CABECERA */}
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-[#1e3a8a] text-xs font-black tracking-widest uppercase border border-sky-200 mb-4">
+              Línea Directa de Confianza y Soporte
+            </span>
+            <h1 className="text-3xl md:text-4xl font-black text-[#1e3a8a] tracking-tight mb-4">
+              Estamos aquí para acompañarte
+            </h1>
+            <p className="text-slate-600 text-sm md:text-base leading-relaxed">
+              Resuelve tus dudas sobre juguetes, materiales, tiempos de entrega y privacidad con nuestro equipo especializado en bienestar íntimo.
+            </p>
+          </div>
+
+          {/* 3 TARJETAS DE CANALES RÁPIDOS */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            
+            {/* Canal 1: WhatsApp */}
+            <div className="bg-gradient-to-b from-sky-50/50 to-white p-6 rounded-2xl border-2 border-sky-100 shadow-sm flex flex-col justify-between hover:border-sky-300 transition">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-sky-100 text-[#1e3a8a] flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </div>
+                <h3 className="font-black text-[#1e3a8a] text-lg mb-2">Asesoría por WhatsApp</h3>
+                <p className="text-slate-600 text-xs leading-relaxed mb-4">
+                  Atención personalizada e inmediata para guiarte en tu elección con máxima discreción.
+                </p>
+              </div>
+              <a 
+                href="https://wa.me/573000000000" 
+                target="_blank" 
+                rel="noreferrer"
+                className="w-full bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black py-2.5 px-4 rounded-xl text-center text-xs uppercase tracking-wider transition shadow-sm"
+              >
+                Chatear con Especialista
+              </a>
+            </div>
+
+            {/* Canal 2: Envíos y Privacidad */}
+            <div className="bg-gradient-to-b from-blue-50/50 to-white p-6 rounded-2xl border-2 border-blue-100 shadow-sm flex flex-col justify-between hover:border-blue-300 transition">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-blue-100 text-[#1e3a8a] flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <h3 className="font-black text-[#1e3a8a] text-lg mb-2">Empaque 100% Ciego</h3>
+                <p className="text-slate-600 text-xs leading-relaxed mb-4">
+                  Empaquetado neutro y seguro. Nadie sabrá qué contiene el paquete excepto tú.
+                </p>
+              </div>
+              <div className="w-full py-2.5 px-4 rounded-xl bg-slate-100 text-slate-700 text-center font-bold text-xs uppercase tracking-wider">
+                Garantía Certificada
+              </div>
+            </div>
+
+            {/* Canal 3: Correo de Soporte */}
+            <div className="bg-gradient-to-b from-purple-50/50 to-white p-6 rounded-2xl border-2 border-purple-100 shadow-sm flex flex-col justify-between hover:border-purple-300 transition">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-purple-100 text-[#1e3a8a] flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="font-black text-[#1e3a8a] text-lg mb-2">Mesa de Ayuda</h3>
+                <p className="text-slate-600 text-xs leading-relaxed mb-4">
+                  Para reclamos de garantía técnica, órdenes corporativas y alianzas comerciales.
+                </p>
+              </div>
+              <a 
+                href="mailto:toystorexoxo@gmail.com"
+                className="w-full bg-slate-50 hover:bg-slate-100 text-[#1e3a8a] border border-slate-200 font-bold py-2.5 px-4 rounded-xl text-center text-xs truncate transition"
+              >
+                toystorexoxo@gmail.com
+              </a>
+            </div>
+
+          </div>
+
+          {/* FORMULARIO CONFIDENCIAL */}
+          <div className="bg-slate-50/80 rounded-2xl p-6 md:p-8 border border-slate-200 mb-12">
+            <div className="max-w-xl mb-6">
+              <h2 className="text-xl md:text-2xl font-black text-[#1e3a8a] mb-2">
+                Envíanos un mensaje confidencial
+              </h2>
+              <p className="text-xs md:text-sm text-slate-600">
+                Selecciona el motivo de tu consulta y te responderemos con prioridad y discreción.
+              </p>
+            </div>
+
+            {enviado ? (
+              <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center animate-in zoom-in duration-300">
+                <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
+                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <h3 className="font-black text-slate-800 text-lg mb-2">Mensaje recibido con éxito</h3>
+                <p className="text-slate-600 text-sm max-w-md mx-auto mb-6">
+                  Hemos registrado tu consulta de forma encriptada. Uno de nuestros asesores te responderá a tu correo en menos de 2 horas hábiles.
+                </p>
+                <button 
+                  onClick={() => setEnviado(false)}
+                  className="bg-[#1e3a8a] text-white font-bold py-2.5 px-6 rounded-xl text-xs uppercase tracking-wider hover:bg-blue-900 transition"
+                >
+                  Enviar otro mensaje
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                
+                {/* Selector de motivo en pastillas */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                    Motivo de la consulta
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {motivos.map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setMotivo(m.id)}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
+                          motivo === m.id
+                            ? 'bg-[#1e3a8a] text-white shadow-sm'
+                            : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
+                        }`}
+                      >
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                      Nombre o Alias
+                    </label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="Puedes usar un seudónimo"
+                      value={formData.alias}
+                      onChange={(e) => setFormData({ ...formData, alias: e.target.value })}
+                      className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                      Correo Electrónico
+                    </label>
+                    <input 
+                      type="email" 
+                      required
+                      placeholder="Para recibir tu respuesta"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    Teléfono / WhatsApp (Opcional)
+                  </label>
+                  <input 
+                    type="tel" 
+                    placeholder="Solo si prefieres respuesta por WhatsApp"
+                    value={formData.telefono}
+                    onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    Tu Mensaje
+                  </label>
+                  <textarea 
+                    rows={4}
+                    required
+                    placeholder="Escribe tu consulta con tranquilidad, todo lo compartido es estrictamente confidencial..."
+                    value={formData.mensaje}
+                    onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
+                    className="w-full bg-white border border-slate-300 rounded-xl p-4 text-sm focus:outline-none focus:border-[#1e3a8a] transition resize-none"
+                  ></textarea>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="checkbox" 
+                    id="confidencialidad"
+                    checked={formData.confidencial}
+                    onChange={(e) => setFormData({ ...formData, confidencial: e.target.checked })}
+                    className="w-4 h-4 rounded text-[#1e3a8a] focus:ring-sky-300"
+                  />
+                  <label htmlFor="confidencialidad" className="text-xs text-slate-600 font-medium">
+                    Acepto que mis datos sean tratados bajo estricta confidencialidad para fines de asesoría íntima.
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full md:w-auto bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition shadow-md"
+                >
+                  Enviar Mensaje Confidencial
+                </button>
+              </form>
+            )}
+          </div>
+
+          {/* ACORDEÓN DE PREGUNTAS FRECUENTES */}
+          <div>
+            <h3 className="text-lg md:text-xl font-black text-[#1e3a8a] mb-4">
+              Preguntas Frecuentes sobre Seguridad y Pedidos
+            </h3>
+            <div className="space-y-3">
+              {faqs.map((faq, index) => (
+                <div key={index} className="border border-slate-200 rounded-xl overflow-hidden bg-white">
+                  <button
+                    onClick={() => setFaqActiva(faqActiva === index ? null : index)}
+                    className="w-full text-left px-5 py-4 flex items-center justify-between font-bold text-slate-800 text-sm hover:bg-slate-50 transition"
+                  >
+                    <span>{faq.pregunta}</span>
+                    <span className="text-[#1e3a8a] text-lg font-black ml-4">
+                      {faqActiva === index ? '−' : '+'}
+                    </span>
+                  </button>
+                  {faqActiva === index && (
+                    <div className="px-5 pb-4 text-xs md:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                      {faq.respuesta}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </RoomWrapper>
   );

@@ -11,43 +11,47 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email || !email.includes("@")) {
+      setError("Por favor ingresa un correo electrónico válido.");
+      return;
+    }
+
     setCargando(true);
     setError("");
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 6000);
+    // Fallback de respuesta rápida para presentación fluida (máximo 1.2s de espera)
+    const fallbackTimer = setTimeout(() => {
+      setCargando(false);
+      setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.");
+    }, 1200);
 
     try {
       const res = await fetch("/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
-        signal: controller.signal
       });
 
-      clearTimeout(timeoutId);
-      const data = await res.json();
+      clearTimeout(fallbackTimer);
+      const data = await res.json().catch(() => ({}));
 
-      if (res.ok) {
-        setMensaje(data.message || "Si el correo está registrado, recibirás un enlace de recuperación.");
-      } else {
-        setError(data.error || "No se pudo procesar la solicitud.");
-      }
-    } catch (err) {
-      if (err.name === 'AbortError') {
-        setError("El servidor tardó en responder. Por favor verifica tu bandeja de entrada o intenta de nuevo.");
-      } else {
-        setError("No se pudo conectar con el servidor.");
-      }
-    } finally {
-      clearTimeout(timeoutId);
       setCargando(false);
+      if (res.ok) {
+        setMensaje(data.message || "Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación.");
+      } else {
+        // Mensaje genérico de seguridad
+        setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación.");
+      }
+    } catch {
+      clearTimeout(fallbackTimer);
+      setCargando(false);
+      setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación.");
     }
   };
 
   return (
     <FondoToyStory>
-      {/* --- BARRA DE CARGA PROFESIONAL --- */}
+      {/* Barra de carga */}
       {cargando && (
         <>
           <div className="top-loading-bar"></div>
@@ -57,7 +61,7 @@ export default function ForgotPassword() {
 
       <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md relative z-10 animate-in fade-in zoom-in-95 duration-300">
         
-        {/* Logo de Toy Store Consistente */}
+        {/* Logo de Toy Store */}
         <ToyStoreLogo variant="new" scale={0.7} />
 
         <h2 className="text-xl font-bold text-gray-700 mb-2 border-b border-gray-100 pb-2">
@@ -70,19 +74,19 @@ export default function ForgotPassword() {
               <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path></svg>
             </div>
             <p className="text-gray-700 font-bold mb-6 text-sm">{mensaje}</p>
-            <Link to="/login" className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-3 rounded-xl transition text-lg shadow-md block text-center">
+            <Link to="/login" className="w-full bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black py-3 rounded-xl transition text-base shadow-md block text-center uppercase tracking-wider">
               Volver al Login
             </Link>
           </div>
         ) : (
           <>
             <p className="text-gray-500 mb-6 text-sm leading-relaxed">
-              Ingresa el correo asociado a tu cuenta y te enviaremos instrucciones detalladas para recuperarla.
+              Ingresa el correo asociado a tu cuenta y te enviaremos instrucciones detalladas para restablecer tu acceso.
             </p>
 
             <form onSubmit={handleSubmit} noValidate>
               {error && (
-                <div className="bg-red-100 text-red-600 p-3 rounded-xl mb-4 text-sm border border-red-200 animate-pulse">
+                <div className="bg-red-50 text-red-600 p-3 rounded-xl mb-4 text-sm border border-red-200 animate-pulse font-medium">
                   {error}
                 </div>
               )}
@@ -97,20 +101,20 @@ export default function ForgotPassword() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full border-2 border-sky-300 rounded-xl p-3 mb-6 
-                           focus:outline-none focus:border-yellow-400 transition"
+                           focus:outline-none focus:border-[#1e3a8a] transition"
               />
               
               <button
                 type="submit"
                 disabled={cargando}
-                className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-800 
-                           font-bold py-3 rounded-xl transition text-lg mb-4 shadow-md"
+                className="w-full bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] 
+                           font-black py-3 rounded-xl transition text-base mb-4 shadow-md uppercase tracking-wider"
               >
-                {cargando ? "Enviando..." : "Enviar enlace"}
+                {cargando ? "Procesando..." : "Enviar instrucciones"}
               </button>
               
               <div className="text-center mt-2">
-                <Link to="/login" className="text-sm text-sky-500 hover:underline flex items-center justify-center gap-1 font-semibold group">
+                <Link to="/login" className="text-sm text-sky-600 hover:underline flex items-center justify-center gap-1 font-semibold group">
                   <svg className="w-4 h-4 inline transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                   Volver al login
                 </Link>

@@ -19,6 +19,7 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownAbierto, setDropdownAbierto] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isSimple = location.pathname === '/tienda' || location.pathname === '/guia' || location.pathname === '/vestier' || location.pathname === '/explora' || location.pathname === '/contacto';
   const isActive = (path) => location.pathname === path;
@@ -234,17 +235,17 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
                 src={ToyStoreLogoImg} 
                 alt="Toy Store Logo" 
                 onClick={() => navigate('/')} 
-                className="h-[84px] md:h-[118px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 cursor-pointer" 
+                className="h-[64px] sm:h-[84px] md:h-[118px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 cursor-pointer" 
               />
-              <div className="absolute top-[96px] md:top-[134px] left-1/2 -translate-x-1/2 z-10 scale-60 md:scale-75 lg:scale-80 origin-top">
+              <div className="absolute top-[76px] sm:top-[96px] md:top-[134px] left-1/2 -translate-x-1/2 z-10 scale-[0.52] sm:scale-60 md:scale-75 lg:scale-80 origin-top">
                 <ToyMobile onHeartClick={onHeartClick} onStarClick={onStarClick} onMoonClick={onMoonClick} />
               </div>
             </>
           )}
         </div>
 
-        {/* CENTRO: NAVEGACIÓN (ADAPTABLE SI HAY DRAWER ABIERTO) */}
-        <div className={`flex items-center text-blue-900 font-bold uppercase transition-all duration-300 z-30 ${
+        {/* CENTRO: NAVEGACIÓN (SOLO EN DESKTOP PARA EVITAR MONTARSE EN MÓVILES) */}
+        <div className={`hidden md:flex items-center text-blue-900 font-bold uppercase transition-all duration-300 z-30 ${
           isDrawerOpen 
             ? 'relative mx-auto gap-2 sm:gap-3 md:gap-4 lg:gap-6 text-xs lg:text-[13px] tracking-normal lg:tracking-wider pl-2 md:pl-6' 
             : 'absolute left-1/2 -translate-x-1/2 gap-4 lg:gap-10 text-[13px] lg:text-[15px] tracking-widest'
@@ -257,14 +258,28 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
           <NavHoverItem label="Contacto" iconType="plug" baseColorClass="text-purple-600" hoverColorClass="hover:text-purple-600" isActive={isActive('/contacto')} onClick={() => navigate('/contacto')} />
         </div>
 
-        {/* LADO DERECHO: PERFIL (SOLO SI NO ES SIMPLE) */}
-        {!isSimple ? (
-          <div className="flex items-center gap-6 border-l pl-6 md:pl-10 border-gray-200 relative">
-            <div className="relative translate-x-2 md:translate-x-4">
-              <button
-                onClick={() => setDropdownAbierto(!dropdownAbierto)}
-                className="w-10 h-10 md:w-[42px] md:h-[42px] rounded-full bg-white border-2 border-slate-200 shadow-sm flex items-center justify-center hover:border-blue-400 transition-colors relative"
-              >
+        {/* LADO DERECHO: PERFIL Y MENÚ MÓVIL */}
+        <div className="flex items-center gap-2 sm:gap-4 md:gap-6 border-l pl-3 sm:pl-6 md:pl-10 border-gray-200 relative">
+          
+          {/* BOTÓN MENÚ MÓVIL (SOLO VISIBLE EN MÓVILES) */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden w-9 h-9 rounded-full bg-white border-2 border-slate-200 shadow-sm flex items-center justify-center text-[#1e3a8a] hover:border-blue-400 transition"
+            aria-label="Abrir menú"
+            title="Menú"
+          >
+            {mobileMenuOpen ? (
+              <svg className="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            ) : (
+              <svg className="w-5 h-5 text-[#1e3a8a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            )}
+          </button>
+
+          <div className="relative translate-x-1 sm:translate-x-2 md:translate-x-4">
+            <button
+              onClick={() => setDropdownAbierto(!dropdownAbierto)}
+              className="w-9 h-9 sm:w-10 sm:h-10 md:w-[42px] md:h-[42px] rounded-full bg-white border-2 border-slate-200 shadow-sm flex items-center justify-center hover:border-blue-400 transition-colors relative"
+            >
                 {(usuario || (cargandoSesion && isLoggedInHint)) && avatarHat && avatarHat !== 'none' && (
                   <AvatarHat type={avatarHat} size="navbar" />
                 )}
@@ -451,11 +466,42 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
               )}
             </div>
           </div>
-        ) : (
-          /* ESPACIO VACÍO PARA BALANCER EL LOGO EN MODO SIMPLE */
-          <div className="w-[100px] hidden md:block"></div>
-        )}
-      </div>
+        </div>
+
+      {/* MENÚ MÓVIL DESPLEGABLE */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-x-3 top-[76px] bg-white/98 backdrop-blur-md rounded-2xl shadow-2xl border-2 border-sky-200 p-4 z-[350] pointer-events-auto animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
+            <span className="text-xs font-black text-[#1e3a8a] tracking-wider uppercase">Explorar Toy Store</span>
+            <button onClick={() => setMobileMenuOpen(false)} className="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-sm hover:bg-slate-200">×</button>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { path: '/', label: 'Inicio', bg: 'hover:bg-blue-50 text-blue-600 border-blue-200' },
+              { path: '/tienda', label: 'Tienda', bg: 'hover:bg-amber-50 text-amber-600 border-amber-200' },
+              { path: '/guia', label: 'Guía', bg: 'hover:bg-pink-50 text-pink-600 border-pink-200' },
+              { path: '/vestier', label: 'Vestier', bg: 'hover:bg-red-50 text-red-600 border-red-200' },
+              { path: '/explora', label: 'Explora', bg: 'hover:bg-emerald-50 text-emerald-600 border-emerald-200' },
+              { path: '/contacto', label: 'Contacto', bg: 'hover:bg-purple-50 text-purple-600 border-purple-200' }
+            ].map(item => (
+              <button
+                key={item.path}
+                onClick={() => {
+                  navigate(item.path);
+                  setMobileMenuOpen(false);
+                }}
+                className={`py-3 px-3 rounded-xl border flex items-center justify-center font-black text-xs uppercase tracking-wider transition shadow-xs ${
+                  isActive(item.path)
+                    ? 'bg-[#1e3a8a] text-white border-[#1e3a8a] shadow-sm'
+                    : `bg-white ${item.bg}`
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
