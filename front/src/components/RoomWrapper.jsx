@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PixarBall from './PixarBall';
 import ToyBlocks from './ToyBlocks';
 import Navbar from './Navbar';
@@ -30,20 +30,32 @@ export default function RoomWrapper({
 }) {
   const { usuario } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
   const [showFilterSidebar, setShowFilterSidebar] = useState(false);
   const [showPurposeSidebar, setShowPurposeSidebar] = useState(false);
   const [showConfesionesDrawer, setShowConfesionesDrawer] = useState(false);
 
   useEffect(() => {
-    const handleOpenConfesiones = () => setShowConfesionesDrawer(true);
+    const handleOpenConfesiones = () => {
+      if (!usuario) {
+        navigate('/login');
+        return;
+      }
+      setShowConfesionesDrawer(true);
+    };
     window.addEventListener('toy_open_confesiones', handleOpenConfesiones);
     return () => window.removeEventListener('toy_open_confesiones', handleOpenConfesiones);
-  }, []);
+  }, [usuario, navigate]);
 
   const forceMinimal = isMinimal || location.pathname.startsWith('/admin');
 
   // Sobrescribimos los clics para que activen las sidebars globales con el mismo diseño lateral minimalista
   const handleHeartClick = () => {
+    // Si el usuario no está registrado, se bloquea la búsqueda de categoría y se envía al login
+    if (!usuario) {
+      navigate('/login');
+      return;
+    }
     setShowPurposeSidebar(false);
     setShowConfesionesDrawer(false);
     setShowFilterSidebar(prev => !prev);
@@ -51,6 +63,7 @@ export default function RoomWrapper({
   };
 
   const handleStarClick = () => {
+    // Propósito y Misión SIEMPRE disponible para todos los usuarios (incluso no registrados)
     setShowFilterSidebar(false);
     setShowConfesionesDrawer(false);
     setShowPurposeSidebar(prev => !prev);
@@ -58,6 +71,11 @@ export default function RoomWrapper({
   };
 
   const handleMoonClick = () => {
+    // Si el usuario no está registrado, se bloquea el rincón de confesiones y se envía al login
+    if (!usuario) {
+      navigate('/login');
+      return;
+    }
     setShowFilterSidebar(false);
     setShowPurposeSidebar(false);
     setShowConfesionesDrawer(prev => !prev);

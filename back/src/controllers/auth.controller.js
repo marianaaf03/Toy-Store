@@ -185,16 +185,21 @@ const forgotPassword = async (req, res) => {
     const expiry = new Date(Date.now() + 3600000);
 
     await db.query('UPDATE usuarios SET reset_token = ?, reset_token_expiry = ? WHERE id_usuario = ?', [token, expiry, usuario.id_usuario]);
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+    const frontendBase = process.env.FRONTEND_URL || 'https://front-psi-five.vercel.app';
+    const resetLink = `${frontendBase}/reset-password/${token}`;
 
-    await transporter.sendMail({
+    // Responder inmediatamente al cliente para evitar esperas y bloqueos de interfaz
+    res.json({ message: 'Si el correo existe, recibirás instrucciones para restablecer tu contraseña.' });
+
+    // Envío asíncrono en segundo plano
+    transporter.sendMail({
       from: `"Toy Store" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Recupera tu contraseña - Toy Store',
       html: `<p>Hola ${usuario.nombre}, haz clic aquí para restablecer tu contraseña: <a href="${resetLink}">${resetLink}</a></p>`
+    }).catch(mailErr => {
+      console.error('Aviso: No se pudo enviar el correo de recuperación en segundo plano:', mailErr.message);
     });
-
-    res.json({ message: 'Si el correo existe, recibirás instrucciones.' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error interno del servidor' });

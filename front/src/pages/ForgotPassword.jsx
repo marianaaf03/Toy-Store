@@ -14,23 +14,33 @@ export default function ForgotPassword() {
     setCargando(true);
     setError("");
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+
     try {
       const res = await fetch("/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
+        signal: controller.signal
       });
 
+      clearTimeout(timeoutId);
       const data = await res.json();
 
       if (res.ok) {
-        setMensaje(data.message);
+        setMensaje(data.message || "Si el correo está registrado, recibirás un enlace de recuperación.");
       } else {
-        setError(data.error);
+        setError(data.error || "No se pudo procesar la solicitud.");
       }
-    } catch {
-      setError("No se pudo conectar con el servidor.");
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        setError("El servidor tardó en responder. Por favor verifica tu bandeja de entrada o intenta de nuevo.");
+      } else {
+        setError("No se pudo conectar con el servidor.");
+      }
     } finally {
+      clearTimeout(timeoutId);
       setCargando(false);
     }
   };

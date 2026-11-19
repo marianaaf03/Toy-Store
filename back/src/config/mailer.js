@@ -6,15 +6,17 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD
-  }
+  },
+  connectionTimeout: 5000,
+  greetingTimeout: 5000,
+  socketTimeout: 5000
 });
 
-// Verificamos conexión de forma asíncrona para que NO detenga el servidor si falla
+// Verificamos conexión de forma asíncrona sin bloquear el arranque del servidor
 transporter.verify()
-  .then(() => console.log('✅ Correo real listo para enviar'))
+  .then(() => console.log('Servicio de correo verificado'))
   .catch((error) => {
-    console.error('❌ Error de conexión SMTP (Gmail):', error.message);
-    console.log('⚠️  El servidor sigue funcionando, pero no se enviarán correos hasta corregir .env');
+    console.warn('Aviso: Verificacion SMTP no completada (' + error.message + '). El servidor continúa funcionando normalmente.');
   });
 
 module.exports = transporter;
