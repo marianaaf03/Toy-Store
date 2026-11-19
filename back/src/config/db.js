@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-const pool = mysql.createPool({
+const poolConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -10,17 +10,26 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
-});
+};
+
+// Si es TiDB Cloud o se especifica DB_SSL, habilitar TLS/SSL
+if (process.env.DB_SSL === 'true' || String(process.env.DB_PORT) === '4000') {
+  poolConfig.ssl = {
+    minVersion: 'TLSv1.2',
+    rejectUnauthorized: true
+  };
+}
+
+const pool = mysql.createPool(poolConfig);
 
 // Probar la conexión al arrancar
 pool.getConnection()
   .then(connection => {
-    console.log('✅ Conectado a MySQL (XAMPP)');
+    console.log('✅ Conectado a la Base de Datos (' + (poolConfig.ssl ? 'TiDB Cloud SSL' : 'MySQL local') + ')');
     connection.release();
   })
   .catch(err => {
-    console.error('❌ Error MySQL: No se pudo conectar a la base de datos local.');
-    console.error('   Asegúrate de que XAMPP Apache y MySQL estén encendidos.');
+    console.error('❌ Error Base de Datos: No se pudo conectar.');
     console.error(`   Detalle: ${err.message}`);
   });
 

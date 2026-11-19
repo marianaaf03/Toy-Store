@@ -10,8 +10,20 @@ const confesionesRoutes = require('./src/routes/confesiones.routes');
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+  origin: (origin, callback) => {
+    // Permitir peticiones sin origin o desde Vercel / localhost
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -26,16 +38,16 @@ app.use('/confesiones', confesionesRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
-  res.json({ message: '🧸 API Toy Store funcionando' });
+  res.json({ message: 'API Toy Store funcionando correctamente' });
 });
 
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {
-  console.error('💥 Error no controlado:', err);
+  console.error('Error no controlado:', err);
   res.status(500).json({ error: 'Error interno en el servidor', detalle: err.message });
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
