@@ -1,0 +1,41 @@
+{
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/auth/(.*)",
+      "destination": "https://toystore-backend-5v90.onrender.com/auth/$1"
+    },
+    {
+      "source": "/auth",
+      "destination": "https://toystore-backend-5v90.onrender.com/auth"
+    },
+    {
+      "source": "/productos/(.*)",
+      "destination": "https://toystore-backend-5v90.onrender.com/productos/$1"
+    },
+    {
+      "source": "/productos",
+      "destination": "https://toystore-backend-5v90.onrender.com/productos"
+    },
+    {
+      "source": "/chat/(.*)",
+      "destination": "https://toystore-backend-5v90.onrender.com/chat/$1"
+    },
+    {
+      "source": "/chat",
+      "destination": "https://toystore-backend-5v90.onrender.com/chat"
+    },
+    {
+      "source": "/confesiones/(.*)",
+      "destination": "https://toystore-backend-5v90.onrender.com/confesiones/$1"
+    },
+    {
+      "source": "/confesiones",
+      "destination": "https://toystore-backend-5v90.onrender.com/confesiones"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
