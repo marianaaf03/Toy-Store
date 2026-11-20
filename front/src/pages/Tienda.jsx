@@ -4,9 +4,9 @@ import RoomWrapper from '../components/RoomWrapper';
 import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 import ToyBoxCard from '../components/ToyBoxCard';
 
-// Catálogo base con productos reales de sex shop y descripciones persuasivas
+// Catálogo oficial completo con todas las imágenes añadidas por el usuario (sin productos repetidos)
 const CATALOGO_REAL = [
-  // 1. VIBRADORES
+  // 1. VIBRADORES (7 productos únicos con sus respectivas imágenes)
   {
     id: 1,
     nombre: 'Masajeador Rabbit Doble Estimulación',
@@ -20,7 +20,7 @@ const CATALOGO_REAL = [
     nombre: 'Succionador Clitoriano por Ondas de Aire',
     categoria: 'vibradores',
     precio: 145000,
-    imagen: '',
+    imagen: '/images/succionadorclitoris.png',
     descripcion: 'Revolucionaria tecnología de ondas de presión pulsantes que acarician el clítoris sin contacto directo ni fricción, desatando orgasmos múltiples e intensos en pocos minutos. Cuenta con 11 niveles de intensidad gradual, tacto aterciopelado hipoalergénico y recarga magnética USB.'
   },
   {
@@ -28,7 +28,7 @@ const CATALOGO_REAL = [
     nombre: 'Vibrador Bala Silenciosa Multi-Velocidad',
     categoria: 'vibradores',
     precio: 65000,
-    imagen: '',
+    imagen: '/images/vibradorbala.png',
     descripcion: 'Ultra compacto, potente y discreto para llevar en el bolso. Su punta redondeada transfiere vibraciones profundas focalizadas en zonas erógenas como clítoris, pezones y cuello con 7 modos de frecuencia y motor whisper-quiet.'
   },
   {
@@ -36,7 +36,7 @@ const CATALOGO_REAL = [
     nombre: 'Vibrador Punto G en Silicona Líquida',
     categoria: 'vibradores',
     precio: 125000,
-    imagen: '/images/vibrador_cowgirl.png',
+    imagen: '/images/vibradorpuntoG.png',
     descripcion: 'Curvatura anatómica precisa diseñada para adaptarse a la perfección al canal vaginal y estimular con firmeza el punto G. Acabado ultra suave y flexible que se amolda a la temperatura corporal para caricias envolventes.'
   },
   {
@@ -44,7 +44,7 @@ const CATALOGO_REAL = [
     nombre: 'Vibrador para Ropa Interior con Control Remoto',
     categoria: 'vibradores',
     precio: 160000,
-    imagen: '',
+    imagen: '/images/vibradorpararopainterior.png',
     descripcion: 'Estimulador ergonómico en forma de mariposa con fijación magnética para ajustarse a cualquier panty. Incluye control inalámbrico de hasta 15 metros para juegos de complicidad y entrega en pareja durante cenas, paseos o en la intimidad.'
   },
   {
@@ -55,184 +55,224 @@ const CATALOGO_REAL = [
     imagen: '/images/cerdito_travieso.png',
     descripcion: 'Divertido y adorable estimulador clitoriano con lengüeta de silicona flexible de alta frecuencia. Simula caricias orales continuas con múltiples pulsaciones para sensaciones cosquilleantes irresistibles.'
   },
-
-  // 2. LENCERÍA
   {
     id: 7,
+    nombre: 'Vibrador Varita Masajeadora Cowgirl',
+    categoria: 'vibradores',
+    precio: 135000,
+    imagen: '/images/vibrador_cowgirl.png',
+    descripcion: 'Varita masajeadora con cabezal flexible y motor de alta torsión diseñada para aliviar tensiones musculares y proporcionar sensaciones clitorianas intensas con múltiples patrones rítmicos.'
+  },
+
+  // 2. LENCERÍA (9 prendas con sus imágenes exclusivas)
+  {
+    id: 8,
     nombre: 'Conjunto Lencería Bralette y Panty de Encaje',
     categoria: 'lencerias',
     precio: 110000,
-    imagen: '/images/lenceria_andy.png',
+    imagen: '/images/lenceriabralette.png',
     descripcion: 'Conjunto sensual confeccionado en encaje floral elástico de alta suavidad. Bralette sin aros con tirantes regulables y panty de corte favorecedor que realza la silueta con elegancia y comodidad.'
   },
   {
-    id: 8,
+    id: 9,
     nombre: 'Baby Doll de Satén con Copas de Encaje',
     categoria: 'lencerias',
     precio: 135000,
-    imagen: '',
+    imagen: '/images/babydoll.png',
     descripcion: 'Camisón corto de satén brillante con caída fluida, escote decorado en encaje transparente y espalda descubierta con lazos de ajuste. Incluye tanga a juego para una noche inolvidable.'
   },
   {
-    id: 9,
+    id: 10,
     nombre: 'Body de Encaje con Escote Profundo',
     categoria: 'lencerias',
     precio: 120000,
-    imagen: '',
+    imagen: '/images/bodydeencaje.png',
     descripcion: 'Enterizo sensual con transparencias estratégicas, escote en V pronunciado y broches de apertura inferior que facilitan la comodidad y encuentros espontáneos.'
   },
   {
-    id: 10,
+    id: 11,
     nombre: 'Arnés Corporal de Tiras Regulables',
     categoria: 'lencerias',
     precio: 95000,
-    imagen: '',
+    imagen: '/images/arnescorporal.png',
     descripcion: 'Arnés moderno de moda íntima con herrajes dorados mate inoxidables y elásticos suaves que se adaptan y ciñen a cualquier talla, enmarcando el busto y el torso con estilo audaz.'
   },
   {
-    id: 11,
+    id: 12,
     nombre: 'Bata Kimono Corta en Seda Satinada',
     categoria: 'lencerias',
     precio: 140000,
-    imagen: '',
+    imagen: '/images/batakimono.png',
     descripcion: 'Prenda sugerente y sedosa con cinturón de amarre y mangas acampanadas. Perfecta para lucir sobre la lencería durante juegos previos o momentos de relajación.'
-  },
-
-  // 3. PLUGS & ANALES
-  {
-    id: 12,
-    nombre: 'Plug Anal Metálico con Gema de Cristal',
-    categoria: 'anales',
-    precio: 55000,
-    imagen: '/images/plug_anal.png',
-    descripcion: 'Fabricado en acero inoxidable de grado quirúrgico pulido a espejo, rematado con una gema facetada brillante en la base. Permite juegos de temperatura sumergiéndolo en agua tibia o fría, con base de seguridad acampanada.'
   },
   {
     id: 13,
-    nombre: 'Plug Anal Vibrador con Control Inalámbrico',
-    categoria: 'anales',
+    nombre: 'Conjunto Lencería Temática Vaquera',
+    categoria: 'lencerias',
     precio: 115000,
-    imagen: '',
-    descripcion: 'Cuerpo cónico de fácil inserción en silicona sedosa con motor interno de 10 modos de vibración profunda. Su mando a distancia inalámbrico permite compartir el control del placer con tu pareja.'
+    imagen: '/images/lenceria_andy.png',
+    descripcion: 'Bralette y panty con temática exclusiva de vaquera chic con lazos en satén y encaje elástico transpirable de alta resistencia.'
   },
   {
     id: 14,
-    nombre: 'Set de 3 Plugs Progresivos de Silicona',
-    categoria: 'anales',
-    precio: 85000,
-    imagen: '',
-    descripcion: 'Kit completo de iniciación con tamaños S, M y L para una exploración gradual y placentera. Silicona hipoalergénica aterciopelada y cuello estrecho con base ancha de total tranquilidad.'
+    nombre: 'Lencería Sensual Masculina Boxer Slip',
+    categoria: 'lencerias',
+    precio: 65000,
+    imagen: '/images/lenceriahombre.png',
+    descripcion: 'Boxer slip ajustado con tejido microperforado ultra suave y transpirable, diseñado para realzar la anatomía masculina con total confort.'
   },
   {
     id: 15,
-    nombre: 'Sonda Prostática Ergonómica con Vibración',
-    categoria: 'anales',
-    precio: 130000,
-    imagen: '',
-    descripcion: 'Ángulo de precisión anatómica diseñado para alcanzar y masajear la próstata y el perineo simultáneamente con ondas de vibración profundas y relajantes.'
+    nombre: 'Lencería Masculina Arnés & Suspensorio',
+    categoria: 'lencerias',
+    precio: 75000,
+    imagen: '/images/lenceriahombre2.png',
+    descripcion: 'Set de arnés pectoral y jockstrap elástico regulable con bandas de compresión suave que definen la musculatura y añaden un toque seductor.'
   },
-
-  // 4. DILDOS
   {
     id: 16,
-    nombre: 'Dildo RealFeel Dual Density con Ventosa 18cm',
-    categoria: 'dildos',
-    precio: 140000,
-    imagen: '',
-    descripcion: 'Tecnología de doble densidad con núcleo interno firme y capa externa suave y flexible que emula la textura y calidez natural. Su ventosa inferior se adhiere con fuerza a superficies lisas o arneses.'
-  },
-  {
-    id: 17,
-    nombre: 'Dildo de Cristal Borosilicato Templado',
-    categoria: 'dildos',
-    precio: 110000,
-    imagen: '',
-    descripcion: 'Obra de arte en vidrio de borosilicato soplado hipoalergénico y no poroso con suaves hendiduras en espiral. Compatible con cualquier lubricante y apto para experimentar sensaciones térmicas.'
+    nombre: 'Conjunto Lencería Galáctica Space',
+    categoria: 'lencerias',
+    precio: 118000,
+    imagen: '/images/lenceriabuzzmujer.png',
+    descripcion: 'Diseño futurista inspirado en el espacio exterior con acabados satinados brillantes, copas con soporte suave y detalles violetas y verdes.'
   },
 
-  // 5. COSMÉTICA
+  // 3. PLUGS & ANALES (4 productos con sus imágenes exactas)
+  {
+    id: 17,
+    nombre: 'Plug Anal Metálico con Gema de Cristal',
+    categoria: 'anales',
+    precio: 55000,
+    imagen: '/images/pluganalconcristal.png',
+    descripcion: 'Fabricado en acero inoxidable de grado quirúrgico pulido a espejo, rematado con una gema facetada brillante en la base. Permite juegos de temperatura sumergiéndolo en agua tibia o fría, con base de seguridad acampanada.'
+  },
   {
     id: 18,
-    nombre: 'Lubricante Íntimo a Base de Agua 100ml',
-    categoria: 'cosmetica',
-    precio: 38000,
-    imagen: '',
-    descripcion: 'Fórmula hidratante de larga duración y textura sedosa que no mancha ni deja residuos pegajosos. 100% compatible con preservativos de látex y juguetes de silicona médica.'
+    nombre: 'Plug Anal Vibrador con Control Inalámbrico',
+    categoria: 'anales',
+    precio: 115000,
+    imagen: '/images/pluganalvibrador.png',
+    descripcion: 'Cuerpo cónico de fácil inserción en silicona sedosa con motor interno de 10 modos de vibración profunda. Su mando a distancia inalámbrico permite compartir el control del placer con tu pareja.'
   },
   {
     id: 19,
-    nombre: 'Aceite de Masaje Sensual Efecto Calor Fresa',
-    categoria: 'cosmetica',
-    precio: 45000,
-    imagen: '',
-    descripcion: 'Aceite comestible de tacto sedoso que reacciona con el calor de la piel y el aliento, generando una agradable sensación térmica acompañada de un delicioso aroma a fresa.'
+    nombre: 'Set de 3 Plugs Progresivos de Silicona',
+    categoria: 'anales',
+    precio: 85000,
+    imagen: '/images/setplugs.png',
+    descripcion: 'Kit completo de iniciación con tamaños S, M y L para una exploración gradual y placentera. Silicona hipoalergénica aterciopelada y cuello estrecho con base ancha de total tranquilidad.'
   },
   {
     id: 20,
-    nombre: 'Gel Estimulador Clitoriano Efecto Frío & Calor',
-    categoria: 'cosmetica',
-    precio: 52000,
-    imagen: '',
-    descripcion: 'Gotas concentradas que incrementan la sensibilidad y activan un cosquilleo estimulante con pulsaciones térmicas para potenciar los orgasmos desde la primera caricia.'
+    nombre: 'Sonda Prostática Ergonómica con Vibración',
+    categoria: 'anales',
+    precio: 130000,
+    imagen: '/images/sondaprostatica.png',
+    descripcion: 'Ángulo de precisión anatómica diseñado para alcanzar y masajear la próstata y el perineo simultáneamente con ondas de vibración profundas y relajantes.'
   },
+
+  // 4. DILDOS (2 productos con sus imágenes)
   {
     id: 21,
-    nombre: 'Vela Aromática de Cera de Soya para Masajes',
-    categoria: 'cosmetica',
-    precio: 48000,
-    imagen: '',
-    descripcion: 'Se derrite a baja temperatura transformándose en un cálido aceite tibio enriquecido con aceites naturales y fragancias relajantes para masajes corporales sensuales.'
+    nombre: 'Dildo RealFeel Dual Density con Ventosa 18cm',
+    categoria: 'dildos',
+    precio: 140000,
+    imagen: '/images/dildorealfeel.png',
+    descripcion: 'Tecnología de doble densidad con núcleo interno firme y capa externa suave y flexible que emula la textura y calidez natural. Su ventosa inferior se adhiere con fuerza a superficies lisas o arneses.'
   },
   {
     id: 22,
-    nombre: 'Limpiador Antibacterial Espumoso para Juguetes',
-    categoria: 'cosmetica',
-    precio: 34000,
-    imagen: '',
-    descripcion: 'Espuma higienizante de fórmula médica sin alcohol que desinfecta y conserva las propiedades de la silicona de tus juguetes favoritos manteniéndolos como nuevos.'
+    nombre: 'Dildo de Cristal Borosilicato Templado',
+    categoria: 'dildos',
+    precio: 110000,
+    imagen: '/images/dildodecristal.png',
+    descripcion: 'Obra de arte en vidrio de borosilicato soplado hipoalergénico y no poroso con suaves hendiduras en espiral. Compatible con cualquier lubricante y apto para experimentar sensaciones térmicas.'
   },
 
-  // 6. ACCESORIOS & BDSM
+  // 5. COSMÉTICA (5 productos con sus imágenes)
   {
     id: 23,
-    nombre: 'Esposas de Peluche con Cierre de Seguridad',
-    categoria: 'accesorios',
-    precio: 42000,
-    imagen: '',
-    descripcion: 'Grilletes de muñeca forrados en suave felpa acolchada con cadena metálica y palanca de liberación rápida para juegos de sumisión suaves y placenteros.'
+    nombre: 'Lubricante Íntimo a Base de Agua 100ml',
+    categoria: 'cosmetica',
+    precio: 38000,
+    imagen: '/images/lubricanteintimo.png',
+    descripcion: 'Fórmula hidratante de larga duración y textura sedosa que no mancha ni deja residuos pegajosos. 100% compatible con preservativos de látex y juguetes de silicona médica.'
   },
   {
     id: 24,
-    nombre: 'Antifaz de Seda Acolchado para Privación Sensorial',
-    categoria: 'accesorios',
-    precio: 28000,
-    imagen: '',
-    descripcion: 'Bloquea por completo la luz agudizando los sentidos del tacto, oído y olfato para intensificar cada roce y caricia durante la previa en pareja.'
+    nombre: 'Aceite de Masaje Sensual Efecto Calor Fresa',
+    categoria: 'cosmetica',
+    precio: 45000,
+    imagen: '/images/aceitedemasaje.png',
+    descripcion: 'Aceite comestible de tacto sedoso que reacciona con el calor de la piel y el aliento, generando una agradable sensación térmica acompañada de un delicioso aroma a fresa.'
   },
   {
     id: 25,
-    nombre: 'Fusta de Placer con Puntera de Cuero Suave',
-    categoria: 'accesorios',
-    precio: 36000,
-    imagen: '',
-    descripcion: 'Accesorio de caricias sensoriales con empuñadura ergonómica y puntera suave para introducir dinámicas de juego de rol y estimulación con delicadeza.'
+    nombre: 'Gel Estimulador Clitoriano Efecto Frío & Calor',
+    categoria: 'cosmetica',
+    precio: 52000,
+    imagen: '/images/gelestimulador.png',
+    descripcion: 'Gotas concentradas que incrementan la sensibilidad y activan un cosquilleo estimulante con pulsaciones térmicas para potenciar los orgasmos desde la primera caricia.'
   },
-
-  // 7. KITS & SORPRESAS
   {
     id: 26,
-    nombre: 'Kit de Iniciación Erótica para Parejas',
-    categoria: 'kits',
-    precio: 165000,
-    imagen: '/images/mystery_box.png',
-    descripcion: 'Set completo con antifaz de satén, esposas de felpa, pluma de caricias, dado erótico y lubricante íntimo para salir de la rutina y encender la chispa.'
+    nombre: 'Vela Aromática de Cera de Soya para Masajes',
+    categoria: 'cosmetica',
+    precio: 48000,
+    imagen: '/images/velaaromatica.png',
+    descripcion: 'Se derrite a baja temperatura transformándose en un cálido aceite tibio enriquecido con aceites naturales y fragancias relajantes para masajes corporales sensuales.'
   },
   {
     id: 27,
+    nombre: 'Limpiador Antibacterial Espumoso para Juguetes',
+    categoria: 'cosmetica',
+    precio: 34000,
+    imagen: '/images/limpiadorantibacterial.png',
+    descripcion: 'Espuma higienizante de fórmula médica sin alcohol que desinfecta y conserva las propiedades de la silicona de tus juguetes favoritos manteniéndolos como nuevos.'
+  },
+
+  // 6. ACCESORIOS & BDSM (3 productos con sus imágenes)
+  {
+    id: 28,
+    nombre: 'Esposas de Peluche con Cierre de Seguridad',
+    categoria: 'accesorios',
+    precio: 42000,
+    imagen: '/images/esposasdepeluche.png',
+    descripcion: 'Grilletes de muñeca forrados en suave felpa acolchada con cadena metálica y palanca de liberación rápida para juegos de sumisión suaves y placenteros.'
+  },
+  {
+    id: 29,
+    nombre: 'Antifaz de Seda Acolchado para Privación Sensorial',
+    categoria: 'accesorios',
+    precio: 28000,
+    imagen: '/images/antifazdeseda.png',
+    descripcion: 'Bloquea por completo la luz agudizando los sentidos del tacto, oído y olfato para intensificar cada roce y caricia durante la previa en pareja.'
+  },
+  {
+    id: 30,
+    nombre: 'Fusta de Placer con Puntera de Cuero Suave',
+    categoria: 'accesorios',
+    precio: 36000,
+    imagen: '/images/fustadeplacer.png',
+    descripcion: 'Accesorio de caricias sensoriales con empuñadura ergonómica y puntera suave para introducir dinámicas de juego de rol y estimulación con delicadeza.'
+  },
+
+  // 7. KITS & SORPRESAS (2 kits con sus imágenes)
+  {
+    id: 31,
+    nombre: 'Kit de Iniciación Erótica para Parejas',
+    categoria: 'kits',
+    precio: 165000,
+    imagen: '/images/kitdeiniciazion.png',
+    descripcion: 'Set completo con antifaz de satén, esposas de felpa, pluma de caricias, dado erótico y lubricante íntimo para salir de la rutina y encender la chispa.'
+  },
+  {
+    id: 32,
     nombre: 'Caja Misteriosa Toy Store Mystery Box',
     categoria: 'kits',
     precio: 250000,
-    imagen: '/images/mystery_box.png',
+    imagen: '/images/cajamisteriosa.png',
     descripcion: 'Exclusiva selección sorpresa curada con 3 productos premium (vibrador de alta gama, cosmética íntima y accesorio sensual) con un valor real muy superior al precio final.'
   }
 ];
@@ -259,15 +299,29 @@ function getCategoryPriority(cat = '') {
   return 8;
 }
 
+function getProductosPorCategoria(cat = 'todos') {
+  const filtered = cat === 'todos' 
+    ? CATALOGO_REAL 
+    : CATALOGO_REAL.filter(p => p.categoria.toLowerCase().includes(cat.toLowerCase()));
+  return [...filtered].sort((a, b) => {
+    const prioA = getCategoryPriority(a.categoria);
+    const prioB = getCategoryPriority(b.categoria);
+    if (prioA !== prioB) return prioA - prioB;
+    return a.id - b.id;
+  });
+}
+
 export default function Tienda() {
   const navigate = useNavigate();
-  const [productos, setProductos] = useState([]);
-  const [cargando, setCargando] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const categoriaActiva = searchParams.get('cat') || 'todos';
   const busqueda = (searchParams.get('buscar') || searchParams.get('q') || '').toLowerCase().trim();
   const [pagina, setPagina] = useState(1);
   const [filtroTexto, setFiltroTexto] = useState(busqueda);
+
+  // Inicialización instantánea sin demora ni pantalla rara al recargar
+  const [productos, setProductos] = useState(() => getProductosPorCategoria(categoriaActiva));
+  const [cargando, setCargando] = useState(false);
 
   // Carrito sincronizado con localStorage
   const [carrito, setCarrito] = useState(() => {
@@ -290,7 +344,9 @@ export default function Tienda() {
   const ITEMS_POR_PAGINA = 15;
 
   useEffect(() => {
-    fetchProductos();
+    // Actualización inmediata al cambiar categoría
+    setProductos(getProductosPorCategoria(categoriaActiva));
+    fetchProductosSilencioso();
   }, [categoriaActiva]);
 
   useEffect(() => {
@@ -304,17 +360,16 @@ export default function Tienda() {
     setPagina(1);
   }, [categoriaActiva, busqueda]);
 
-  const fetchProductos = async () => {
+  // Actualización en segundo plano sin interrumpir ni demorar la visualización
+  const fetchProductosSilencioso = async () => {
     try {
-      setCargando(true);
       const url = categoriaActiva === 'todos' 
         ? '/productos'
         : `/productos?categoria=${encodeURIComponent(categoriaActiva)}`;
-      
       const res = await fetch(url);
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
-        // Combinamos con los nombres reales y persuasivos para máxima coherencia
+        // Combinamos manteniendo los nombres e imágenes correctas
         const merged = data.map((item, idx) => {
           const matchReal = CATALOGO_REAL.find(c => c.id === item.id || c.nombre.toLowerCase() === item.nombre.toLowerCase());
           if (matchReal) {
@@ -330,7 +385,6 @@ export default function Tienda() {
           };
         });
 
-        // Orden estricto solicitado: Vibradores -> Lencería -> Plugs/Anales -> Dildos -> Cosmética -> Accesorios -> Kits
         const sorted = [...merged].sort((a, b) => {
           const prioA = getCategoryPriority(a.categoria);
           const prioB = getCategoryPriority(b.categoria);
@@ -338,27 +392,9 @@ export default function Tienda() {
           return a.id - b.id;
         });
         setProductos(sorted);
-      } else {
-        // Fallback al catálogo real curado
-        const filtered = categoriaActiva === 'todos'
-          ? CATALOGO_REAL
-          : CATALOGO_REAL.filter(p => p.categoria.toLowerCase().includes(categoriaActiva.toLowerCase()));
-        const sorted = [...filtered].sort((a, b) => {
-          const prioA = getCategoryPriority(a.categoria);
-          const prioB = getCategoryPriority(b.categoria);
-          if (prioA !== prioB) return prioA - prioB;
-          return a.id - b.id;
-        });
-        setProductos(sorted);
       }
-    } catch (error) {
-      console.error("Error cargando productos, usando catalogo real:", error);
-      const filtered = categoriaActiva === 'todos'
-        ? CATALOGO_REAL
-        : CATALOGO_REAL.filter(p => p.categoria.toLowerCase().includes(categoriaActiva.toLowerCase()));
-      setProductos(filtered);
-    } finally {
-      setCargando(false);
+    } catch (e) {
+      // Si el backend duerme, el catálogo real ya está visible sin demoras
     }
   };
 
@@ -437,36 +473,6 @@ export default function Tienda() {
         }
       `}</style>
 
-      {/* =========================================================================
-          BOTÓN DE AÑADIR AL CARRITO (CON IMAGEN DEL USUARIO, COLGANDO DE LA NUBE)
-          ========================================================================= */}
-      <div 
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          navigate('/carrito');
-        }}
-        className="fixed top-[105px] sm:top-[120px] md:top-[132px] right-3 sm:right-6 md:right-10 z-[250] cursor-pointer group animate-swing-sign pointer-events-auto select-none"
-        title="Ver Carrito de Compras"
-      >
-        <div className="relative flex items-center justify-center transition-transform group-hover:scale-105 active:scale-95">
-          {/* Imagen oficial añadir_carrito.png subida por el usuario */}
-          <img 
-            src="/images/anadir_carrito.png" 
-            alt="Añadir al Carrito" 
-            onError={(e) => { e.target.src = '/images/añadir_carrito.png'; }}
-            className="w-24 sm:w-28 md:w-32 h-auto object-contain drop-shadow-md"
-          />
-
-          {/* Botón / Indicador rojo en la esquina con el contador de artículos pendientes */}
-          {totalArticulosCarrito > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 bg-[#E52521] text-white text-[11px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow-md animate-bounce ring-1 ring-red-300">
-              {totalArticulosCarrito}
-            </span>
-          )}
-        </div>
-      </div>
-
       {/* TOAST / NOTIFICACIÓN EMERGENTE AL AÑADIR AL CARRITO */}
       {toastNotificacion && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[500] bg-[#1e3a8a] text-white px-5 py-3 rounded-full shadow-2xl border-2 border-[#a6d4f2] text-xs sm:text-sm font-black flex items-center gap-2.5 animate-in fade-in slide-in-from-top-4 duration-300">
@@ -475,16 +481,70 @@ export default function Tienda() {
         </div>
       )}
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-6 pt-3 pb-28 font-fredoka flex flex-col items-center select-none">
+      {/* ÁREA DE CONTENIDO PRINCIPAL: Con espaciado superior amplio para que la navbar no tape nada */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-6 pt-16 sm:pt-20 md:pt-24 pb-28 font-fredoka flex flex-col items-center select-none">
         
         {/* =========================================================================
-            ZONA SUPERIOR: BUSCADOR FLOTANTE CON MARGEN AZUL Y BORDE REDONDEADO LIMPIO
+            ZONA SUPERIOR: BUSCADOR CON BARRITAS COLGANTES + CARTEL "AÑADIR AL CARRITO"
             ========================================================================= */}
-        <div className="w-full relative flex items-center justify-center my-4 min-h-[140px]">
+        <div className="w-full relative flex items-center justify-center mb-6 min-h-[170px]">
           
+          {/* 1. CARTEL "AÑADIR AL CARRITO": CONECTADO CON SUS BARRITAS, SCROLLEA CON LA PÁGINA */}
+          <div 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              navigate('/carrito');
+            }}
+            className="absolute top-0 right-2 sm:right-6 md:right-8 z-30 cursor-pointer group pointer-events-auto select-none flex flex-col items-center animate-swing-sign"
+            title="Ver Carrito de Compras"
+          >
+            {/* Barritas que sostienen el cartel de añadir al carrito */}
+            <div className="flex justify-between w-12 sm:w-16 mx-auto -mb-1 relative z-0">
+              <div className="w-[3px] h-8 sm:h-12 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
+                <div className="w-2 h-2 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[2.5px]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[2.5px]"></div>
+              </div>
+              <div className="w-[3px] h-8 sm:h-12 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
+                <div className="w-2 h-2 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[2.5px]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[2.5px]"></div>
+              </div>
+            </div>
+
+            {/* Imagen oficial del cartel con tamaño moderado y proporcional */}
+            <div className="relative flex items-center justify-center transition-transform group-hover:scale-105 active:scale-95">
+              <img 
+                src="/images/anadir_carrito.png" 
+                alt="Añadir al Carrito" 
+                onError={(e) => { e.target.src = '/images/añadir_carrito.png'; }}
+                className="w-16 sm:w-20 md:w-24 h-auto object-contain drop-shadow-md"
+              />
+
+              {/* Botón / Indicador rojo en la esquina con el contador de artículos pendientes */}
+              {totalArticulosCarrito > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#E52521] text-white text-[10px] sm:text-[11px] font-black w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center border-2 border-white shadow-md animate-bounce ring-1 ring-red-300">
+                  {totalArticulosCarrito}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* 2. EL BUSCADOR: SOSTENIDO POR SUS BARRITAS COLGANTES */}
           <div className="relative z-10 flex flex-col items-center animate-hanging-cloud max-w-2xl w-full mx-auto px-2">
             
-            {/* Contenedor Limpio y Redondeado sin bolas ni líneas deformes */}
+            {/* Barritas que sostienen el buscador conectadas a la parte superior */}
+            <div className="w-full max-w-md flex justify-between px-12 sm:px-16 -mb-1 relative z-0">
+              <div className="w-[3.5px] h-10 sm:h-14 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3px]"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3px]"></div>
+              </div>
+              <div className="w-[3.5px] h-10 sm:h-14 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3px]"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3px]"></div>
+              </div>
+            </div>
+
+            {/* Contenedor Limpio y Redondeado sin bolas ni bordes deformes */}
             <div className="w-full bg-white/95 backdrop-blur-md rounded-[2.5rem] p-4 sm:p-5 shadow-[0_12px_35px_rgba(30,58,138,0.12)] border-4 border-[#a6d4f2] relative z-10">
               
               {/* Barra de entrada de búsqueda */}
@@ -578,23 +638,16 @@ export default function Tienda() {
             ========================================================================= */}
         <div className="w-full max-w-7xl bg-white/95 backdrop-blur-md rounded-t-[3.5rem] rounded-b-3xl border-4 border-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] p-4 sm:p-8 relative mt-3">
           
-          {/* Sombrero de Woody con imagen oficial del usuario rotada en la esquina */}
-          <div className="absolute -top-9 -left-4 sm:-top-12 sm:-left-6 md:-top-14 md:-left-7 z-30 pointer-events-none -rotate-12 transition-transform hover:rotate-0">
+          {/* Sombrero de Woody adaptado perfectamente a la curvatura de la esquina del estante */}
+          <div className="absolute -top-7 -left-3 sm:-top-8 sm:-left-4 md:-top-9 md:-left-5 z-30 pointer-events-none -rotate-[15deg] transition-transform hover:rotate-0">
             <img 
               src="/images/sombrero_vaquero.png" 
               alt="Sombrero Vaquero Woody" 
-              className="w-20 sm:w-28 md:w-32 h-auto object-contain drop-shadow-md"
+              className="w-16 sm:w-22 md:w-26 h-auto object-contain drop-shadow-md"
             />
           </div>
 
-          {cargando ? (
-            <div className="py-24 flex flex-col items-center justify-center">
-              <div className="w-12 h-12 border-4 border-[#a6d4f2] border-t-[#1e3a8a] rounded-full animate-spin"></div>
-              <p className="mt-4 text-xs font-black text-[#1e3a8a] uppercase tracking-widest">
-                Acomodando los juguetes en los estantes...
-              </p>
-            </div>
-          ) : productosFiltrados.length === 0 ? (
+          {productosFiltrados.length === 0 ? (
             <div className="py-20 text-center">
               <p className="text-sm font-black text-[#1e3a8a] uppercase">No hay juguetes en esta categoría</p>
               <button
@@ -688,11 +741,11 @@ export default function Tienda() {
       </div>
 
       {/* =========================================================================
-          PÁGINA EMERGENTE / MODAL DETALLADO CON DIFUMINADO CLARO Y DISEÑO LIMPIO
+          PÁGINA EMERGENTE / MODAL DETALLADO CON MARGEN AZULITO (COMBINADO CON BUSCADOR)
           ========================================================================= */}
       {productoSeleccionado && (
         <div className="fixed inset-0 z-[400] flex items-center justify-center p-3 sm:p-6 bg-black/25 backdrop-blur-xs font-fredoka select-none animate-in fade-in duration-200">
-          <div className="bg-white rounded-[2.5rem] max-w-4xl w-full max-h-[88vh] overflow-y-auto p-6 sm:p-10 shadow-[0_25px_70px_rgba(0,0,0,0.25)] relative border-4 border-amber-300 animate-in zoom-in-95 duration-200 z-[401]">
+          <div className="bg-white rounded-[2.5rem] max-w-4xl w-full max-h-[88vh] overflow-y-auto p-6 sm:p-10 shadow-[0_25px_70px_rgba(0,0,0,0.25)] relative border-4 border-[#a6d4f2] animate-in zoom-in-95 duration-200 z-[401]">
             
             {/* Botón Cerrar */}
             <button
@@ -703,7 +756,7 @@ export default function Tienda() {
             </button>
 
             <div className="flex flex-col md:flex-row gap-8 items-center">
-              {/* Vista del Producto Directa y Amplia (Sin recuadro contenedor) */}
+              {/* Vista del Producto Directa y Amplia (Sin recuadro contenedor extra) */}
               <div className="w-full md:w-5/12 flex items-center justify-center">
                 <ToyBoxCard producto={productoSeleccionado} index={0} isModalView={true} />
               </div>
