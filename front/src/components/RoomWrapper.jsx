@@ -87,38 +87,45 @@ export default function RoomWrapper({
     switch (theme) {
       case 'woody':
         return {
-          wall: 'bg-[#FDE68A] bg-opacity-90', // Amarillo Woody
-          floor: 'bg-[#92400E]', // Madera oscura
-          accent: 'border-[#F87171]', // Rojo pañuelo
-          wallpaper: 'bg-[radial-gradient(#d97706_1px,transparent_1px)] [background-size:20px_20px]',
+          wall: 'bg-[#EAB308]', // Amarillo dorado cálido Woody (idéntico a la referencia)
+          floor: 'bg-[#B45309]', // Suelo de madera Andy
+          accent: 'border-[#EAB308]',
+          wallpaper: '',
         };
       case 'buzz':
         return {
-          wall: 'bg-[#F3F4F6] border-purple-200', // Blanco/Gris espacial
-          floor: 'bg-[#1F2937]', // Metal oscuro / Carbono
-          accent: 'border-lime-400', // Verde Buzz
-          wallpaper: 'bg-[linear-gradient(45deg,#e5e7eb_25%,transparent_25%,transparent_50%,#e5e7eb_50%,#e5e7eb_75%,transparent_75%,transparent)] [background-size:40px_40px]',
+          wall: 'bg-[#8B5CF6]', // Púrpura espacial de Buzz
+          floor: 'bg-[#B45309]',
+          accent: 'border-[#8B5CF6]',
+          wallpaper: '',
         };
       case 'aliens':
         return {
-          wall: 'bg-[#1E1B4B]', // Azul noche profundo
-          floor: 'bg-[#064E3B]', // Verde pizza planet
+          wall: 'bg-[#1E1B4B]', // Azul noche cósmico Marcianos
+          floor: 'bg-[#B45309]',
           accent: 'border-green-400',
-          wallpaper: 'bg-[radial-gradient(#4ADE80_1px,transparent_1px)] [background-size:30px_30px]',
+          wallpaper: '',
         };
       case 'lotso':
         return {
-          wall: 'bg-[#ff0080]', // Rosa base
-          floor: 'bg-[#4c0519]', // Frambuesa muy oscuro (piso)
-          accent: 'border-[#ff0080]',
-          wallpaper: 'lotso-fur-pattern',
+          wall: 'bg-[#EC4899]', // Rosa fresa intenso Lotso
+          floor: 'bg-[#B45309]',
+          accent: 'border-[#EC4899]',
+          wallpaper: '',
+        };
+      case 'jessie':
+        return {
+          wall: 'bg-[#F97316]', // Naranja / Coral vaquero Jessie
+          floor: 'bg-[#B45309]',
+          accent: 'border-[#F97316]',
+          wallpaper: '',
         };
       default: // andy
         return {
           wall: 'bg-[#87CEEB]', // Azul Cielo Andy
-          floor: 'bg-[#B45309]', // Madera oscura original
+          floor: 'bg-[#B45309]', // Madera clásica
           accent: 'border-white shadow-[0_-5px_15px_rgba(0,0,0,0.05)]',
-          wallpaper: 'andy-clouds-pattern',
+          wallpaper: '',
         };
     }
   };
@@ -154,18 +161,10 @@ export default function RoomWrapper({
         ) : (
           /* MODO DIORAMA (E.j. Inicio Andy - Las nubes van en la pared) */
           <div className="absolute inset-0 flex flex-col">
-            {/* 1. PARED (Wall - Blue Sky, Fur, etc.) */}
-            <div 
-              className={`relative flex-1 ${styles.wall} ${theme === 'andy' ? '' : styles.wallpaper}`}
-              style={theme === 'lotso' ? { 
-                backgroundImage: `url(${LotsoFurImg})`, 
-                backgroundSize: '400px auto', 
-                backgroundRepeat: 'repeat',
-                backgroundBlendMode: 'multiply' // Mezcla el rosa base con el pelaje
-              } : {}}
-            >
+            {/* 1. PARED (Wall - Con color insignia del personaje y doodles eróticos) */}
+            <div className={`relative flex-1 ${styles.wall}`}>
                {wallpaperContent}
-               <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/5"></div>
+               <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/5 pointer-events-none"></div>
             </div>
 
             {/* 2. ZÓCALO / MADERA BLANCA (Mid Section) */}

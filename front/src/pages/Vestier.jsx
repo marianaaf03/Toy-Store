@@ -61,9 +61,8 @@ export default function Vestier() {
 
   return (
     <RoomWrapper 
-      theme="woody" 
-      fullWallpaper={true} 
-      wallpaperContent={<JessieOutfitBg />}
+      theme="jessie" 
+      wallpaperContent={<AndyCloudsWallpaper />}
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto px-4 md:px-8 pt-8 pb-16">
         

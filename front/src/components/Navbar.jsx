@@ -26,7 +26,7 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
   const [dropdownAbierto, setDropdownAbierto] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const isSimple = location.pathname === '/tienda' || location.pathname === '/guia' || location.pathname === '/vestier' || location.pathname === '/explora' || location.pathname === '/contacto';
+  const isSimple = location.pathname === '/tienda';
   const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
@@ -208,34 +208,10 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
           {isSimple ? (
             <div className="flex justify-center items-center md:min-w-[150px]" onClick={() => navigate('/')}>
               <img 
-                src={
-                  location.pathname === '/tienda'
-                    ? corazonWoodyImg
-                    : location.pathname === '/guia' 
-                      ? lotsoBearImg 
-                      : location.pathname === '/vestier'
-                        ? jessyHeartImg
-                        : location.pathname === '/explora'
-                          ? aliensFriendsImg
-                          : location.pathname === '/contacto'
-                            ? buzzHeartImg
-                            : corazonWoodyImg
-                } 
-                alt="Toy Store Icon" 
+                src={corazonWoodyImg} 
+                alt="Toy Store Woody Icon" 
                 onError={(e) => { e.target.src = corazonWoodyImg; }}
-                className={
-                  location.pathname === '/tienda'
-                    ? "h-[85px] sm:h-[105px] md:h-[135px] w-auto object-contain z-20 drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] transition-transform hover:scale-108 active:scale-95 cursor-pointer"
-                    : location.pathname === '/guia' 
-                      ? "h-[70px] md:h-[100px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-1 md:translate-x-3 cursor-pointer"
-                      : location.pathname === '/vestier'
-                        ? "h-[95px] md:h-[135px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-1 md:translate-x-2 cursor-pointer"
-                        : location.pathname === '/explora'
-                          ? "h-[140px] md:h-[200px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-[-10px] md:translate-x-[-20px] cursor-pointer"
-                          : location.pathname === '/contacto'
-                            ? "h-[120px] md:h-[180px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-[-5px] md:translate-x-[-10px] cursor-pointer"
-                            : "h-[85px] md:h-[120px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer"
-                } 
+                className="h-[85px] sm:h-[105px] md:h-[135px] w-auto object-contain z-20 drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] transition-transform hover:scale-108 active:scale-95 cursor-pointer" 
               />
             </div>
           ) : (
