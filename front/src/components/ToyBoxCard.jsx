@@ -374,9 +374,9 @@ export default function ToyBoxCard({ producto, index = 0, onClick, isModalView =
             {producto.nombre}
           </h4>
 
-          {/* Etiqueta de precio */}
+          {/* Etiqueta de precio elegante en celeste y azul marino (sin amarillo) */}
           <div className="mt-1.5 flex items-center justify-center gap-1.5">
-            <span className={`bg-[#fbbf24] text-[#1e3a8a] ${isModalView ? 'text-xs' : 'text-[10px]'} font-black px-2.5 py-0.5 rounded-full shadow-xs border border-amber-400`}>
+            <span className={`bg-sky-50 text-[#1e3a8a] border-2 border-[#a6d4f2] ${isModalView ? 'text-xs px-3.5 py-1' : 'text-[11px] px-3 py-0.5'} font-black rounded-full shadow-xs group-hover:bg-[#a6d4f2]/30 transition-colors`}>
               ${Number(producto.precio).toLocaleString('es-CO')}
             </span>
           </div>

@@ -481,13 +481,13 @@ export default function Tienda() {
         </div>
       )}
 
-      {/* ÁREA DE CONTENIDO PRINCIPAL: Con espaciado superior amplio para que la navbar no tape nada */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-6 pt-16 sm:pt-20 md:pt-24 pb-28 font-fredoka flex flex-col items-center select-none">
+      {/* ÁREA DE CONTENIDO PRINCIPAL: Espaciado ajustado para que las cuerdas coincidan exactamente con la nube */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-6 pt-0 pb-28 font-fredoka flex flex-col items-center select-none">
         
         {/* =========================================================================
             ZONA SUPERIOR: BUSCADOR CON BARRITAS COLGANTES + CARTEL "AÑADIR AL CARRITO"
             ========================================================================= */}
-        <div className="w-full relative flex items-center justify-center mb-6 min-h-[170px]">
+        <div className="w-full relative flex items-center justify-center mb-6 min-h-[170px] -mt-2 sm:-mt-3 md:-mt-4">
           
           {/* 1. CARTEL "AÑADIR AL CARRITO": CONECTADO CON SUS BARRITAS, SCROLLEA CON LA PÁGINA */}
           <div 
@@ -496,16 +496,16 @@ export default function Tienda() {
               e.stopPropagation();
               navigate('/carrito');
             }}
-            className="absolute top-0 right-2 sm:right-6 md:right-8 z-30 cursor-pointer group pointer-events-auto select-none flex flex-col items-center animate-swing-sign"
+            className="absolute top-0 right-0 sm:-right-2 md:-right-4 lg:-right-6 z-30 cursor-pointer group pointer-events-auto select-none flex flex-col items-center animate-swing-sign"
             title="Ver Carrito de Compras"
           >
             {/* Barritas que sostienen el cartel de añadir al carrito */}
             <div className="flex justify-between w-12 sm:w-16 mx-auto -mb-1 relative z-0">
-              <div className="w-[3px] h-8 sm:h-12 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
+              <div className="w-[3px] h-12 sm:h-16 md:h-18 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
                 <div className="w-2 h-2 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[2.5px]"></div>
                 <div className="w-2 h-2 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[2.5px]"></div>
               </div>
-              <div className="w-[3px] h-8 sm:h-12 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
+              <div className="w-[3px] h-12 sm:h-16 md:h-18 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
                 <div className="w-2 h-2 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[2.5px]"></div>
                 <div className="w-2 h-2 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[2.5px]"></div>
               </div>
@@ -534,11 +534,11 @@ export default function Tienda() {
             
             {/* Barritas que sostienen el buscador conectadas a la parte superior */}
             <div className="w-full max-w-md flex justify-between px-12 sm:px-16 -mb-1 relative z-0">
-              <div className="w-[3.5px] h-10 sm:h-14 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
+              <div className="w-[3.5px] h-14 sm:h-16 md:h-20 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3px]"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3px]"></div>
               </div>
-              <div className="w-[3.5px] h-10 sm:h-14 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
+              <div className="w-[3.5px] h-14 sm:h-16 md:h-20 bg-gradient-to-b from-slate-400 via-amber-600 to-amber-700 shadow-xs relative">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3px]"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3px]"></div>
               </div>
@@ -638,12 +638,12 @@ export default function Tienda() {
             ========================================================================= */}
         <div className="w-full max-w-7xl bg-white/95 backdrop-blur-md rounded-t-[3.5rem] rounded-b-3xl border-4 border-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] p-4 sm:p-8 relative mt-3">
           
-          {/* Sombrero de Woody adaptado perfectamente a la curvatura de la esquina del estante */}
-          <div className="absolute -top-7 -left-3 sm:-top-8 sm:-left-4 md:-top-9 md:-left-5 z-30 pointer-events-none -rotate-[15deg] transition-transform hover:rotate-0">
+          {/* Sombrero de Woody agrandado y coronando la curvatura de la esquina superior del estante */}
+          <div className="absolute -top-11 -left-4 sm:-top-14 sm:-left-5 md:-top-16 md:-left-6 z-30 pointer-events-none -rotate-[16deg] transition-transform hover:rotate-0">
             <img 
               src="/images/sombrero_vaquero.png" 
               alt="Sombrero Vaquero Woody" 
-              className="w-16 sm:w-22 md:w-26 h-auto object-contain drop-shadow-md"
+              className="w-28 sm:w-36 md:w-44 h-auto object-contain drop-shadow-xl"
             />
           </div>
 

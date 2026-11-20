@@ -7,6 +7,7 @@ import NavHoverItem from './NavHoverItem';
 import CowboyHat from './CowboyHat';
 import AvatarHat from './AvatarHat';
 import corazonWoodyImg from '../assets/corazon_woody.png';
+import corazonLotsoImg from '../assets/corazon_lotso.png';
 import lotsoBearImg from '../assets/lotso_bear.png';
 import jessyHeartImg from '../assets/jessy_heart.png';
 import aliensFriendsImg from '../assets/aliens_friends.png';
@@ -213,6 +214,14 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
               onError={(e) => { e.target.src = corazonWoodyImg; }}
               className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1" 
             />
+          ) : location.pathname === '/guia' ? (
+            <img 
+              src={corazonLotsoImg} 
+              alt="Toy Store Lotso Icon" 
+              onClick={() => navigate('/')} 
+              onError={(e) => { e.target.src = '/images/corazon_lotso.png'; }}
+              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1" 
+            />
           ) : (
             <>
               <img 
@@ -221,9 +230,12 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
                 onClick={() => navigate('/')} 
                 className="h-[64px] sm:h-[84px] md:h-[118px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 cursor-pointer" 
               />
-              <div className="absolute top-[76px] sm:top-[96px] md:top-[134px] left-1/2 -translate-x-1/2 z-10 scale-[0.52] sm:scale-60 md:scale-75 lg:scale-80 origin-top">
-                <ToyMobile onHeartClick={onHeartClick} onStarClick={onStarClick} onMoonClick={onMoonClick} />
-              </div>
+              {/* Toy Mobile SOLO en la página de inicio como solicitó el usuario */}
+              {location.pathname === '/' && (
+                <div className="absolute top-[76px] sm:top-[96px] md:top-[134px] left-1/2 -translate-x-1/2 z-10 scale-[0.52] sm:scale-60 md:scale-75 lg:scale-80 origin-top">
+                  <ToyMobile onHeartClick={onHeartClick} onStarClick={onStarClick} onMoonClick={onMoonClick} />
+                </div>
+              )}
             </>
           )}
         </div>
