@@ -89,8 +89,8 @@ function renderToyFigure(producto, index = 0, isModal = false) {
   if (nombre.includes('rabbit') || nombre.includes('buzz') || nombre.includes('conejo')) {
     return <img src="/images/rabbitbuzz.webp" alt={producto.nombre} onError={(e) => { e.target.style.display = 'none'; }} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
   }
-  if (nombre.includes('cowgirl') || (nombre.includes('woody') && cat.includes('vibra'))) {
-    return <img src="/images/vibrador_cowgirl.png" alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
+  if (nombre.includes('cowgirl') || nombre.includes('varita') || (nombre.includes('woody') && cat.includes('vibra'))) {
+    return <img src="/images/vibradorvarita.png" alt={producto.nombre} onError={(e) => { e.target.src = '/images/vibrador_cowgirl.png'; }} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
   }
   if (nombre.includes('jessie') || (cat.includes('lence') && (nombre.includes('vaquera') || nombre.includes('andy')))) {
     return <img src="/images/lenceria_andy.png" alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
@@ -98,8 +98,8 @@ function renderToyFigure(producto, index = 0, isModal = false) {
   if (nombre.includes('cerdito') || nombre.includes('jammy')) {
     return <img src="/images/cerdito_travieso.png" alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
   }
-  if (nombre.includes('gema') || (cat.includes('anal') && nombre.includes('rubí'))) {
-    return <img src="/images/plug_anal.png" alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
+  if (nombre.includes('gema') || nombre.includes('cristal') || (cat.includes('anal') && nombre.includes('rubí'))) {
+    return <img src="/images/pluganalconcristal.png" alt={producto.nombre} onError={(e) => { e.target.src = '/images/plug_anal.png'; }} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
   }
   if (nombre.includes('misteriosa') || (cat.includes('kit') && (nombre.includes('toy box') || nombre.includes('sorpresa')))) {
     return <img src="/images/mystery_box.png" alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;

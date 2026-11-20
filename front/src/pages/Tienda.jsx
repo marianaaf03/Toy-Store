@@ -60,7 +60,7 @@ const CATALOGO_REAL = [
     nombre: 'Vibrador Varita Masajeadora Cowgirl',
     categoria: 'vibradores',
     precio: 135000,
-    imagen: '/images/vibrador_cowgirl.png',
+    imagen: '/images/vibradorvarita.png',
     descripcion: 'Varita masajeadora con cabezal flexible y motor de alta torsión diseñada para aliviar tensiones musculares y proporcionar sensaciones clitorianas intensas con múltiples patrones rítmicos.'
   },
 
@@ -496,7 +496,7 @@ export default function Tienda() {
               e.stopPropagation();
               navigate('/carrito');
             }}
-            className="absolute top-3 sm:top-4 md:top-5 right-3 sm:right-6 md:right-8 lg:right-10 z-30 cursor-pointer group pointer-events-auto select-none flex flex-col items-center animate-swing-sign"
+            className="absolute top-3 sm:top-4 md:top-5 right-0 sm:right-1 md:right-2 lg:right-3 z-30 cursor-pointer group pointer-events-auto select-none flex flex-col items-center animate-swing-sign"
             title="Ver Carrito de Compras"
           >
             {/* Barritas que sostienen el cartel de añadir al carrito */}
