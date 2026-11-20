@@ -106,14 +106,6 @@ const CATALOGO_REAL = [
     descripcion: 'Prenda sugerente y sedosa con cinturón de amarre y mangas acampanadas. Perfecta para lucir sobre la lencería durante juegos previos o momentos de relajación.'
   },
   {
-    id: 13,
-    nombre: 'Conjunto Lencería Temática Vaquera',
-    categoria: 'lencerias',
-    precio: 115000,
-    imagen: '/images/lenceria_andy.png',
-    descripcion: 'Bralette y panty con temática exclusiva de vaquera chic con lazos en satén y encaje elástico transpirable de alta resistencia.'
-  },
-  {
     id: 14,
     nombre: 'Lencería Sensual Masculina Boxer Slip',
     categoria: 'lencerias',
@@ -496,7 +488,7 @@ export default function Tienda() {
               e.stopPropagation();
               navigate('/carrito');
             }}
-            className="absolute top-3 sm:top-4 md:top-5 right-0 sm:right-1 md:right-2 lg:right-3 z-30 cursor-pointer group pointer-events-auto select-none flex flex-col items-center animate-swing-sign"
+            className="absolute top-3 sm:top-4 md:top-5 -right-6 sm:-right-10 md:-right-14 lg:-right-20 xl:-right-24 z-30 cursor-pointer group pointer-events-auto select-none flex flex-col items-center animate-swing-sign"
             title="Ver Carrito de Compras"
           >
             {/* Barritas que sostienen el cartel de añadir al carrito */}

@@ -107,7 +107,7 @@ export default function Guia() {
       `}</style>
 
       {/* CONTENEDOR PRINCIPAL: Espaciado superior limpio y cómodo bajo las nubes */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 pt-6 sm:pt-8 pb-24 font-fredoka select-none flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 pt-10 sm:pt-14 md:pt-16 pb-24 font-fredoka select-none flex flex-col items-center">
         
         {/* =========================================================================
             LAS 4 SECCIONES EN FORMA DE HUELLA DE OSITO LOTSO (2 ARRIBA Y 2 ABAJO)
@@ -122,13 +122,13 @@ export default function Guia() {
                 key={h.id}
                 className="relative w-full max-w-[560px] sm:max-w-[590px] group flex flex-col items-center transition-all duration-300 hover:-translate-y-1.5"
               >
-                {/* LOTSO ABRAZADOR ABRAZANDO EL PRIMER CUADRO DE HUELLITA */}
+                {/* LOTSO ABRAZADOR PARADO AL FINAL DEL RECUADRO Y ABRAZANDO EL BORDE */}
                 {esPrimeraHuella && (
-                  <div className="absolute -top-10 -right-8 sm:-top-14 sm:-right-12 md:-top-16 md:-right-16 z-30 pointer-events-none select-none transition-transform group-hover:scale-105 duration-300">
+                  <div className="absolute -bottom-2 sm:-bottom-3 md:-bottom-4 -right-10 sm:-right-14 md:-right-18 lg:-right-20 z-30 pointer-events-none select-none transition-transform group-hover:scale-105 duration-300">
                     <img 
                       src="/images/lotso_abrazador.png" 
                       alt="Lotso Abrazador"
-                      className="w-28 sm:w-36 md:w-44 h-auto object-contain drop-shadow-2xl" 
+                      className="w-20 sm:w-24 md:w-28 lg:w-32 h-auto object-contain drop-shadow-2xl" 
                     />
                   </div>
                 )}
@@ -170,8 +170,8 @@ export default function Guia() {
 
                 </div>
 
-                {/* ALMOHADILLA PRINCIPAL (CUERPO ANCHO DE LA HUELLA) */}
-                <div className="w-full bg-white/95 backdrop-blur-md rounded-[3rem] border-4 border-[#f472b6] shadow-[0_18px_40px_rgba(225,29,72,0.15)] p-7 sm:p-9 pt-10 sm:pt-12 relative z-10 flex flex-col justify-between transition-all duration-300 group-hover:shadow-[0_24px_50px_rgba(225,29,72,0.25)] group-hover:border-[#e11d48]">
+                {/* ALMOHADILLA PRINCIPAL (CUERPO ANCHO DE LA HUELLA CON MARGEN GRUESO TIPO PELAJE) */}
+                <div className="w-full bg-white/95 backdrop-blur-md rounded-[3.2rem] border-8 border-[#db2777] shadow-[0_20px_45px_rgba(225,29,72,0.18)] p-7 sm:p-9 pt-10 sm:pt-12 relative z-10 flex flex-col justify-between transition-all duration-300 group-hover:shadow-[0_26px_55px_rgba(225,29,72,0.28)] group-hover:border-[#be185d]">
                   
                   {/* Cabecera de la Huella */}
                   <div className="border-b border-rose-100 pb-4 mb-4 text-center">

@@ -98,7 +98,10 @@ function renderToyFigure(producto, index = 0, isModal = false) {
   if (nombre.includes('cerdito') || nombre.includes('jammy')) {
     return <img src="/images/cerdito_travieso.png" alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
   }
-  if (nombre.includes('gema') || nombre.includes('cristal') || (cat.includes('anal') && nombre.includes('rubí'))) {
+  if (nombre.includes('dildo') && (nombre.includes('cristal') || nombre.includes('borosilicat'))) {
+    return <img src="/images/dildodecristal.png" alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
+  }
+  if ((nombre.includes('plug') && (nombre.includes('gema') || nombre.includes('cristal'))) || nombre.includes('gema') || (cat.includes('anal') && nombre.includes('rubí'))) {
     return <img src="/images/pluganalconcristal.png" alt={producto.nombre} onError={(e) => { e.target.src = '/images/plug_anal.png'; }} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
   }
   if (nombre.includes('misteriosa') || (cat.includes('kit') && (nombre.includes('toy box') || nombre.includes('sorpresa')))) {
