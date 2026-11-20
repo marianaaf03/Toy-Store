@@ -91,8 +91,8 @@ export default function Guia() {
   ];
 
   return (
-    <RoomWrapper 
-      theme="lotso" 
+    <RoomWrapper
+      theme="lotso"
       wallpaperContent={<AndyCloudsWallpaper />}
       hideFloorToys={true}
     >
@@ -108,7 +108,7 @@ export default function Guia() {
 
       {/* CONTENEDOR PRINCIPAL: Espaciado superior limpio y cómodo bajo las nubes */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 pt-10 sm:pt-14 md:pt-16 pb-24 font-fredoka select-none flex flex-col items-center">
-        
+
         {/* =========================================================================
             LAS 4 SECCIONES EN FORMA DE HUELLA DE OSITO LOTSO (2 ARRIBA Y 2 ABAJO)
             Con espacio amplio para que respire y Lotso abrazador en la primera huella
@@ -118,22 +118,33 @@ export default function Guia() {
             const esPrimeraHuella = h.id === 1;
 
             return (
-              <div 
+              <div
                 key={h.id}
                 className="relative w-full max-w-[560px] sm:max-w-[590px] group flex flex-col items-center transition-all duration-300 hover:-translate-y-1.5"
               >
+                {/* LOTSO ABRAZADOR PARADO ALINEADO AL FINAL DEL RECUADRO Y ABRAZANDO EL MARGEN */}
+                {esPrimeraHuella && (
+                  <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 left-full -ml-7 sm:-ml-8 md:-ml-9 z-30 pointer-events-none select-none transition-transform group-hover:scale-105 duration-300">
+                    <img
+                      src="/images/lotso_abrazador.png"
+                      alt="Lotso Abrazador"
+                      className="w-32 sm:w-38 md:w-44 lg:w-48 h-auto object-contain drop-shadow-2xl"
+                    />
+                  </div>
+                )}
+
                 {/* HUELLITAS DE LOTSO ESTILO CRAYOLA (GRANDES Y DESTACADAS CORONANDO CADA HUELLA) */}
                 <div className="flex justify-center -mb-9 sm:-mb-12 md:-mb-14 relative z-20 pointer-events-none">
-                  <img 
-                    src="/images/lotso_huellas.png" 
+                  <img
+                    src="/images/lotso_huellas.png"
                     alt="Huellitas Lotso"
-                    className="w-56 sm:w-68 md:w-80 lg:w-88 max-w-[88%] h-auto object-contain drop-shadow-md transition-transform group-hover:scale-105" 
+                    className="w-56 sm:w-68 md:w-80 lg:w-88 max-w-[88%] h-auto object-contain drop-shadow-md transition-transform group-hover:scale-105"
                   />
                 </div>
 
                 {/* ALMOHADILLA PRINCIPAL (CUERPO ANCHO DE LA HUELLA CON MARGEN EXTRA GRUESO TIPO PELAJE) */}
                 <div className="w-full bg-white/95 backdrop-blur-md rounded-[3.2rem] border-[12px] sm:border-[14px] border-[#db2777] shadow-[0_24px_50px_rgba(225,29,72,0.2)] ring-4 ring-[#be185d]/20 p-7 sm:p-9 pt-10 sm:pt-12 relative z-10 flex flex-col justify-between transition-all duration-300 group-hover:shadow-[0_28px_60px_rgba(225,29,72,0.3)] group-hover:border-[#be185d]">
-                  
+
                   {/* Cabecera de la Huella */}
                   <div className="border-b border-rose-100 pb-4 mb-4 text-center">
                     <span className="inline-block px-3.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] sm:text-[11px] font-black uppercase tracking-wider border border-rose-200 mb-2">

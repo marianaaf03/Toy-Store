@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LennyIcon from './LennyIcon';
 import AvatarHat from './AvatarHat';
+import { CATALOGO_REAL } from '../data/catalogoProductos';
 
 export default function PinterestSearchBar({
   searchTerm = '',
@@ -115,18 +116,18 @@ export default function PinterestSearchBar({
     });
   };
 
-  // Cuadrícula predeterminada de "Búsquedas recientes" 100% temática de la Sex Shop Toy Store
+  // Cuadrícula predeterminada de "Búsquedas recientes" 100% temática con productos reales de Toy Store
   const defaultRecentCards = [
-    { label: 'vibradores andy deluxe', img: '/images/vibrador_cowgirl.png', action: () => handleSelectSearchText('vibradores andy deluxe') },
-    { label: 'lencería cowgirl de jessie', img: '/images/jessy_heart.png', action: () => handleSelectSearchText('lencería cowgirl de jessie') },
-    { label: 'gorritos de toy story', img: '/images/woody_heart.png', action: () => onOpenHats ? onOpenHats() : navigate('/configuracion?tab=cuenta') },
-    { label: 'plugs anales y joyas buzz', img: '/images/plug_anal.png', action: () => handleSelectSearchText('plugs anales y joyas buzz') },
-    { label: 'caja sorpresa mystery box', img: '/images/mystery_box.png', action: () => handleSelectSearchText('caja sorpresa mystery box') },
-    { label: 'lubricantes térmicos y de fresa', img: '/images/toy_vibrator.png', action: () => handleSelectSearchText('lubricantes térmicos y de fresa') },
-    { label: 'juegos íntimos para parejas', img: '/images/aliens_friends.png', action: () => handleSelectSearchText('juegos íntimos para parejas') },
-    { label: 'tus secretos guardados', img: '/images/plug_anal.png', action: () => onOpenSecretos ? onOpenSecretos() : navigate('/configuracion?tab=secretos') },
-    { label: 'rincón de confesiones íntimas', img: '/images/cerdito_travieso.png', action: () => handleSelectSearchText('confesiones íntimas') },
-    { label: 'empaque 100% discreto', img: '/images/soldiers.png', action: () => onSelectTab ? onSelectTab('privacidad') : navigate('/configuracion') }
+    { label: 'Masajeador Rabbit Doble Estimulación', img: '/images/rabbitbuzz.webp', action: () => handleSelectSearchText('Masajeador Rabbit') },
+    { label: 'Succionador Clitoriano Ondas de Aire', img: '/images/succionadorclitoris.png', action: () => handleSelectSearchText('Succionador') },
+    { label: 'Conjunto Lencería Bralette Encaje', img: '/images/lenceriabralette.png', action: () => handleSelectSearchText('Lencería Bralette') },
+    { label: 'Plug Anal Metálico Gema Cristal', img: '/images/pluganalconcristal.png', action: () => handleSelectSearchText('Plug Anal Cristal') },
+    { label: 'Aceite de Masaje Efecto Calor Fresa', img: '/images/aceitedemasaje.png', action: () => handleSelectSearchText('Aceite de Masaje') },
+    { label: 'Caja Misteriosa Mystery Box Parejas', img: '/images/cajamisteriosa.png', action: () => handleSelectSearchText('Mystery Box') },
+    { label: 'Antifaz de Seda Acolchado Pareja', img: '/images/antifazdeseda.png', action: () => handleSelectSearchText('Antifaz de Seda') },
+    { label: 'Dildo de Cristal Borosilicato', img: '/images/dildodecristal.png', action: () => handleSelectSearchText('Dildo Cristal') },
+    { label: 'Cerdito Travieso Lengua Vibradora', img: '/images/cerdito_travieso.png', action: () => handleSelectSearchText('Cerdito Travieso') },
+    { label: 'Varita Masajeadora Cowgirl', img: '/images/vibradorvarita.png', action: () => handleSelectSearchText('Varita Masajeadora') }
   ];
 
   // Listado de sugerencias de texto frecuentes 100% referentes a la sex shop

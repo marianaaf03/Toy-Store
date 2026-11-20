@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { CATALOGO_REAL } from '../data/catalogoProductos';
 
 /**
  * AdminInventory: Suite de Gestión en la Computadora de Andy (ToyOS Desktop 2025).
@@ -15,8 +16,8 @@ export default function AdminInventory() {
   const [appActiva, setAppActiva] = useState('inventario'); // 'inventario' | 'pedidos' | 'confesiones' | 'usuarios'
   const [ventanaMaximizada, setVentanaMaximizada] = useState(false);
 
-  const [productos, setProductos] = useState([]);
-  const [cargando, setCargando] = useState(true);
+  const [productos, setProductos] = useState(CATALOGO_REAL);
+  const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
   
   const [busqueda, setBusqueda] = useState('');
@@ -48,17 +49,20 @@ export default function AdminInventory() {
   }, []);
 
   const fetchProductos = async () => {
-    setCargando(true);
     try {
       const res = await fetch('/productos');
       const data = await res.json();
-      if (res.ok) {
-        setProductos(data);
+      if (res.ok && Array.isArray(data) && data.length > 0) {
+        const combinados = data.map(item => {
+          const real = CATALOGO_REAL.find(c => c.id === item.id || c.nombre.toLowerCase() === item.nombre.toLowerCase());
+          return real ? { ...real, ...item, imagen: (item.imagen && !item.imagen.includes('vibrador_cowgirl')) ? item.imagen : real.imagen } : item;
+        });
+        setProductos(combinados);
       } else {
-        setError('Error al conectar con la base de datos');
+        setProductos(CATALOGO_REAL);
       }
     } catch (err) {
-      setError('Fallo de conexión con el servidor');
+      setProductos(CATALOGO_REAL);
     } finally {
       setCargando(false);
     }
@@ -157,10 +161,11 @@ export default function AdminInventory() {
     { id: 'todas', label: 'Todos' },
     { id: 'vibradores', label: 'Vibradores' },
     { id: 'lencerias', label: 'Lencería' },
-    { id: 'anales', label: 'Anales' },
-    { id: 'kits', label: 'Kits & Cajas' },
-    { id: 'accesorios', label: 'Accesorios' },
-    { id: 'cosmeticos', label: 'Aceites' }
+    { id: 'anales', label: 'Plugs & Anales' },
+    { id: 'dildos', label: 'Dildos' },
+    { id: 'cosmetica', label: 'Cosmética & Aceites' },
+    { id: 'accesorios', label: 'Accesorios & BDSM' },
+    { id: 'kits', label: 'Kits & Sorpresas' }
   ];
 
   return (
