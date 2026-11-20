@@ -6,9 +6,10 @@ import ToyMobile from './ToyMobile';
 import NavHoverItem from './NavHoverItem';
 import CowboyHat from './CowboyHat';
 import AvatarHat from './AvatarHat';
+import corazonWoodyImg from '../assets/corazon_woody.png';
 
 // El logo del corazón para la tienda
-const woodyHeartPlaceholder = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0icmVkIj48cGF0aCBkPSJNMTIgMjEuMzVMMTAuNTUgMjAuMDNDNS40IDE1LjM2IDIgMTIuMjcgMiA4LjVDMiA1LjQyIDQuNDIgMyA3LjUgM0M5LjI0IDMgMTAuOTEgMy44MSAxMiA1LjA5QzEzLjA5IDMuODEgMTQuNzYgMyAxNi41IDNDMTkuNTggMyAyMiA1LjQyIDIyIDguNUMyMiAxMi4yNyAxOC42IDE1LjM2IDEzLjQ1IDIwLjA0TDEyIDIxLjM1WiIvPjwvc3ZnPg==";
+const woodyHeartPlaceholder = corazonWoodyImg;
 
 /**
  * Navbar Global: Inteligente y Contextual
@@ -201,31 +202,35 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
           onClick={() => !isSimple && navigate('/')}
         >
           {isSimple ? (
-            <div className="flex justify-center items-center md:min-w-[125px]">
+            <div className="flex justify-center items-center md:min-w-[140px]" onClick={() => navigate('/')}>
               <img 
                 src={
-                location.pathname === '/guia' 
-                  ? "/src/assets/lotso_bear.png" 
-                  : location.pathname === '/vestier'
-                    ? "/src/assets/jessy_heart.png"
-                    : location.pathname === '/explora'
-                      ? "/src/assets/aliens_friends.png"
-                      : location.pathname === '/contacto'
-                        ? "/src/assets/buzz_heart.png"
-                        : "/src/assets/woody_heart.png"
-              } 
-                alt="Toy Store Simple Logo" 
-                onError={(e) => { e.target.src = woodyHeartPlaceholder; }}
+                  location.pathname === '/tienda'
+                    ? corazonWoodyImg
+                    : location.pathname === '/guia' 
+                      ? "/src/assets/lotso_bear.png" 
+                      : location.pathname === '/vestier'
+                        ? "/src/assets/jessy_heart.png"
+                        : location.pathname === '/explora'
+                          ? "/src/assets/aliens_friends.png"
+                          : location.pathname === '/contacto'
+                            ? "/src/assets/buzz_heart.png"
+                            : corazonWoodyImg
+                } 
+                alt="Toy Store Icon" 
+                onError={(e) => { e.target.src = corazonWoodyImg; }}
                 className={
-                  location.pathname === '/guia' 
-                    ? "h-[65px] md:h-[95px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-1 md:translate-x-3"
-                    : location.pathname === '/vestier'
-                      ? "h-[95px] md:h-[135px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-1 md:translate-x-2"
-                    : location.pathname === '/explora'
-                        ? "h-[140px] md:h-[200px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-[-10px] md:translate-x-[-20px]"
-                        : location.pathname === '/contacto'
-                          ? "h-[120px] md:h-[180px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-[-5px] md:translate-x-[-10px]"
-                          : "h-[85px] md:h-[120px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95"
+                  location.pathname === '/tienda'
+                    ? "h-[75px] sm:h-[95px] md:h-[130px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer -translate-y-1 md:-translate-y-2"
+                    : location.pathname === '/guia' 
+                      ? "h-[65px] md:h-[95px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-1 md:translate-x-3 cursor-pointer"
+                      : location.pathname === '/vestier'
+                        ? "h-[95px] md:h-[135px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-1 md:translate-x-2 cursor-pointer"
+                        : location.pathname === '/explora'
+                          ? "h-[140px] md:h-[200px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-[-10px] md:translate-x-[-20px] cursor-pointer"
+                          : location.pathname === '/contacto'
+                            ? "h-[120px] md:h-[180px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-[-5px] md:translate-x-[-10px] cursor-pointer"
+                            : "h-[85px] md:h-[120px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer"
                 } 
               />
             </div>
