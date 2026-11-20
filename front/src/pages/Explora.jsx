@@ -4,17 +4,46 @@ import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 import { useNavigate } from 'react-router-dom';
 import { CATALOGO_REAL } from '../data/catalogoProductos';
 
+// Franja a cuadros rojos y blancos idéntica a la del cartel oficial de Pizza Planet
+const CheckeredStripe = () => (
+  <div 
+    className="w-full h-4 sm:h-5 shrink-0" 
+    style={{
+      backgroundImage: 'linear-gradient(45deg, #E52521 25%, transparent 25%), linear-gradient(-45deg, #E52521 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #E52521 75%), linear-gradient(-45deg, transparent 75%, #E52521 75%)',
+      backgroundSize: '16px 16px',
+      backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px',
+      backgroundColor: '#ffffff'
+    }} 
+  />
+);
+
+// Lluvia de rodajas de pizza flotando y cayendo desde el cielo con transparencia sutil
+const RAINING_PIZZAS = [
+  { id: 1, left: '5%', size: 'w-10 sm:w-12', duration: '9s', delay: '0s', opacity: 0.32 },
+  { id: 2, left: '14%', size: 'w-8 sm:w-9', duration: '12s', delay: '3s', opacity: 0.25 },
+  { id: 3, left: '23%', size: 'w-11 sm:w-13', duration: '10s', delay: '1s', opacity: 0.30 },
+  { id: 4, left: '35%', size: 'w-9 sm:w-10', duration: '14s', delay: '5s', opacity: 0.24 },
+  { id: 5, left: '46%', size: 'w-12 sm:w-14', duration: '11s', delay: '2s', opacity: 0.28 },
+  { id: 6, left: '57%', size: 'w-8 sm:w-10', duration: '13s', delay: '6s', opacity: 0.22 },
+  { id: 7, left: '68%', size: 'w-11 sm:w-13', duration: '9.5s', delay: '0.5s', opacity: 0.33 },
+  { id: 8, left: '79%', size: 'w-9 sm:w-11', duration: '15s', delay: '4s', opacity: 0.26 },
+  { id: 9, left: '89%', size: 'w-10 sm:w-12', duration: '11.5s', delay: '2.5s', opacity: 0.29 },
+  { id: 10, left: '10%', size: 'w-11 sm:w-13', duration: '13.5s', delay: '7s', opacity: 0.25 },
+  { id: 11, left: '62%', size: 'w-10 sm:w-12', duration: '10.5s', delay: '4.5s', opacity: 0.30 },
+  { id: 12, left: '94%', size: 'w-8 sm:w-9', duration: '14.5s', delay: '8s', opacity: 0.22 },
+];
+
 export default function Explora() {
   const navigate = useNavigate();
 
-  // Estado del modal y del quizz
+  // Estados del quizz y del modal
   const [modalAbierto, setModalAbierto] = useState(false);
   const [preguntaActual, setPreguntaActual] = useState(0); // 0 a 6 (7 preguntas)
   const [respuestas, setRespuestas] = useState([]);
   const [mostrarResultados, setMostrarResultados] = useState(false);
   const [isPressingBtn, setIsPressingBtn] = useState(false);
 
-  // Las 7 preguntas del Quizz de Pizza Planet
+  // Las 7 preguntas de la Trivia inspiradas en la estética Pizza Planet
   const preguntasQuizz = [
     {
       id: 1,
@@ -26,7 +55,7 @@ export default function Explora() {
         { id: 'principiante', letra: 'A', texto: 'Apenas estoy empezando, busco suavidad, cero nervios y cosas sencillas.', tipo: 'suave' },
         { id: 'curioso', letra: 'B', texto: 'Ya conozco lo básico; busco tecnología innovadora, ondas de aire e intensidad.', tipo: 'sonico' },
         { id: 'avanzado', letra: 'C', texto: 'Tengo bastante experiencia y me fascina probar nuevas texturas, contrastes y fantasías.', tipo: 'audaz' },
-        { id: 'libre', letra: 'D', texto: '¡Me dejo llevar por la curiosidad de lo que surja según el día!', tipo: 'sorpresa' }
+        { id: 'libre', letra: 'D', texto: '¡Me dejo llevar por la curiosidad de lo que surja según el momento!', tipo: 'sorpresa' }
       ]
     },
     {
@@ -109,7 +138,7 @@ export default function Explora() {
     }
   ];
 
-  // Abrir Quizz al pulsar el botón rojo
+  // Pulsar el botón rojo grande
   const handlePulsarBotonRojo = () => {
     setIsPressingBtn(true);
     setTimeout(() => {
@@ -118,10 +147,10 @@ export default function Explora() {
       setRespuestas([]);
       setMostrarResultados(false);
       setModalAbierto(true);
-    }, 250);
+    }, 220);
   };
 
-  // Manejar respuesta
+  // Responder pregunta
   const handleResponder = (tipo) => {
     const nuevas = [...respuestas, tipo];
     setRespuestas(nuevas);
@@ -133,14 +162,13 @@ export default function Explora() {
     }
   };
 
-  // Calcular recomendaciones personalizadas de CATALOGO_REAL
+  // Calcular recomendaciones de productos y categorías basados en CATALOGO_REAL
   const getRecomendaciones = () => {
     const conteo = respuestas.reduce((acc, r) => {
       acc[r] = (acc[r] || 0) + 1;
       return acc;
     }, {});
 
-    // Perfil dominante
     let max = 0;
     let dominante = 'sonico';
     for (const [key, val] of Object.entries(conteo)) {
@@ -190,7 +218,7 @@ export default function Explora() {
       };
     }
 
-    // Default: sonico / suave
+    // Default: sonico / bienestar
     return {
       titulo: 'TU PERFIL: BIENESTAR SÓNICO & AUTOCUIDADO',
       descripcion: 'Buscas la máxima comodidad, tecnología ergonómica no invasiva y respeto total por tu ritmo con silicona médica ultra sedosa.',
@@ -210,76 +238,96 @@ export default function Explora() {
       hideFloorToys={true}
     >
       <style>{`
-        @keyframes pulseGlow {
-          0%, 100% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.3); }
-          50% { box-shadow: 0 0 50px rgba(239, 68, 68, 0.8), inset 0 0 25px rgba(255, 255, 255, 0.6); }
+        @keyframes rainPizzaAnim {
+          0% {
+            transform: translateY(-90px) rotate(0deg);
+          }
+          100% {
+            transform: translateY(115vh) rotate(360deg);
+          }
         }
-        .animate-red-btn-glow {
-          animation: pulseGlow 2.5s ease-in-out infinite;
+        .animate-pizza-fall {
+          animation-name: rainPizzaAnim;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
         }
-        @keyframes neonBillboard {
-          0%, 100% { filter: drop-shadow(0 0 15px rgba(52, 211, 153, 0.4)); }
-          50% { filter: drop-shadow(0 0 30px rgba(52, 211, 153, 0.8)); }
+        @keyframes pulseRedButton {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(229, 37, 33, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.35);
+          }
+          50% {
+            box-shadow: 0 0 45px rgba(229, 37, 33, 0.8), inset 0 0 25px rgba(255, 255, 255, 0.6);
+          }
         }
-        .animate-neon-billboard {
-          animation: neonBillboard 4s ease-in-out infinite;
+        .animate-red-button-glow {
+          animation: pulseRedButton 2.4s ease-in-out infinite;
         }
       `}</style>
 
-      {/* CONTENEDOR DE LA PÁGINA */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-20 font-fredoka select-none flex flex-col items-center justify-center min-h-[80vh]">
-        
-        {/* =========================================================================
-            1. CARTEL TIPO PIZZA PLANET SÚPER FUTURISTA
-            ========================================================================= */}
-        <div className="w-full bg-slate-950/90 rounded-[2.5rem] sm:rounded-[3.2rem] border-4 sm:border-[6px] border-emerald-400 shadow-[0_20px_70px_rgba(16,185,129,0.35)] ring-4 ring-emerald-500/20 p-6 sm:p-10 text-center relative overflow-hidden backdrop-blur-md animate-neon-billboard mb-10 sm:mb-14">
-          
-          {/* Insignia superior de Pizza Planet */}
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
-            <span className="px-3.5 py-1 rounded-full bg-emerald-950 border border-emerald-500/50 text-[10px] sm:text-xs font-black tracking-widest text-emerald-300 uppercase">
-              PIZZA PLANET • TERMINAL INTERACTIVA
-            </span>
-            <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+      {/* =========================================================================
+          EFECTO ESPECIAL: LLUVIA DE RODAJAS DE PIZZA CAYENDO DESDE EL TECHO
+          Con transparencia sutil para ambientar sin saturar la lectura
+          ========================================================================= */}
+      <div className="fixed inset-0 pointer-events-none z-[5] overflow-hidden">
+        {RAINING_PIZZAS.map((p) => (
+          <div
+            key={p.id}
+            className={`absolute top-0 animate-pizza-fall select-none ${p.size}`}
+            style={{
+              left: p.left,
+              animationDuration: p.duration,
+              animationDelay: p.delay,
+              opacity: p.opacity
+            }}
+          >
+            <img 
+              src="/images/rodaja_pizza.png" 
+              alt="Rodaja de Pizza Planet"
+              className="w-full h-auto object-contain filter drop-shadow-xs" 
+            />
           </div>
+        ))}
+      </div>
 
-          {/* Gran Pregunta del Cartel */}
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
-            ¿QUIERES EXPLORARTE Y NO SABES POR DÓNDE EMPEZAR?
-          </h1>
-
-          <p className="text-slate-300 text-xs sm:text-base font-medium mt-3 max-w-2xl mx-auto leading-relaxed">
-            Presiona el botón central para iniciar una trivia de 7 preguntas. Nuestro sistema cósmico analizará tus gustos para revelarte tus juguetes, lencería y sensaciones ideales.
-          </p>
-
-          {/* Remaches metálicos decorativos en las esquinas */}
-          <div className="absolute top-4 left-4 w-3 h-3 rounded-full bg-slate-700 border border-slate-500"></div>
-          <div className="absolute top-4 right-4 w-3 h-3 rounded-full bg-slate-700 border border-slate-500"></div>
-          <div className="absolute bottom-4 left-4 w-3 h-3 rounded-full bg-slate-700 border border-slate-500"></div>
-          <div className="absolute bottom-4 right-4 w-3 h-3 rounded-full bg-slate-700 border border-slate-500"></div>
+      {/* =========================================================================
+          CONTENEDOR PRINCIPAL: ESPACIADO FLUIDO IDÉNTICO A LAS DEMÁS PÁGINAS
+          ========================================================================= */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-8 pt-8 sm:pt-12 md:pt-14 pb-28 font-fredoka select-none flex flex-col items-center">
+        
+        {/* =====================================================================
+            1. EL CARTEL OFICIAL DE LOS ALIENS (IMAGEN OFICIAL SUBIDA POR EL USUARIO)
+            Grande, centrado, con sus cuadros rojos y blancos y el marcianito
+            ===================================================================== */}
+        <div className="w-full max-w-3xl sm:max-w-4xl flex justify-center mb-8 sm:mb-12 transition-transform hover:scale-[1.01] duration-300">
+          <img 
+            src="/images/cartel_aliens.png" 
+            onError={(e) => { e.target.src = '/images/letrero_aliens.png'; }}
+            alt="¿Quieres explorarte y no sabes por dónde empezar? - Pizza Planet"
+            className="w-full h-auto object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.18)] rounded-2xl sm:rounded-3xl"
+          />
         </div>
 
-        {/* =========================================================================
-            2. BOTÓN ROJO GRANDE EN TODA LA MITAD DE LA PÁGINA
-            ========================================================================= */}
+        {/* =====================================================================
+            2. EL GRAN BOTÓN ROJO EN EL CENTRO DE LA PÁGINA ("PRESIONAR AQUÍ")
+            ===================================================================== */}
         <div className="flex flex-col items-center relative my-2">
           
-          {/* Aro exterior cromado / industrial */}
-          <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-gradient-to-b from-slate-200 via-slate-400 to-slate-700 p-4 sm:p-5 shadow-[0_25px_60px_rgba(0,0,0,0.6)] flex items-center justify-center border-2 border-slate-400/80">
+          {/* Aro exterior metálico / cromado */}
+          <div className="w-52 h-52 sm:w-64 sm:h-64 rounded-full bg-gradient-to-b from-slate-200 via-slate-400 to-slate-700 p-4 sm:p-5 shadow-[0_25px_60px_rgba(0,0,0,0.35)] flex items-center justify-center border-2 border-slate-300/80">
             
-            {/* Aro de advertencia neón */}
-            <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center ring-4 ring-rose-500/40 p-2 sm:p-2.5">
+            {/* Aro de advertencia neón rojo */}
+            <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center ring-4 ring-[#E52521]/40 p-2 sm:p-2.5">
               
-              {/* CÚPULA DEL BOTÓN ROJO TÁCTIL 3D */}
+              {/* CÚPULA 3D DEL BOTÓN ROJO TÁCTIL */}
               <button
                 type="button"
                 onClick={handlePulsarBotonRojo}
-                className={`w-full h-full rounded-full bg-gradient-to-b from-red-500 via-rose-600 to-red-800 text-white font-black flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 shadow-[inset_0_8px_16px_rgba(255,255,255,0.45),0_15px_30px_rgba(159,18,57,0.7)] animate-red-btn-glow ${
+                className={`w-full h-full rounded-full bg-gradient-to-b from-[#ff3834] via-[#E52521] to-[#991b1b] text-white font-black flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 shadow-[inset_0_8px_16px_rgba(255,255,255,0.5),0_15px_30px_rgba(153,27,27,0.7)] animate-red-button-glow ${
                   isPressingBtn 
                     ? 'scale-90 translate-y-3 shadow-inner' 
                     : 'hover:scale-105 active:scale-95 active:translate-y-2'
                 }`}
-                title="Presionar aquí para abrir la trivia"
+                title="Presionar aquí para abrir el quizz"
               >
                 <span className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
                   PRESIONAR
@@ -287,7 +335,7 @@ export default function Explora() {
                 <span className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
                   AQUÍ
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-rose-200 mt-1 uppercase opacity-90">
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-red-200 mt-1 uppercase opacity-90">
                   INICIAR QUIZZ
                 </span>
               </button>
@@ -297,14 +345,14 @@ export default function Explora() {
           </div>
 
           {/* Marcianitos de Pizza Planet animando al usuario */}
-          <div className="mt-8 flex items-center gap-4 bg-slate-900/90 border border-emerald-400/40 rounded-2xl p-3.5 sm:p-4 max-w-md shadow-xl backdrop-blur-md">
+          <div className="mt-8 flex items-center gap-4 bg-white/95 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 max-w-md shadow-lg backdrop-blur-md">
             <img 
               src="/images/aliens_friends.png" 
               alt="Marcianitos de Pizza Planet"
-              className="w-14 sm:w-16 h-auto object-contain shrink-0 drop-shadow-lg"
+              className="w-14 sm:w-16 h-auto object-contain shrink-0 drop-shadow-sm"
             />
-            <p className="text-xs sm:text-sm text-emerald-200 font-medium italic">
-              “¡Ooooh! ¡El gran botón de La Garra! Púlsalo para descubrir tu universo ideal en Toy Store.”
+            <p className="text-xs sm:text-sm text-[#1e3a8a] font-bold italic leading-snug">
+              “¡Ooooh! ¡El gran botón rojo de La Garra! Púlsalo para descubrir tus juguetes y lencería ideales.”
             </p>
           </div>
 
@@ -313,156 +361,173 @@ export default function Explora() {
       </div>
 
       {/* =========================================================================
-          3. VENTANA EMERGENTE CENTRAL: QUIZZ / TRIVIA DE 7 PREGUNTAS
+          3. VENTANA EMERGENTE CENTRAL: QUIZZ INSPIRADO EN EL CARTEL DE PIZZA PLANET
+          Con franjas a cuadros rojos y blancos, tipografía nítida y estética limpia
           ========================================================================= */}
       {modalAbierto && (
-        <div className="fixed inset-0 z-[300] bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none font-fredoka">
+        <div className="fixed inset-0 z-[300] bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none font-fredoka">
           
-          <div className="relative w-full max-w-2xl bg-slate-950 rounded-[2.5rem] border-4 border-emerald-400 shadow-[0_0_60px_rgba(16,185,129,0.5)] p-6 sm:p-9 overflow-hidden flex flex-col justify-between max-h-[92vh]">
+          <div className="relative w-full max-w-2xl bg-white rounded-[2rem] sm:rounded-[2.5rem] border-4 sm:border-[6px] border-[#E52521] shadow-[0_25px_80px_rgba(229,37,33,0.35)] overflow-hidden flex flex-col justify-between max-h-[92vh]">
             
+            {/* FRANJA SUPERIOR A CUADROS ROJOS Y BLANCOS (IDÉNTICA AL CARTEL) */}
+            <CheckeredStripe />
+
             {/* Botón de cerrar (X) */}
             <button
               onClick={() => setModalAbierto(false)}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-sm font-black transition cursor-pointer z-30"
+              className="absolute top-6 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-[#E52521] border border-slate-300 flex items-center justify-center text-sm font-black transition cursor-pointer z-30"
               title="Cerrar ventana"
             >
               ✕
             </button>
 
-            {!mostrarResultados ? (
-              /* MODO PREGUNTAS (1 A 7) */
-              <div className="flex flex-col items-center">
-                
-                {/* Cabecera con Fase y Progreso */}
-                <div className="text-center w-full mb-6">
-                  <div className="flex items-center justify-between text-xs font-black text-emerald-400 uppercase tracking-widest mb-2 px-1">
-                    <span>{preg.categoria}</span>
-                    <span>PREGUNTA {preg.numero}</span>
-                  </div>
+            {/* CONTENIDO INTERIOR DEL QUIZZ */}
+            <div className="p-5 sm:p-8 flex-1 overflow-y-auto no-scrollbar">
 
-                  {/* Barra de energía verde neón */}
-                  <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden border border-slate-700 p-0.5">
-                    <div 
-                      className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-300 rounded-full transition-all duration-300 shadow-[0_0_8px_#10b981]"
-                      style={{ width: `${((preguntaActual + 1) / 7) * 100}%` }}
-                    ></div>
-                  </div>
-
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white uppercase mt-4 leading-snug">
-                    {preg.pregunta}
-                  </h2>
-                  <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
-                    {preg.subtitulo}
-                  </p>
-                </div>
-
-                {/* 4 Opciones de la Trivia */}
-                <div className="grid grid-cols-1 gap-3 w-full mb-4">
-                  {preg.opciones.map(opc => (
-                    <button
-                      key={opc.id}
-                      type="button"
-                      onClick={() => handleResponder(opc.tipo)}
-                      className="text-left p-3.5 sm:p-4 rounded-2xl bg-slate-900/90 hover:bg-emerald-950/60 border-2 border-slate-700 hover:border-emerald-400 transition-all flex items-center gap-3.5 group cursor-pointer active:scale-95 shadow-sm"
-                    >
-                      <div className="w-8 h-8 rounded-xl bg-slate-800 text-emerald-300 border border-slate-600 group-hover:bg-emerald-500 group-hover:text-slate-950 group-hover:border-emerald-300 flex items-center justify-center font-black text-xs sm:text-sm shrink-0 transition-colors">
-                        {opc.letra}
-                      </div>
-                      <span className="text-xs sm:text-sm font-semibold text-slate-200 group-hover:text-white leading-snug">
-                        {opc.texto}
+              {!mostrarResultados ? (
+                /* ================= MODO PREGUNTAS (1 A 7) ================= */
+                <div className="flex flex-col items-center">
+                  
+                  {/* Cabecera con Fase y Progreso */}
+                  <div className="text-center w-full mb-6">
+                    <div className="flex items-center justify-between text-xs font-black text-[#E52521] uppercase tracking-widest mb-2 px-1">
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-[#E52521] animate-ping"></span>
+                        <span>{preg.categoria}</span>
                       </span>
-                    </button>
-                  ))}
-                </div>
-
-                {/* Pie con indicador de avance */}
-                <div className="text-[11px] font-black text-slate-500 tracking-wider uppercase">
-                  TRIVIA SENSORIAL TOY STORE • PIZZA PLANET
-                </div>
-
-              </div>
-            ) : (
-              /* MODO RESULTADOS: RECOMENDACIÓN DE PRODUCTOS Y LENCERÍA */
-              <div className="flex flex-col items-center animate-in fade-in zoom-in-95 duration-300 overflow-y-auto no-scrollbar max-h-[80vh] pr-1">
-                
-                {/* Cabecera del Resultado */}
-                <div className="text-center mb-6">
-                  <span className="inline-block px-3.5 py-1 rounded-full bg-emerald-950 border border-emerald-500/50 text-emerald-300 text-[11px] font-black tracking-widest uppercase mb-2">
-                    ¡RESULTADO CÓSMICO DE TU TRIVIA!
-                  </span>
-                  <h2 className="text-2xl sm:text-3xl font-black text-white uppercase leading-tight">
-                    {recomendacion.titulo}
-                  </h2>
-                  <p className="text-xs sm:text-sm text-slate-300 font-medium mt-2 leading-relaxed max-w-lg mx-auto">
-                    {recomendacion.descripcion}
-                  </p>
-                </div>
-
-                {/* Categorías recomendadas */}
-                <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-                  <span className="text-xs font-black text-slate-400 uppercase">
-                    Secciones sugeridas:
-                  </span>
-                  {recomendacion.categorias.map((cat, idx) => (
-                    <span 
-                      key={idx}
-                      className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black uppercase"
-                    >
-                      {cat}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Tarjetas de los 3 productos recomendados */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 w-full mb-6">
-                  {recomendacion.productos.map(p => (
-                    <div 
-                      key={p.id}
-                      className="bg-slate-900 rounded-2xl border border-emerald-500/30 p-3 flex flex-col justify-between text-center group hover:border-emerald-400 transition"
-                    >
-                      <div className="w-full h-28 rounded-xl bg-slate-950 flex items-center justify-center p-2 mb-2 group-hover:scale-105 transition-transform overflow-hidden">
-                        <img 
-                          src={p.imagen} 
-                          alt={p.nombre} 
-                          className="max-h-full max-w-full object-contain drop-shadow-md"
-                        />
-                      </div>
-                      <h4 className="text-xs font-bold text-white line-clamp-2 leading-tight mb-1.5">
-                        {p.nombre}
-                      </h4>
-                      <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#a6d4f2] text-[#1e3a8a] text-[11px] font-black mx-auto">
-                        ${Number(p.precio).toLocaleString('es-CO')}
+                      <span className="bg-red-50 px-3 py-1 rounded-full border border-red-200">
+                        PREGUNTA {preg.numero}
                       </span>
                     </div>
-                  ))}
+
+                    {/* Barra de progreso en rojo Pizza Planet */}
+                    <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200 p-0.5">
+                      <div 
+                        className="h-full bg-gradient-to-r from-red-500 via-rose-500 to-[#E52521] rounded-full transition-all duration-300 shadow-xs"
+                        style={{ width: `${((preguntaActual + 1) / 7) * 100}%` }}
+                      ></div>
+                    </div>
+
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#1e3a8a] uppercase mt-4 leading-snug">
+                      {preg.pregunta}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                      {preg.subtitulo}
+                    </p>
+                  </div>
+
+                  {/* 4 Opciones de la Trivia */}
+                  <div className="grid grid-cols-1 gap-3 w-full mb-4">
+                    {preg.opciones.map(opc => (
+                      <button
+                        key={opc.id}
+                        type="button"
+                        onClick={() => handleResponder(opc.tipo)}
+                        className="text-left p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 hover:bg-red-50/70 border-2 border-slate-200 hover:border-[#E52521] transition-all flex items-center gap-3.5 group cursor-pointer active:scale-95 shadow-2xs"
+                      >
+                        <div className="w-8 h-8 rounded-xl bg-white text-[#E52521] border-2 border-[#E52521] group-hover:bg-[#E52521] group-hover:text-white flex items-center justify-center font-black text-xs sm:text-sm shrink-0 transition-colors shadow-xs">
+                          {opc.letra}
+                        </div>
+                        <span className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-[#E52521] transition-colors leading-snug">
+                          {opc.texto}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Pie con indicador temático */}
+                  <div className="text-[11px] font-black text-slate-400 tracking-wider uppercase text-center mt-2">
+                    TRIVIA SENSORIAL TOY STORE • PIZZA PLANET
+                  </div>
+
                 </div>
+              ) : (
+                /* ================= MODO RESULTADOS: RECOMENDACIÓN DE PRODUCTOS Y LENCERÍA ================= */
+                <div className="flex flex-col items-center animate-in fade-in zoom-in-95 duration-300">
+                  
+                  {/* Cabecera del Resultado */}
+                  <div className="text-center mb-6">
+                    <span className="inline-block px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-[#E52521] text-[11px] font-black tracking-widest uppercase mb-2">
+                      ¡RESULTADO CÓSMICO DE TU TRIVIA!
+                    </span>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#E52521] uppercase leading-tight">
+                      {recomendacion.titulo}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium mt-2 leading-relaxed max-w-lg mx-auto">
+                      {recomendacion.descripcion}
+                    </p>
+                  </div>
 
-                {/* Botones de acción */}
-                <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md">
-                  <button
-                    onClick={() => {
-                      setPreguntaActual(0);
-                      setRespuestas([]);
-                      setMostrarResultados(false);
-                    }}
-                    className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-600 font-black text-xs uppercase tracking-wider transition cursor-pointer"
-                  >
-                    Repetir Trivia
-                  </button>
+                  {/* Secciones sugeridas */}
+                  <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+                    <span className="text-xs font-black text-slate-400 uppercase">
+                      Secciones recomendadas:
+                    </span>
+                    {recomendacion.categorias.map((cat, idx) => (
+                      <span 
+                        key={idx}
+                        className="px-3 py-1 rounded-full bg-red-50 text-[#E52521] border border-red-300 text-xs font-black uppercase shadow-2xs"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
 
-                  <button
-                    onClick={() => {
-                      setModalAbierto(false);
-                      navigate(`/tienda?categoria=${recomendacion.categoriaFiltro}`);
-                    }}
-                    className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer"
-                  >
-                    Ver en Tienda
-                  </button>
+                  {/* Tarjetas de los 3 productos recomendados de CATALOGO_REAL */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 w-full mb-6">
+                    {recomendacion.productos.map(p => (
+                      <div 
+                        key={p.id}
+                        className="bg-slate-50/80 rounded-2xl border-2 border-slate-200 p-3 flex flex-col justify-between text-center group hover:border-[#E52521] transition shadow-xs"
+                      >
+                        <div className="w-full h-28 rounded-xl bg-white flex items-center justify-center p-2 mb-2 group-hover:scale-105 transition-transform overflow-hidden shadow-2xs">
+                          <img 
+                            src={p.imagen} 
+                            alt={p.nombre} 
+                            className="max-h-full max-w-full object-contain drop-shadow-sm"
+                          />
+                        </div>
+                        <h4 className="text-xs font-bold text-slate-900 line-clamp-2 leading-tight mb-1.5">
+                          {p.nombre}
+                        </h4>
+                        <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#a6d4f2] text-[#1e3a8a] text-[11px] font-black mx-auto">
+                          ${Number(p.precio).toLocaleString('es-CO')}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Botones de acción */}
+                  <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md">
+                    <button
+                      onClick={() => {
+                        setPreguntaActual(0);
+                        setRespuestas([]);
+                        setMostrarResultados(false);
+                      }}
+                      className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-black text-xs uppercase tracking-wider transition cursor-pointer"
+                    >
+                      Repetir Trivia
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setModalAbierto(false);
+                        navigate(`/tienda?categoria=${recomendacion.categoriaFiltro}`);
+                      }}
+                      className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-red-500 to-[#E52521] hover:from-red-600 hover:to-red-700 text-white font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer"
+                    >
+                      Ver en Tienda
+                    </button>
+                  </div>
+
                 </div>
+              )}
 
-              </div>
-            )}
+            </div>
+
+            {/* FRANJA INFERIOR A CUADROS ROJOS Y BLANCOS (IDÉNTICA AL CARTEL) */}
+            <CheckeredStripe />
 
           </div>
 
