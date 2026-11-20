@@ -276,7 +276,6 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
           <NavHoverItem label="Inicio" iconType="vagina" baseColorClass="text-blue-500" hoverColorClass="hover:text-blue-500" isActive={isActive('/')} onClick={() => navigate('/')} />
           <NavHoverItem label="Tienda" iconType="phallic" baseColorClass="text-yellow-500" hoverColorClass="hover:text-yellow-500" isActive={isActive('/tienda')} onClick={() => navigate('/tienda')} />
           <NavHoverItem label="Guía" iconType="handcuffs" baseColorClass="text-pink-600" hoverColorClass="hover:text-pink-600" isActive={isActive('/guia')} onClick={() => navigate('/guia')} />
-          <NavHoverItem label="Vestier" iconType="rabbit" baseColorClass="text-red-500" hoverColorClass="hover:text-red-500" isActive={isActive('/vestier')} onClick={() => navigate('/vestier')} />
           <NavHoverItem label="Explora" iconType="whip" baseColorClass="text-green-500" hoverColorClass="hover:text-green-500" isActive={isActive('/explora')} onClick={() => navigate('/explora')} />
           <NavHoverItem label="Contacto" iconType="plug" baseColorClass="text-purple-600" hoverColorClass="hover:text-purple-600" isActive={isActive('/contacto')} onClick={() => navigate('/contacto')} />
         </div>
@@ -498,12 +497,11 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
             <span className="text-xs font-black text-[#1e3a8a] tracking-wider uppercase">Explorar Toy Store</span>
             <button onClick={() => setMobileMenuOpen(false)} className="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-sm hover:bg-slate-200">×</button>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {[
               { path: '/', label: 'Inicio', bg: 'hover:bg-blue-50 text-blue-600 border-blue-200' },
               { path: '/tienda', label: 'Tienda', bg: 'hover:bg-amber-50 text-amber-600 border-amber-200' },
               { path: '/guia', label: 'Guía', bg: 'hover:bg-pink-50 text-pink-600 border-pink-200' },
-              { path: '/vestier', label: 'Vestier', bg: 'hover:bg-red-50 text-red-600 border-red-200' },
               { path: '/explora', label: 'Explora', bg: 'hover:bg-emerald-50 text-emerald-600 border-emerald-200' },
               { path: '/contacto', label: 'Contacto', bg: 'hover:bg-purple-50 text-purple-600 border-purple-200' }
             ].map(item => (

@@ -15,7 +15,6 @@ import Explora from "./pages/Explora";
 import Configuracion from "./pages/Configuracion";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminInventory from "./pages/AdminInventory";
-import Vestier from "./pages/Vestier";
 import Carrito from "./pages/Carrito";
 import PerfilPublico from "./pages/PerfilPublico";
 import "./SpaceTheme.css";
@@ -56,7 +55,7 @@ export default function App() {
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/guia" element={<Guia />} />
           <Route path="/explora" element={<Explora />} />
-          <Route path="/vestier" element={<Vestier />} />
+          <Route path="/vestier" element={<Navigate to="/tienda" replace />} />
           <Route path="/perfil/:username" element={<PerfilPublico />} />
           <Route path="/u/:username" element={<PerfilPublico />} />
           <Route path="/usuario/:username" element={<PerfilPublico />} />
