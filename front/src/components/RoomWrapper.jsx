@@ -27,7 +27,8 @@ export default function RoomWrapper({
   onHeartClick,
   onStarClick,
   isMinimal = false,
-  hideNavbar = false
+  hideNavbar = false,
+  hideFloorToys = false
 }) {
   const { usuario } = useContext(AuthContext);
   const location = useLocation();
@@ -184,18 +185,14 @@ export default function RoomWrapper({
                <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent"></div>
 
                {/* 🛑 ELEMENTOS 3D FUSIONADOS ESTÁTICAMENTE AL HORIZONTE DEL PISO 🛑 */}
-               {!location.pathname.startsWith('/admin') && (
-                 (theme === 'woody' || location.pathname === '/tienda') ? (
-                   <WoodyFloorElements />
-                 ) : (
-                   <div className="absolute top-0 left-0 w-full h-0 z-40">
-                      <div className="max-w-7xl mx-auto relative w-full h-0 pointer-events-auto">
-                          <PixarBall />
-                          <ToyBlocks />
-                      </div>
-                   </div>
-                 )
-               )}
+               {!location.pathname.startsWith('/admin') && !hideFloorToys && location.pathname !== '/tienda' && (
+                  <div className="absolute top-0 left-0 w-full h-0 z-40">
+                     <div className="max-w-7xl mx-auto relative w-full h-0 pointer-events-auto">
+                         <PixarBall />
+                         <ToyBlocks />
+                     </div>
+                  </div>
+                )}
             </div>
           </div>
         )}

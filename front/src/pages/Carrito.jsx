@@ -3,18 +3,35 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 
-// Helper de imagen para productos en el carrito
+// Helper de imagen para productos en el carrito con correspondencia exacta
 function resolveItemImage(item) {
+  const nombre = (item.nombre || '').toLowerCase();
+  const cat = (item.categoria || '').toLowerCase();
+
+  if (nombre.includes('cowgirl') || (nombre.includes('woody') && cat.includes('vibra'))) {
+    return '/images/vibrador_cowgirl.png';
+  }
+  if (nombre.includes('rabbit') || nombre.includes('buzz')) {
+    return '/images/rabbitbuzz.webp';
+  }
+  if (nombre.includes('jessie') || (cat.includes('lence') && nombre.includes('vaquera'))) {
+    return '/images/lenceria_andy.png';
+  }
+  if (nombre.includes('plug anal gema') || nombre.includes('gema rubí') || nombre.includes('gema rubi')) {
+    return '/images/plug_anal.png';
+  }
+  if (nombre.includes('caja misteriosa') || (cat.includes('kit') && nombre.includes('toy box'))) {
+    return '/images/mystery_box.png';
+  }
+  if (nombre.includes('cerdito') || nombre.includes('jammy')) {
+    return '/images/cerdito_travieso.png';
+  }
   if (item.imagen && (item.imagen.startsWith('/') || item.imagen.startsWith('http')) && !item.imagen.includes('cerdito_travieso')) {
     return item.imagen;
   }
-  const nombre = (item.nombre || '').toLowerCase();
-  const cat = (item.categoria || '').toLowerCase();
-  if (nombre.includes('cowgirl') || cat.includes('vibra')) return '/images/vibrador_cowgirl.png';
-  if (nombre.includes('jessie') || cat.includes('lence')) return '/images/lenceria_andy.png';
-  if (nombre.includes('plug') || cat.includes('anal')) return '/images/plug_anal.png';
-  if (nombre.includes('kit') || cat.includes('kit')) return '/images/mystery_box.png';
-  if (nombre.includes('cerdito') || nombre.includes('jammy')) return '/images/cerdito_travieso.png';
+  if (cat.includes('lence')) return '/images/lenceria_andy.png';
+  if (cat.includes('anal')) return '/images/plug_anal.png';
+  if (cat.includes('kit')) return '/images/mystery_box.png';
   return '/images/vibrador_cowgirl.png';
 }
 
@@ -70,7 +87,7 @@ export default function Carrito() {
     if (codigo === 'WOODY10' || codigo === 'TOYSTORE' || codigo === 'SENA') {
       setDescuentoAplicado(15000);
       setCuponValido(true);
-      setMensajePromo('¡Cupón aplicado con éxito! Descuento de $15.000 COP');
+      setMensajePromo('Cupón aplicado con éxito. Descuento de $15.000 COP.');
     } else if (codigo === '') {
       setDescuentoAplicado(0);
       setCuponValido(false);
@@ -84,22 +101,31 @@ export default function Carrito() {
 
   const subtotal = items.reduce((acc, item) => acc + (Number(item.precio) * item.cantidad), 0);
   const totalArticulos = items.reduce((acc, item) => acc + item.cantidad, 0);
-  const envio = 0; // Envío Gratis garantizado
   const total = Math.max(0, subtotal - descuentoAplicado);
 
   const enviarPedidoWhatsApp = () => {
     if (items.length === 0) return;
-    let mensaje = `*¡Hola Toy Store! Quiero confirmar mi pedido desde la web:*\n\n`;
+    let mensaje = `*¡Hola Toy Store! Quiero confirmar mi pedido desde la web:*
+
+`;
     items.forEach((item, idx) => {
-      mensaje += `${idx + 1}. *${item.nombre}* (${item.categoria}) x${item.cantidad} — $${(Number(item.precio) * item.cantidad).toLocaleString('es-CO')} COP\n`;
+      mensaje += `${idx + 1}. *${item.nombre}* (${item.categoria}) x${item.cantidad} — $${(Number(item.precio) * item.cantidad).toLocaleString('es-CO')} COP
+`;
     });
     if (descuentoAplicado > 0) {
-      mensaje += `\n*Descuento cupón:* -$${descuentoAplicado.toLocaleString('es-CO')} COP\n`;
+      mensaje += `
+*Descuento cupón:* -$${descuentoAplicado.toLocaleString('es-CO')} COP
+`;
     }
-    mensaje += `\n*TOTAL A PAGAR:* $${total.toLocaleString('es-CO')} COP\n`;
-    mensaje += `*Envío:* Gratis (Discreto y Confidencial)\n`;
-    mensaje += `*Cliente:* ${usuario ? usuario.nombre : 'Cliente Web'}\n`;
-    mensaje += `\n*Solicito empaque 100% sellado sin distintivos de sex shop.*`;
+    mensaje += `
+*TOTAL A PAGAR:* $${total.toLocaleString('es-CO')} COP
+`;
+    mensaje += `*Envío:* Gratis (Discreto y Confidencial)
+`;
+    mensaje += `*Cliente:* ${usuario ? usuario.nombre : 'Cliente Web'}
+`;
+    mensaje += `
+*Solicito empaque 100% sellado sin distintivos de sex shop.*`;
 
     const url = `https://wa.me/573009028001?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
@@ -109,9 +135,9 @@ export default function Carrito() {
     <div className="w-full min-h-screen bg-white select-none font-fredoka text-[#111111]">
       
       {/* ============================================================ */}
-      {/* 1. BARRA VERTICAL DE ICONOS A LA IZQUIERDA (RÉPLICA EXACTA)  */}
+      {/* 1. BARRA VERTICAL FIJA A LA IZQUIERDA (DESKTOP: md en adelante) */}
       {/* ============================================================ */}
-      <aside className="fixed left-0 top-0 bottom-0 w-[82px] border-r border-[#e9e9e9] flex flex-col justify-between items-center py-4 bg-white z-40 select-none">
+      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-[82px] border-r border-[#e9e9e9] flex-col justify-between items-center py-4 bg-white z-40 select-none">
         
         {/* ICONOS SUPERIORES */}
         <div className="flex flex-col items-center space-y-4 w-full">
@@ -141,16 +167,16 @@ export default function Carrito() {
             </svg>
           </button>
 
-          {/* ICONO 2: LA BRÚJULA (EXPLORA) */}
+          {/* ICONO 2: TIENDA (SOMBRERO / COMPRAS) */}
           <button 
-            onClick={() => navigate('/configuracion?tab=hoy')} 
+            onClick={() => navigate('/tienda')} 
             className="w-12 h-12 rounded-full hover:bg-[#a6d4f2]/30 flex items-center justify-center text-[#1e3a8a] transition-all cursor-pointer"
-            title="Explorar y Recomendaciones"
+            title="Tienda de Juguetes"
           >
             <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="9.25" />
-              <polygon points="15.8,8.2 13.2,13.2 8.2,15.8 10.8,10.8" fill="none" />
-              <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
             </svg>
           </button>
 
@@ -175,7 +201,7 @@ export default function Carrito() {
           {/* ICONO 4: CARRITO DE COMPRAS (RESALTADO ACTIVO) */}
           <button 
             onClick={() => navigate('/carrito')}
-            className="w-12 h-12 rounded-2xl bg-[#a6d4f2]/30 ring-1 ring-[#a6d4f2]/50 shadow-xs flex items-center justify-center text-[#1e3a8a] transition-all cursor-pointer relative"
+            className="w-12 h-12 rounded-2xl bg-[#a6d4f2]/40 ring-2 ring-[#a6d4f2] shadow-xs flex items-center justify-center text-[#1e3a8a] transition-all cursor-pointer relative"
             title="Carrito y Factura"
           >
             <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
@@ -190,29 +216,16 @@ export default function Carrito() {
             )}
           </button>
 
-          {/* ICONO 5: NOTIFICACIONES */}
+          {/* ICONO 5: EXPLORAR / BRÚJULA */}
           <button 
-            onClick={() => navigate('/configuracion')}
+            onClick={() => navigate('/configuracion?tab=hoy')} 
             className="w-12 h-12 rounded-full hover:bg-[#a6d4f2]/30 flex items-center justify-center text-[#1e3a8a] transition-all cursor-pointer"
-            title="Notificaciones"
+            title="Explorar y Recomendaciones"
           >
             <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-            </svg>
-          </button>
-
-          {/* ICONO 6: MENSAJES / CONFESIONES */}
-          <button 
-            onClick={() => navigate('/configuracion')}
-            className="w-12 h-12 rounded-full hover:bg-[#a6d4f2]/30 flex items-center justify-center text-[#1e3a8a] transition-all cursor-pointer"
-            title="Rincón de Confesiones"
-          >
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 3.5C6.75 3.5 2.5 7.25 2.5 11.8c0 2.65 1.4 5 3.65 6.45-.15.95-.6 2.3-1.4 3.25 1.8 0 3.65-.8 4.75-1.75.8.2 1.65.3 2.5.3 5.25 0 9.5-3.75 9.5-8.25S17.25 3.5 12 3.5z" />
-              <circle cx="8" cy="11.8" r="1.1" fill="currentColor" stroke="none" />
-              <circle cx="12" cy="11.8" r="1.1" fill="currentColor" stroke="none" />
-              <circle cx="16" cy="11.8" r="1.1" fill="currentColor" stroke="none" />
+              <circle cx="12" cy="12" r="9.25" />
+              <polygon points="15.8,8.2 13.2,13.2 8.2,15.8 10.8,10.8" fill="none" />
+              <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
             </svg>
           </button>
         </div>
@@ -231,17 +244,68 @@ export default function Carrito() {
       </aside>
 
       {/* ============================================================ */}
+      {/* BARRA INFERIOR MÓVIL (SOLO VISIBLE EN MÓVILES: < md)         */}
+      {/* ============================================================ */}
+      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-[#e9e9e9] flex md:hidden justify-around items-center z-40 px-3 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] select-none">
+        <button onClick={() => navigate('/')} className="flex flex-col items-center justify-center text-[#1e3a8a] py-1">
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3">
+            <path d="M3 10.25L10.9 3.5a1.6 1.6 0 0 1 2.2 0L21 10.25V20a1.75 1.75 0 0 1-1.75 1.75H4.75A1.75 1.75 0 0 1 3 20V10.25z" />
+          </svg>
+          <span className="text-[10px] font-bold">Inicio</span>
+        </button>
+
+        <button onClick={() => navigate('/tienda')} className="flex flex-col items-center justify-center text-[#1e3a8a] py-1">
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+          </svg>
+          <span className="text-[10px] font-bold">Tienda</span>
+        </button>
+
+        <button onClick={() => navigate('/carrito')} className="flex flex-col items-center justify-center text-[#1e3a8a] py-1 relative">
+          <div className="w-10 h-10 rounded-2xl bg-[#a6d4f2]/40 ring-2 ring-[#a6d4f2] flex items-center justify-center">
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3">
+              <circle cx="9" cy="20" r="1.5" />
+              <circle cx="18" cy="20" r="1.5" />
+              <path d="M1 2.5h3.5l2.6 11.5a2 2 0 0 0 2 1.5h8.6a2 2 0 0 0 2-1.5L21.5 6.5H5.2" />
+            </svg>
+          </div>
+          {totalArticulos > 0 && (
+            <span className="absolute top-0 right-1 w-4 h-4 rounded-full bg-[#E52521] text-white text-[9px] font-black flex items-center justify-center ring-1 ring-white">
+              {totalArticulos}
+            </span>
+          )}
+        </button>
+
+        <button onClick={() => navigate('/configuracion?tab=secretos')} className="flex flex-col items-center justify-center text-[#1e3a8a] py-1">
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+            <rect x="3.5" y="11" width="17" height="9" rx="2.5" />
+            <path d="M4 11V8.5C4 5.5 7.5 3.5 12 3.5C16.5 3.5 20 5.5 20 8.5V11" />
+          </svg>
+          <span className="text-[10px] font-bold">Secretos</span>
+        </button>
+
+        <button onClick={() => navigate('/configuracion')} className="flex flex-col items-center justify-center text-[#1e3a8a] py-1">
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          <span className="text-[10px] font-bold">Ajustes</span>
+        </button>
+      </nav>
+
+      {/* ============================================================ */}
       {/* 2. ÁREA PRINCIPAL CON DESPLAZAMIENTO A LA DERECHA (pl-[82px]) */}
       {/* ============================================================ */}
-      <div className="pl-[82px] min-h-screen flex flex-col">
+      <div className="pl-0 md:pl-[82px] pb-20 md:pb-6 min-h-screen flex flex-col">
         
-        {/* NAVBAR MINIMALISTA: SOLO EL AVATAR FLOTANTE EN LA ESQUINA DERECHA */}
+        {/* NAVBAR MINIMALISTA: SOLO EL AVATAR FLOTANTE EN LA ESQUINA DERECHA (SIN NUBE GIGANTE) */}
         <Navbar minimal={true} />
 
-        <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-8 py-6">
+        <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 sm:py-6">
           
           {/* Cabecera limpia y estilizada */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-gray-100 gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 sm:pb-6 mb-6 sm:mb-8 border-b border-gray-100 gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-black text-[#1e3a8a] tracking-tight uppercase">
                 Carrito de Compras
@@ -257,7 +321,7 @@ export default function Carrito() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => navigate('/tienda')}
-                  className="px-4 py-2 bg-[#a6d4f2]/30 hover:bg-[#a6d4f2]/50 text-[#1e3a8a] text-xs font-bold rounded-full transition cursor-pointer"
+                  className="px-4 py-2 bg-[#a6d4f2]/40 hover:bg-[#a6d4f2]/70 text-[#1e3a8a] text-xs font-bold rounded-full transition cursor-pointer"
                 >
                   ← Seguir Comprando
                 </button>
@@ -273,7 +337,7 @@ export default function Carrito() {
 
           {items.length === 0 ? (
             /* Estado Vacío Elegante */
-            <div className="py-20 flex flex-col items-center justify-center text-center max-w-md mx-auto">
+            <div className="py-20 flex flex-col items-center justify-center text-center max-w-md mx-auto px-4">
               <div className="w-24 h-24 rounded-full bg-[#a6d4f2]/20 flex items-center justify-center text-[#1e3a8a] mb-5">
                 <svg className="w-12 h-12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <circle cx="9" cy="20" r="1.5" />
@@ -282,12 +346,12 @@ export default function Carrito() {
                 </svg>
               </div>
               <h3 className="text-xl font-black text-[#1e3a8a] uppercase">Tu carrito está vacío</h3>
-              <p className="text-xs sm:text-sm text-[#717171] mt-2">
-                Añade tus juguetes sensuales, lencería y aceites favoritos desde la tienda para iniciar tu pedido.
+              <p className="text-xs sm:text-sm text-[#717171] mt-2 leading-relaxed">
+                Añade tus juguetes sensuales, lencería y aceites favoritos desde la tienda para iniciar tu pedido confidencial.
               </p>
               <button
                 onClick={() => navigate('/tienda')}
-                className="mt-6 px-7 py-3 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-full text-xs uppercase tracking-wider shadow-sm transition active:scale-95 cursor-pointer"
+                className="mt-6 px-7 py-3 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-full text-xs uppercase tracking-wider shadow-sm transition active:scale-95 cursor-pointer border-2 border-white"
               >
                 Explorar Juguetes en Tienda
               </button>
@@ -296,7 +360,7 @@ export default function Carrito() {
             /* Dos Columnas estilo Samsung E-Commerce / Pinterest */
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
-              {/* Columna Izquierda: Lista de Artículos (8 cols) */}
+              {/* Columna Izquierda: Lista de Artículos (7 cols) */}
               <div className="lg:col-span-7 space-y-4">
                 {items.map(item => {
                   const itemImg = resolveItemImage(item);
@@ -415,7 +479,7 @@ export default function Carrito() {
                       />
                       <button
                         type="submit"
-                        className="px-5 py-2.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 cursor-pointer"
+                        className="px-5 py-2.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 cursor-pointer border-2 border-white"
                       >
                         Aplicar
                       </button>

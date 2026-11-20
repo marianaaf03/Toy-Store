@@ -213,7 +213,7 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
               alt="Toy Store Woody Icon" 
               onClick={() => navigate('/')} 
               onError={(e) => { e.target.src = corazonWoodyImg; }}
-              className="h-[74px] sm:h-[96px] md:h-[130px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer" 
+              className="h-[80px] sm:h-[105px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer translate-x-3 sm:translate-x-6 md:translate-x-9 -translate-y-1" 
             />
           ) : (
             <>

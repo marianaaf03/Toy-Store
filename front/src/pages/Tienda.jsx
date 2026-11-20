@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import RoomWrapper from '../components/RoomWrapper';
 import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 import ToyBoxCard from '../components/ToyBoxCard';
+import ToyWoodyHat from '../components/ToyWoodyHat';
 
 // Prioridad fija de categorías según solicitud del usuario:
 // 1. Vibradores, 2. Lencería, 3. Plugs & Anales, 4. Dildos, 5. Cosmética, 6. Accesorios & BDSM, 7. Kits & Sorpresas
@@ -155,11 +156,12 @@ export default function Tienda() {
     <RoomWrapper 
       theme="woody" 
       wallpaperContent={<AndyCloudsWallpaper />}
+      hideFloorToys={true}
     >
       <style>{`
         @keyframes swingSign {
-          0%, 100% { transform: rotate(-5deg); }
-          50% { transform: rotate(5deg); }
+          0%, 100% { transform: rotate(-4deg); }
+          50% { transform: rotate(4deg); }
         }
         .animate-swing-sign {
           transform-origin: top center;
@@ -174,23 +176,73 @@ export default function Tienda() {
         }
       `}</style>
 
+      {/* =========================================================================
+          CARTEL COLGANTE ANIMADO FIJO: "ADD TO CART" (SIEMPRE VISIBLE, 100% FUNCIONAL)
+          ========================================================================= */}
+      <div 
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          navigate('/carrito');
+        }}
+        className="fixed top-2 sm:top-4 right-3 sm:right-6 md:right-10 z-[250] cursor-pointer group animate-swing-sign pointer-events-auto select-none"
+        title="Ir a mi Carrito de Compras"
+      >
+        {/* Cuerdas colgantes con remaches dorados que vienen del techo/nube */}
+        <div className="flex justify-between w-16 sm:w-20 mx-auto -mb-1 relative z-0">
+          <div className="w-[3px] h-7 sm:h-10 bg-gradient-to-b from-slate-400 to-amber-700 shadow-xs relative">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3.5px]"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3.5px]"></div>
+          </div>
+          <div className="w-[3px] h-7 sm:h-10 bg-gradient-to-b from-slate-400 to-amber-700 shadow-xs relative">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3.5px]"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3.5px]"></div>
+          </div>
+        </div>
+
+        {/* Placa de juguete con doble reborde y remaches */}
+        <div className="bg-gradient-to-b from-[#fef08a] via-[#f59e0b] to-[#d97706] border-4 border-[#dc2626] rounded-2xl shadow-[0_14px_30px_rgba(0,0,0,0.35)] px-3 sm:px-4 py-2 sm:py-2.5 flex flex-col items-center justify-center transition-transform group-hover:scale-110 active:scale-95 relative">
+          {/* Costura de hilo interior */}
+          <div className="absolute inset-1 border border-dashed border-[#dc2626]/40 rounded-xl pointer-events-none"></div>
+
+          <span className="text-[10px] sm:text-[11px] font-black text-[#dc2626] tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] leading-none">
+            ADD TO
+          </span>
+          <span className="text-xs sm:text-sm font-black text-[#1e3a8a] tracking-tight uppercase flex items-center gap-1.5 leading-tight mt-0.5">
+            <span>CART</span>
+            {/* Icono vectorial de Carrito (Cero emojis) */}
+            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1e3a8a]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <circle cx="9" cy="20" r="1.5" />
+              <circle cx="18" cy="20" r="1.5" />
+              <path d="M1 2.5h3.5l2.6 11.5a2 2 0 0 0 2 1.5h8.6a2 2 0 0 0 2-1.5L21.5 6.5H5.2" />
+            </svg>
+          </span>
+
+          {/* Insignia / Contador de artículos */}
+          {totalArticulosCarrito > 0 && (
+            <span className="absolute -top-2.5 -right-2.5 bg-[#dc2626] text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow-md animate-bounce">
+              {totalArticulosCarrito}
+            </span>
+          )}
+        </div>
+      </div>
+
       <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-6 pt-2 pb-28 font-fredoka flex flex-col items-center select-none">
         
         {/* =========================================================================
-            ZONA SUPERIOR: NUBE BUSCADORA COLGANTE Y CARTEL "ADD TO CART"
+            ZONA SUPERIOR: SEGUNDA NUBE CONECTADA POR CUERDAS (EL BUSCADOR Y SECCIONES)
             ========================================================================= */}
-        <div className="w-full relative flex items-center justify-center my-4 min-h-[170px]">
+        <div className="w-full relative flex items-center justify-center my-3 sm:my-4 min-h-[160px]">
           
-          {/* 1. SEGUNDA NUBE: EL BUSCADOR Y SECCIONES (FORMA DE NUBE REDONDITA Y CREATIVA) */}
           <div className="relative z-10 flex flex-col items-center animate-hanging-cloud max-w-3xl w-full mx-auto px-2">
             
             {/* Cuerdas colgantes con remaches dorados que conectan a la nube superior */}
             <div className="w-full max-w-lg flex justify-between px-16 relative z-0">
-              <div className="w-[3px] h-9 sm:h-12 bg-slate-400 shadow-xs relative">
+              <div className="w-[3px] h-8 sm:h-12 bg-slate-400 shadow-xs relative">
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-400 border border-amber-600 absolute -top-1 -left-[3.5px]"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-400 border border-amber-600 absolute -bottom-1 -left-[3.5px]"></div>
               </div>
-              <div className="w-[3px] h-9 sm:h-12 bg-slate-400 shadow-xs relative">
+              <div className="w-[3px] h-8 sm:h-12 bg-slate-400 shadow-xs relative">
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-400 border border-amber-600 absolute -top-1 -left-[3.5px]"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-400 border border-amber-600 absolute -bottom-1 -left-[3.5px]"></div>
               </div>
@@ -257,7 +309,7 @@ export default function Tienda() {
                         return n;
                       });
                     }}
-                    className="px-5 py-2.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95 whitespace-nowrap border-2 border-white"
+                    className="px-5 py-2.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95 whitespace-nowrap border-2 border-white cursor-pointer"
                   >
                     Buscar
                   </button>
@@ -278,10 +330,10 @@ export default function Tienda() {
                             return n;
                           });
                         }}
-                        className={`px-3 py-1 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all border ${
+                        className={`px-3 py-1 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all border cursor-pointer ${
                           activo
-                            ? 'bg-[#1e3a8a] text-white border-[#1e3a8a] shadow-md scale-105'
-                            : 'bg-slate-50 text-[#1e3a8a] border-slate-200 hover:bg-amber-100 hover:border-amber-300'
+                            ? 'bg-[#a6d4f2] text-[#1e3a8a] border-[#1e3a8a] shadow-md scale-105 ring-2 ring-[#1e3a8a]/20'
+                            : 'bg-slate-50 text-[#1e3a8a] border-slate-200 hover:bg-[#a6d4f2]/30 hover:border-[#a6d4f2]'
                         }`}
                       >
                         {cat.label}
@@ -292,55 +344,6 @@ export default function Tienda() {
               </div>
             </div>
           </div>
-
-          {/* 2. CARTEL COLGANTE ANIMADO: "ADD TO CART" (ALTAMENTE DETALLADO Y 100% FUNCIONAL) */}
-          <div 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              navigate('/carrito');
-            }}
-            className="absolute right-0 sm:right-2 md:right-4 lg:right-8 top-0 z-[120] cursor-pointer group animate-swing-sign pointer-events-auto"
-            title="Ir a mi Carrito de Compras"
-          >
-            {/* Cuerdas colgantes con remaches dorados */}
-            <div className="flex justify-between w-20 mx-auto -mb-1 relative z-0">
-              <div className="w-[3px] h-10 bg-gradient-to-b from-slate-400 to-amber-700 shadow-xs relative">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3.5px]"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3.5px]"></div>
-              </div>
-              <div className="w-[3px] h-10 bg-gradient-to-b from-slate-400 to-amber-700 shadow-xs relative">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3.5px]"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3.5px]"></div>
-              </div>
-            </div>
-
-            {/* Placa de madera / juguete con doble reborde y remaches */}
-            <div className="bg-gradient-to-b from-[#fef08a] via-[#f59e0b] to-[#d97706] border-4 border-[#dc2626] rounded-2xl shadow-[0_14px_28px_rgba(0,0,0,0.35)] px-4 py-2.5 flex flex-col items-center justify-center transition-transform group-hover:scale-110 active:scale-95 relative">
-              {/* Costura de hilo interior */}
-              <div className="absolute inset-1 border border-dashed border-[#dc2626]/40 rounded-xl pointer-events-none"></div>
-
-              <span className="text-[11px] font-black text-[#dc2626] tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] leading-none">
-                ADD TO
-              </span>
-              <span className="text-sm font-black text-[#1e3a8a] tracking-tight uppercase flex items-center gap-1.5 leading-tight mt-0.5">
-                <span>CART</span>
-                {/* Icono vectorial de Carrito (Cero emojis) */}
-                <svg className="w-4 h-4 text-[#1e3a8a]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <circle cx="9" cy="20" r="1.5" />
-                  <circle cx="18" cy="20" r="1.5" />
-                  <path d="M1 2.5h3.5l2.6 11.5a2 2 0 0 0 2 1.5h8.6a2 2 0 0 0 2-1.5L21.5 6.5H5.2" />
-                </svg>
-              </span>
-
-              {/* Insignia / Contador de artículos */}
-              {totalArticulosCarrito > 0 && (
-                <span className="absolute -top-2.5 -right-2.5 bg-[#dc2626] text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow-md animate-bounce">
-                  {totalArticulosCarrito}
-                </span>
-              )}
-            </div>
-          </div>
         </div>
 
         {/* =========================================================================
@@ -348,9 +351,14 @@ export default function Tienda() {
             ========================================================================= */}
         <div className="w-full max-w-7xl bg-white/95 backdrop-blur-md rounded-t-[3.5rem] rounded-b-3xl border-4 border-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] p-4 sm:p-8 relative mt-3">
           
+          {/* Sombrero de Woody descansando en la esquina superior izquierda del estante */}
+          <div className="absolute -top-10 -left-4 sm:-top-14 sm:-left-6 md:-top-16 md:-left-8 z-30 pointer-events-none">
+            <ToyWoodyHat className="w-24 sm:w-32 md:w-36 h-auto" />
+          </div>
+
           {cargando ? (
             <div className="py-24 flex flex-col items-center justify-center">
-              <div className="w-12 h-12 border-4 border-amber-300 border-t-[#1e3a8a] rounded-full animate-spin"></div>
+              <div className="w-12 h-12 border-4 border-[#a6d4f2] border-t-[#1e3a8a] rounded-full animate-spin"></div>
               <p className="mt-4 text-xs font-black text-[#1e3a8a] uppercase tracking-widest">
                 Acomodando los juguetes en los estantes...
               </p>
@@ -360,7 +368,7 @@ export default function Tienda() {
               <p className="text-sm font-black text-[#1e3a8a] uppercase">No hay juguetes en esta categoría</p>
               <button
                 onClick={() => setSearchParams({})}
-                className="mt-4 px-5 py-2.5 bg-[#a6d4f2] text-[#1e3a8a] font-black rounded-xl text-xs uppercase shadow-sm"
+                className="mt-4 px-5 py-2.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-xl text-xs uppercase shadow-sm border-2 border-white cursor-pointer"
               >
                 Ver todos los productos
               </button>
@@ -411,13 +419,13 @@ export default function Tienda() {
             </div>
           )}
 
-          {/* Paginación */}
+          {/* Paginación con botones en Celeste Configuración */}
           {totalPaginas > 1 && (
             <div className="flex items-center justify-center gap-2 mt-10 pt-6 border-t border-slate-100">
               <button
                 disabled={pagina === 1}
                 onClick={() => setPagina(p => Math.max(p - 1, 1))}
-                className="px-4 py-2 bg-slate-100 hover:bg-[#a6d4f2] disabled:opacity-40 text-[#1e3a8a] font-black rounded-xl text-xs uppercase tracking-wider transition"
+                className="px-4 py-2 bg-slate-100 hover:bg-[#a6d4f2] disabled:opacity-40 text-[#1e3a8a] font-black rounded-xl text-xs uppercase tracking-wider transition cursor-pointer"
               >
                 Anterior
               </button>
@@ -426,10 +434,10 @@ export default function Tienda() {
                 <button
                   key={p}
                   onClick={() => setPagina(p)}
-                  className={`w-9 h-9 rounded-xl font-black text-xs transition ${
+                  className={`w-9 h-9 rounded-xl font-black text-xs transition cursor-pointer ${
                     pagina === p
-                      ? 'bg-[#1e3a8a] text-white shadow-md'
-                      : 'bg-slate-50 text-[#1e3a8a] hover:bg-slate-200'
+                      ? 'bg-[#a6d4f2] text-[#1e3a8a] shadow-md border-2 border-white ring-2 ring-[#1e3a8a]/20'
+                      : 'bg-slate-50 text-[#1e3a8a] hover:bg-[#a6d4f2]/40'
                   }`}
                 >
                   {p}
@@ -439,7 +447,7 @@ export default function Tienda() {
               <button
                 disabled={pagina === totalPaginas}
                 onClick={() => setPagina(p => Math.min(p + 1, totalPaginas))}
-                className="px-4 py-2 bg-slate-100 hover:bg-[#a6d4f2] disabled:opacity-40 text-[#1e3a8a] font-black rounded-xl text-xs uppercase tracking-wider transition"
+                className="px-4 py-2 bg-slate-100 hover:bg-[#a6d4f2] disabled:opacity-40 text-[#1e3a8a] font-black rounded-xl text-xs uppercase tracking-wider transition cursor-pointer"
               >
                 Siguiente
               </button>
@@ -449,16 +457,16 @@ export default function Tienda() {
       </div>
 
       {/* =========================================================================
-          PÁGINA EMERGENTE / MODAL DETALLADO CON Z-INDEX ELEVADO (ENCIMA DE NAVBAR)
+          PÁGINA EMERGENTE / MODAL DETALLADO CON Z-INDEX ELEVADO (SIEMPRE ENCIMA DE NAVBAR)
           ========================================================================= */}
       {productoSeleccionado && (
-        <div className="fixed inset-0 z-[500] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs font-fredoka select-none">
-          <div className="bg-white rounded-[2.5rem] max-w-3xl sm:max-w-4xl w-full p-6 sm:p-10 shadow-[0_25px_60px_rgba(0,0,0,0.35)] relative border-4 border-amber-300 animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
+        <div className="fixed inset-0 z-[400] flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-md font-fredoka select-none animate-in fade-in duration-200">
+          <div className="bg-white rounded-[2.5rem] max-w-4xl w-full max-h-[88vh] overflow-y-auto p-6 sm:p-10 shadow-[0_30px_90px_rgba(0,0,0,0.5)] relative border-4 border-amber-300 animate-in zoom-in-95 duration-200 z-[401]">
             
             {/* Botón Cerrar */}
             <button
               onClick={() => setProductoSeleccionado(null)}
-              className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center absolute top-5 right-5 font-black text-lg shadow-sm transition active:scale-95"
+              className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center absolute top-5 right-5 font-black text-lg shadow-sm transition active:scale-95 cursor-pointer z-10"
             >
               ✕
             </button>
@@ -472,7 +480,7 @@ export default function Tienda() {
               {/* Información y Compra */}
               <div className="w-full md:w-7/12 flex flex-col justify-between">
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-md border border-amber-300">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-800 bg-amber-100 px-3 py-1 rounded-md border border-amber-300">
                     {productoSeleccionado.categoria}
                   </span>
 
@@ -513,14 +521,14 @@ export default function Tienda() {
                     <div className="flex items-center border-2 border-slate-200 rounded-2xl px-3 py-1.5 bg-slate-50">
                       <button
                         onClick={() => setCantidadModal(c => Math.max(c - 1, 1))}
-                        className="w-6 h-6 font-black text-slate-600 hover:text-[#1e3a8a] text-sm"
+                        className="w-6 h-6 font-black text-slate-600 hover:text-[#1e3a8a] text-sm cursor-pointer"
                       >
                         -
                       </button>
                       <span className="text-sm font-black text-slate-800 w-8 text-center">{cantidadModal}</span>
                       <button
                         onClick={() => setCantidadModal(c => c + 1)}
-                        className="w-6 h-6 font-black text-slate-600 hover:text-[#1e3a8a] text-sm"
+                        className="w-6 h-6 font-black text-slate-600 hover:text-[#1e3a8a] text-sm cursor-pointer"
                       >
                         +
                       </button>
@@ -528,7 +536,7 @@ export default function Tienda() {
 
                     <button
                       onClick={() => agregarAlCarrito(productoSeleccionado, cantidadModal)}
-                      className="flex-1 py-3 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95 border-2 border-white"
+                      className="flex-1 py-3 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95 border-2 border-white cursor-pointer"
                     >
                       Añadir al Carrito
                     </button>
@@ -540,7 +548,7 @@ export default function Tienda() {
                       setProductoSeleccionado(null);
                       navigate('/carrito');
                     }}
-                    className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-2xl text-xs uppercase tracking-wider shadow-md transition active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-2xl text-xs uppercase tracking-wider shadow-md transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>Comprar Ahora y Ver Carrito</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
