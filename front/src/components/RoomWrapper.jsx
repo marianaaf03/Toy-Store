@@ -83,6 +83,7 @@ export default function RoomWrapper({
   };
 
   const isAnyDrawerOpen = showConfesionesDrawer || showFilterSidebar || showPurposeSidebar;
+  const isHome = location.pathname === '/';
   
   const getThemeStyles = () => {
     switch (theme) {
@@ -153,8 +154,8 @@ export default function RoomWrapper({
       DIFERENTES PANTALLAS Y LOS ELEMENTOS SE SUPERPONDRÁN.
       ========================================================================
       */}
-      {/* Fondo Fijo (Fixed) para evitar desajustes o cortes al hacer scroll o filtrar */}
-      <div className={`fixed inset-0 z-0 transition-all duration-700 ${activeBlur ? 'blur-[6px]' : ''} pointer-events-none`}>
+      {/* Capa de Fondo (Diorama de la Habitación de Andy) */}
+      <div className={`absolute inset-0 z-0 transition-all duration-700 ${activeBlur ? 'blur-[6px]' : ''} pointer-events-none`}>
         {fullWallpaper && wallpaperContent ? (
           /* MODO FONDO COMPLETO */
           <div className="absolute inset-0 z-0">
@@ -163,14 +164,14 @@ export default function RoomWrapper({
         ) : (
           /* MODO DIORAMA (La pared con el tapiz erótico, zócalo y suelo) */
           <div className="absolute inset-0 flex flex-col">
-            {/* 1. PARED (Wall - Con color insignia del personaje y doodles eróticos) */}
-            <div className={`relative flex-1 ${styles.wall}`}>
+            {/* 1. PARED (Wall - Con color insignia del personaje y tapiz con siluetas) */}
+            <div className={`relative flex-1 ${isHome ? '' : 'min-h-[calc(100vh-280px)]'} ${styles.wall}`}>
                {wallpaperContent}
                <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/5 pointer-events-none"></div>
             </div>
 
             {/* 2. ZÓCALO / MADERA BLANCA (Mid Section) */}
-            <div className={`h-[25vh] md:h-[30vh] bg-[#fcf8f2] relative border-t-8 border-white shadow-[0_-10px_30px_rgba(0,0,0,0.05)]`}>
+            <div className={`${isHome ? 'h-[25vh] md:h-[30vh] border-t-8 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]' : 'h-16 sm:h-20 border-t-4 shadow-[0_-6px_20px_rgba(0,0,0,0.04)]'} bg-[#fcf8f2] relative border-white`}>
               <div className="absolute inset-0 opacity-10" 
                    style={{ backgroundImage: 'linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '150px 100%' }}>
               </div>
@@ -178,7 +179,7 @@ export default function RoomWrapper({
             </div>
 
             {/* 3. SUELO COORDINADO CON EL TEMA (Bottom Section) */}
-            <div className={`min-h-[480px] md:h-[40vh] ${styles.floor} relative shadow-[inset_0_20px_40px_rgba(0,0,0,0.4)] transition-colors duration-700`}>
+            <div className={`${isHome ? 'min-h-[480px] md:h-[40vh]' : 'min-h-[300px] sm:min-h-[360px]'} ${styles.floor} relative shadow-[inset_0_20px_40px_rgba(0,0,0,0.4)] transition-colors duration-700`}>
                <div className="absolute inset-0 opacity-20" 
                     style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent 0, transparent 80px, rgba(0,0,0,0.5) 81px)' }}>
                </div>
