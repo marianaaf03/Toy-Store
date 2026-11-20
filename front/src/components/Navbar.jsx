@@ -7,6 +7,10 @@ import NavHoverItem from './NavHoverItem';
 import CowboyHat from './CowboyHat';
 import AvatarHat from './AvatarHat';
 import corazonWoodyImg from '../assets/corazon_woody.png';
+import lotsoBearImg from '../assets/lotso_bear.png';
+import jessyHeartImg from '../assets/jessy_heart.png';
+import aliensFriendsImg from '../assets/aliens_friends.png';
+import buzzHeartImg from '../assets/buzz_heart.png';
 
 // El logo del corazón para la tienda
 const woodyHeartPlaceholder = corazonWoodyImg;
@@ -202,28 +206,28 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
           onClick={() => !isSimple && navigate('/')}
         >
           {isSimple ? (
-            <div className="flex justify-center items-center md:min-w-[140px]" onClick={() => navigate('/')}>
+            <div className="flex justify-center items-center md:min-w-[150px]" onClick={() => navigate('/')}>
               <img 
                 src={
                   location.pathname === '/tienda'
                     ? corazonWoodyImg
                     : location.pathname === '/guia' 
-                      ? "/src/assets/lotso_bear.png" 
+                      ? lotsoBearImg 
                       : location.pathname === '/vestier'
-                        ? "/src/assets/jessy_heart.png"
+                        ? jessyHeartImg
                         : location.pathname === '/explora'
-                          ? "/src/assets/aliens_friends.png"
+                          ? aliensFriendsImg
                           : location.pathname === '/contacto'
-                            ? "/src/assets/buzz_heart.png"
+                            ? buzzHeartImg
                             : corazonWoodyImg
                 } 
                 alt="Toy Store Icon" 
                 onError={(e) => { e.target.src = corazonWoodyImg; }}
                 className={
                   location.pathname === '/tienda'
-                    ? "h-[75px] sm:h-[95px] md:h-[130px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer -translate-y-1 md:-translate-y-2"
+                    ? "h-[85px] sm:h-[105px] md:h-[135px] w-auto object-contain z-20 drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] transition-transform hover:scale-108 active:scale-95 cursor-pointer"
                     : location.pathname === '/guia' 
-                      ? "h-[65px] md:h-[95px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-1 md:translate-x-3 cursor-pointer"
+                      ? "h-[70px] md:h-[100px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-1 md:translate-x-3 cursor-pointer"
                       : location.pathname === '/vestier'
                         ? "h-[95px] md:h-[135px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 translate-x-1 md:translate-x-2 cursor-pointer"
                         : location.pathname === '/explora'

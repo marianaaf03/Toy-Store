@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import RoomWrapper from '../components/RoomWrapper';
+import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 import { useNavigate } from 'react-router-dom';
+
+/**
+ * LotsoBg: Color insignia pastel de Lotso (rosa fresa suave)
+ * combinado con los doodles eróticos sutiles (penes y vulvas) de Toy Store.
+ */
+const LotsoBg = () => (
+  <div className="absolute inset-0 bg-gradient-to-b from-[#FFF1F5] via-[#FCE7F3]/60 to-[#FBCFE8]/40 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 opacity-[0.13]">
+      <AndyCloudsWallpaper />
+    </div>
+  </div>
+);
 
 export default function Guia() {
   const navigate = useNavigate();
@@ -69,7 +82,11 @@ export default function Guia() {
   ];
 
   return (
-    <RoomWrapper theme="lotso">
+    <RoomWrapper 
+      theme="lotso"
+      fullWallpaper={true}
+      wallpaperContent={<LotsoBg />}
+    >
       <div className="relative z-10 w-full max-w-5xl mx-auto px-4 md:px-8 pt-8 pb-16">
         
         {/* CONTENEDOR PRINCIPAL FLOTANTE */}

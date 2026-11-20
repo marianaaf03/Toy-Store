@@ -1,214 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import RoomWrapper from '../components/RoomWrapper';
-import WoodyWallpaper from '../components/WoodyWallpaper';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import logoOfficialImg from '../assets/logo_official.png';
-import logoNewImg from '../assets/logo_toystore_new.png';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 
-/**
- * Helper para generar los claims, colores y diseño del empaque coleccionable estilo "YOUTOOZ".
- */
-function getBoxClaims(producto, index) {
-  const cat = (producto.categoria || '').toLowerCase();
-  const seriesNum = String(index + 1).padStart(3, '0');
-  
-  // Colores Youtooz (Box Color Theme)
-  let boxColor = 'bg-[#f43f5e]';      // Tono de caja principal (Vibradores - Ketnipz Pink Style)
-  let boxColorDark = 'bg-[#be123c]';  // Lado derecho (sombra)
-  let boxColorDarker = 'bg-[#9f1239]';// Lado izquierdo (sombra profunda)
-  let boxColorLight = 'bg-[#ffe4e6]'; // Tapa superior (brillo)
-  let boxBorderColor = 'border-[#f43f5e]'; // Borde decorativo
-  let boxText = 'text-[#f43f5e]';
-  let brandLogoText = 'TOYTOOZ';
-  let categoryLabelText = 'VINYL FIGURE';
-
-  if (cat.includes('vibra')) {
-    boxColor = 'bg-[#f43f5e]';
-    boxColorDark = 'bg-[#be123c]';
-    boxColorDarker = 'bg-[#9f1239]';
-    boxColorLight = 'bg-[#ffe4e6]';
-    boxBorderColor = 'border-[#f43f5e]';
-    boxText = 'text-[#f43f5e]';
-    brandLogoText = 'VIBRA';
-    categoryLabelText = 'VIBRATOR';
-  } else if (cat.includes('lence')) {
-    boxColor = 'bg-[#7e22ce]';
-    boxColorDark = 'bg-[#6b21a8]';
-    boxColorDarker = 'bg-[#581c87]';
-    boxColorLight = 'bg-[#f3e8ff]';
-    boxBorderColor = 'border-[#7e22ce]';
-    boxText = 'text-[#7e22ce]';
-    brandLogoText = 'LACE';
-    categoryLabelText = 'LINGERIE';
-  } else if (cat.includes('cosme')) {
-    boxColor = 'bg-[#db2777]';
-    boxColorDark = 'bg-[#9d174d]';
-    boxColorDarker = 'bg-[#831843]';
-    boxColorLight = 'bg-[#fce7f3]';
-    boxBorderColor = 'border-[#db2777]';
-    boxText = 'text-[#db2777]';
-    brandLogoText = 'GLIDE';
-    categoryLabelText = 'COSMETIC';
-  } else if (cat.includes('access') || cat.includes('accesor')) {
-    boxColor = 'bg-[#0f766e]';
-    boxColorDark = 'bg-[#115e59]';
-    boxColorDarker = 'bg-[#134e4a]';
-    boxColorLight = 'bg-[#ccfbf1]';
-    boxBorderColor = 'border-[#0f766e]';
-    boxText = 'text-[#0f766e]';
-    brandLogoText = 'ACCS';
-    categoryLabelText = 'ACCESSORY';
-  } else if (cat.includes('anal')) {
-    boxColor = 'bg-[#2563eb]';
-    boxColorDark = 'bg-[#1d4ed8]';
-    boxColorDarker = 'bg-[#1e40af]';
-    boxColorLight = 'bg-[#dbeafe]';
-    boxBorderColor = 'border-[#2563eb]';
-    boxText = 'text-[#2563eb]';
-    brandLogoText = 'ANALS';
-    categoryLabelText = 'ANAL TOY';
-  } else if (cat.includes('pene') || cat.includes('dildo') || cat.includes('dildos')) {
-    boxColor = 'bg-[#ca8a04]';
-    boxColorDark = 'bg-[#a16207]';
-    boxColorDarker = 'bg-[#854d0e]';
-    boxColorLight = 'bg-[#fef9c3]';
-    boxBorderColor = 'border-[#ca8a04]';
-    boxText = 'text-[#ca8a04]';
-    brandLogoText = 'DILDO';
-    categoryLabelText = 'DILDO TOY';
-  } else if (cat.includes('kit')) {
-    boxColor = 'bg-[#dc2626]';
-    boxColorDark = 'bg-[#b91c1c]';
-    boxColorDarker = 'bg-[#991b1b]';
-    boxColorLight = 'bg-[#fee2e2]';
-    boxBorderColor = 'border-[#dc2626]';
-    boxText = 'text-[#dc2626]';
-    brandLogoText = 'KITS';
-    categoryLabelText = 'SURPRISE KIT';
-  }
-
-  return {
-    boxColor,
-    boxColorDark,
-    boxColorDarker,
-    boxColorLight,
-    boxBorderColor,
-    boxText,
-    brandLogoText,
-    categoryLabelText,
-    seriesNum
-  };
-}
-
-/**
- * Resolutor inteligente de imágenes fotorrealistas del producto.
- * Si el producto tiene una imagen cargada en base de datos la usa,
- * de lo contrario mapea a los hermosos PNGs 3D fotorrealistas ya existentes.
- */
-const getProductImage = (producto) => {
-  if (producto.imagen && producto.imagen !== '/images/default.png') {
+// Helper de imagen por categoría o imagen existente
+function resolveProductImage(producto) {
+  if (producto.imagen && (producto.imagen.startsWith('/') || producto.imagen.startsWith('http'))) {
     return producto.imagen;
   }
-  
   const cat = (producto.categoria || '').toLowerCase();
-  if (cat.includes('vibra')) return '/images/toy_vibrator.png';
+  if (cat.includes('vibra')) return '/images/vibrador_cowgirl.png';
   if (cat.includes('lence')) return '/images/lenceria_andy.png';
   if (cat.includes('anal')) return '/images/plug_anal.png';
   if (cat.includes('kit')) return '/images/mystery_box.png';
-  
-  // Fallbacks de alta calidad
-  if (cat.includes('cosme')) return '/images/vibrador_cowgirl.png';
-  if (cat.includes('pene') || cat.includes('dildo')) return '/images/plug_anal.png';
-  
-  return '/images/toy_vibrator.png';
-};
+  return '/images/cerdito_travieso.png';
+}
 
-/**
- * Dibuja un sticker de precio retro estilo explosión/ovalado (Sawtooth Starburst)
- * adaptado a pesos colombianos (formato $XX.000 COP)
- */
-const renderPriceSticker = (precio) => {
-  const numericPrice = Number(precio);
-  const thousands = Math.floor(numericPrice / 1000);
-  const digits = String(thousands);
-  
-  const spikes = 22;
-  const cx = 65;
-  const cy = 45;
-  const rx_out = 52;
-  const ry_out = 32;
-  const rx_in = 46;
-  const ry_in = 28;
-  const pointsArr = [];
-  for (let i = 0; i < spikes * 2; i++) {
-    const angle = (Math.PI / spikes) * i;
-    const isEven = i % 2 === 0;
-    const rx = isEven ? rx_out : rx_in;
-    const ry = isEven ? ry_out : ry_in;
-    const x = cx + rx * Math.cos(angle);
-    const y = cy + ry * Math.sin(angle);
-    pointsArr.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-  }
-  const starPoints = pointsArr.join(' ');
-
-  const isLargePrice = digits.length > 2;
-  const mainFontSize = isLargePrice ? "28" : "36";
-  const mainX = isLargePrice ? "32" : "36";
-  const mainY = isLargePrice ? "54" : "56";
-  
-  const dollarX = isLargePrice ? "20" : "22";
-  const dollarY = isLargePrice ? "40" : "42";
-  const dollarSize = isLargePrice ? "12" : "15";
-
-  const superX = isLargePrice ? "84" : "82";
-  const superY = isLargePrice ? "38" : "37";
-  const superSize = isLargePrice ? "9" : "12";
-
-  const labelX = isLargePrice ? "82" : "80";
-  const labelY1 = isLargePrice ? "50" : "51";
-  const labelY2 = isLargePrice ? "56" : "58";
-
-  return (
-    <svg className="w-[105px] h-[75px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] filter rotate-12" viewBox="0 0 130 90">
-      {/* Oval rojo exterior con borde negro */}
-      <ellipse cx="65" cy="45" rx="60" ry="40" fill="#dc2626" stroke="#1e293b" strokeWidth="2.5" />
-      
-      {/* Estrella amarilla interior con borde negro fino */}
-      <polygon points={starPoints} fill="#facc15" stroke="#1e293b" strokeWidth="1.2" />
-      
-      {/* Símbolo de pesos */}
-      <text x={dollarX} y={dollarY} fontSize={dollarSize} fontWeight="900" fill="#1e293b" fontFamily="Fredoka" textAnchor="middle">
-        $
-      </text>
-      
-      {/* Dígitos principales */}
-      <text x={mainX} y={mainY} fontSize={mainFontSize} fontWeight="900" fill="#1e293b" fontFamily="Fredoka">
-        {digits}
-      </text>
-      
-      {/* Superscript .000 */}
-      <text x={superX} y={superY} fontSize={superSize} fontWeight="900" fill="#1e293b" fontFamily="Fredoka">
-        .000
-      </text>
-      
-      {/* Textos descriptivos estilo vintage */}
-      <text x={labelX} y={labelY1} fontSize="5.5" fontWeight="900" fill="#1e293b" fontFamily="Fredoka" textAnchor="start">
-        OFERTA
-      </text>
-      <text x={labelX} y={labelY2} fontSize="4.5" fontWeight="700" fill="#dc2626" fontFamily="Fredoka" textAnchor="start">
-        COP
-      </text>
-    </svg>
-  );
-};
+// Helper de etiqueta de intensidad
+function getIntensityBadge(nivel) {
+  if (nivel === 1) return { label: 'Iniciación Suave', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' };
+  if (nivel === 3) return { label: 'Intensidad Extrema', color: 'bg-rose-100 text-rose-700 border-rose-200' };
+  return { label: 'Placer Avanzado', color: 'bg-amber-100 text-amber-700 border-amber-200' };
+}
 
 export default function Tienda() {
+  const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const categoriaActiva = searchParams.get('cat') || 'todos';
   const busqueda = (searchParams.get('buscar') || searchParams.get('q') || '').toLowerCase().trim();
   const [pagina, setPagina] = useState(1);
+  const [filtroTexto, setFiltroTexto] = useState(busqueda);
+  const [orden, setOrden] = useState('destacados');
+
+  // Estado del Carrito interactivo (guardado en localStorage)
+  const [carrito, setCarrito] = useState(() => {
+    try {
+      const guardado = localStorage.getItem('toy_cart');
+      return guardado ? JSON.parse(guardado) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
+
+  // Modal de detalle rápido
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  const [cantidadModal, setCantidadModal] = useState(1);
 
   const ITEMS_POR_PAGINA = 12;
 
@@ -217,22 +56,29 @@ export default function Tienda() {
   }, [categoriaActiva]);
 
   useEffect(() => {
+    try {
+      localStorage.setItem('toy_cart', JSON.stringify(carrito));
+    } catch {
+      // Ignorar
+    }
+  }, [carrito]);
+
+  useEffect(() => {
     setPagina(1);
-  }, [categoriaActiva, busqueda]);
+  }, [categoriaActiva, busqueda, orden]);
 
   const fetchProductos = async () => {
     try {
       setCargando(true);
       const url = categoriaActiva === 'todos' 
         ? '/productos'
-        : `/productos?categoria=${categoriaActiva}`;
+        : `/productos?categoria=${encodeURIComponent(categoriaActiva)}`;
       
       const res = await fetch(url);
       const data = await res.json();
       if (Array.isArray(data)) {
         setProductos(data);
       } else {
-        console.error("Los productos no se devolvieron como un arreglo:", data);
         setProductos([]);
       }
     } catch (error) {
@@ -243,485 +89,556 @@ export default function Tienda() {
     }
   };
 
+  const agregarAlCarrito = (producto, cantidad = 1) => {
+    setCarrito(prev => {
+      const existe = prev.find(item => item.id === producto.id);
+      if (existe) {
+        return prev.map(item =>
+          item.id === producto.id
+            ? { ...item, cantidad: item.cantidad + cantidad }
+            : item
+        );
+      }
+      return [...prev, { ...producto, cantidad }];
+    });
+    setCartDrawerOpen(true);
+  };
+
+  const modificarCantidad = (id, delta) => {
+    setCarrito(prev => prev.map(item => {
+      if (item.id === id) {
+        const nueva = item.cantidad + delta;
+        return nueva > 0 ? { ...item, cantidad: nueva } : null;
+      }
+      return item;
+    }).filter(Boolean));
+  };
+
+  const eliminarDelCarrito = (id) => {
+    setCarrito(prev => prev.filter(item => item.id !== id));
+  };
+
+  const totalCarrito = carrito.reduce((sum, item) => sum + (Number(item.precio) * item.cantidad), 0);
+  const itemsCount = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+
+  const enviarPedidoWhatsApp = () => {
+    if (carrito.length === 0) return;
+    let mensaje = `*¡Hola Toy Store! Quiero realizar el siguiente pedido discreto:*\n\n`;
+    carrito.forEach((item, idx) => {
+      mensaje += `${idx + 1}. *${item.nombre}* x${item.cantidad} - $${(Number(item.precio) * item.cantidad).toLocaleString('es-CO')} COP\n`;
+    });
+    mensaje += `\n*TOTAL:* $${totalCarrito.toLocaleString('es-CO')} COP\n`;
+    mensaje += `*Solicito empaque 100% discreto y confidencial.*`;
+    
+    const url = `https://wa.me/573009028001?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+  };
+
+  // Filtrado y ordenamiento
   const productosFiltrados = productos.filter(p => {
     if (!busqueda) return true;
     const nombre = (p.nombre || '').toLowerCase();
     const desc = (p.descripcion || '').toLowerCase();
     const cat = (p.categoria || '').toLowerCase();
     return nombre.includes(busqueda) || desc.includes(busqueda) || cat.includes(busqueda);
+  }).sort((a, b) => {
+    if (orden === 'precio_asc') return Number(a.precio) - Number(b.precio);
+    if (orden === 'precio_desc') return Number(b.precio) - Number(a.precio);
+    if (orden === 'nombre_asc') return (a.nombre || '').localeCompare(b.nombre || '');
+    return 0; // destacados
   });
 
-  const inicio = (pagina - 1) * ITEMS_POR_PAGINA;
-  const fin = inicio + ITEMS_POR_PAGINA;
-  const productosVisibles = productosFiltrados.slice(inicio, fin);
   const totalPaginas = Math.ceil(productosFiltrados.length / ITEMS_POR_PAGINA);
+  const inicio = (pagina - 1) * ITEMS_POR_PAGINA;
+  const productosVisibles = productosFiltrados.slice(inicio, inicio + ITEMS_POR_PAGINA);
 
-  const chunkProducts = (arr, size) => {
-    const chunks = [];
-    for (let i = 0; i < arr.length; i += size) {
-      chunks.push(arr.slice(i, i + size));
-    }
-    while (chunks.length < 3) {
-      chunks.push([]);
-    }
-    return chunks;
-  };
-
-  const estantes = chunkProducts(productosVisibles, 4);
-
-  // Dibujos de stickers de personajes 2D en esquina inferior izquierda
-  // Añadida línea de troquelado blanco gruesa (stroke="white" strokeWidth="6") y sombra para efecto "sticker despegable" auténtico de Youtooz
-  const renderYoutoozCartoonVector = (categoria, insideLeftPanel = false) => {
-    const cat = (categoria || '').toLowerCase();
-    
-    // Si se dibuja dentro del panel izquierdo, omitimos el borde de troquelado blanco
-    const strokeColor = insideLeftPanel ? "#1e293b" : "white";
-    const strokeWidth = insideLeftPanel ? "5.5" : "7.5";
-    
-    if (cat.includes('vibra')) {
-      return (
-        <svg className="w-[115px] h-[115px] drop-shadow-[0_12px_20px_rgba(0,0,0,0.5)] transform -rotate-6" viewBox="0 0 100 100" fill="none">
-           {/* Contorno de troquelado blanco del sticker */}
-           <path d="M42 90V28c0-8 6-14 13-14s13 6 13 14v62c0 5-4 8-8 8h-10c-5 0-8-3-8-8z" fill="#fda4af" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <path d="M42 90V28c0-8 6-14 13-14s13 6 13 14v62c0 5-4 8-8 8h-10c-5 0-8-3-8-8z" fill="#fda4af" stroke="#1e293b" strokeWidth="3" />
-           <path d="M50 48c0-3.5 3-6.5 6.5-6.5s6.5 3 6.5 6.5-3 6.5-6.5 6.5-6.5-3-6.5-6.5z" fill="#f43f5e" stroke="#1e293b" strokeWidth="2.5" />
-           <ellipse cx="49" cy="25" rx="3.5" ry="5.5" fill="#1e293b" />
-           <ellipse cx="61" cy="25" rx="3.5" ry="5.5" fill="#1e293b" />
-           <circle cx="48" cy="23" r="1.2" fill="white" />
-           <circle cx="60" cy="23" r="1.2" fill="white" />
-           <path d="M53 31c2 1 4 1 5 0" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
-        </svg>
-      );
-    } else if (cat.includes('lence')) {
-      return (
-        <svg className="w-[115px] h-[115px] drop-shadow-[0_12px_20px_rgba(0,0,0,0.5)] transform -rotate-6" viewBox="0 0 100 100" fill="none">
-           <path d="M30 18c12 4 20-3 20-3s8 7 20 3c0 12-4 30-8 38l-4 12H42l-4-12c-4-8-8-26-8-38z" fill="#d8b4fe" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <path d="M30 18c12 4 20-3 20-3s8 7 20 3c0 12-4 30-8 38l-4 12H42l-4-12c-4-8-8-26-8-38z" fill="#d8b4fe" stroke="#1e293b" strokeWidth="3" />
-           <path d="M42 28h16M38 40h24M35 52h30" stroke="#7e22ce" strokeWidth="3" strokeLinecap="round" />
-           <ellipse cx="44" cy="20" rx="3.5" ry="5.5" fill="#1e293b" />
-           <ellipse cx="56" cy="20" rx="3.5" ry="5.5" fill="#1e293b" />
-        </svg>
-      );
-    } else if (cat.includes('cosme')) {
-      return (
-        <svg className="w-[115px] h-[115px] drop-shadow-[0_12px_20px_rgba(0,0,0,0.5)] transform -rotate-6" viewBox="0 0 100 100" fill="none">
-           <rect x="35" y="42" width="30" height="42" rx="7" fill="#fbcfe8" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <rect x="35" y="42" width="30" height="42" rx="7" fill="#fbcfe8" stroke="#1e293b" strokeWidth="3" />
-           <path d="M42 42V22c0-3 2-5 5-5h6c3 0 5 2 5 5v20H42z" fill="#db2777" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <path d="M42 42V22c0-3 2-5 5-5h6c3 0 5 2 5 5v20H42z" fill="#db2777" stroke="#1e293b" strokeWidth="3" />
-           <ellipse cx="44" cy="55" rx="3.5" ry="5.5" fill="#1e293b" />
-           <ellipse cx="56" cy="55" rx="3.5" ry="5.5" fill="#1e293b" />
-        </svg>
-      );
-    } else if (cat.includes('access') || cat.includes('accesor')) {
-      return (
-        <svg className="w-[115px] h-[115px] drop-shadow-[0_12px_20px_rgba(0,0,0,0.5)] transform -rotate-6" viewBox="0 0 100 100" fill="none">
-           <circle cx="36" cy="50" r="16" fill="#99f6e4" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <circle cx="64" cy="50" r="16" fill="#99f6e4" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <circle cx="36" cy="50" r="16" fill="#99f6e4" stroke="#1e293b" strokeWidth="3" />
-           <circle cx="64" cy="50" r="16" fill="#99f6e4" stroke="#1e293b" strokeWidth="3" />
-           <path d="M48 50h4" stroke="#1e293b" strokeWidth="5.5" strokeLinecap="round" />
-           <ellipse cx="32" cy="48" rx="2.5" ry="4.5" fill="#1e293b" />
-           <ellipse cx="40" cy="48" rx="2.5" ry="4.5" fill="#1e293b" />
-        </svg>
-      );
-    } else if (cat.includes('anal')) {
-      return (
-        <svg className="w-[115px] h-[115px] drop-shadow-[0_12px_20px_rgba(0,0,0,0.5)] transform -rotate-6" viewBox="0 0 100 100" fill="none">
-           <path d="M50 16c-11 0-18 11-18 24 0 14 18 32 18 32s18-18 18-32c0-13-7-24-18-24z" fill="#c7d2fe" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <rect x="32" y="72" width="36" height="10" rx="3.5" fill="#6366f1" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <path d="M50 16c-11 0-18 11-18 24 0 14 18 32 18 32s18-18 18-32c0-13-7-24-18-24z" fill="#c7d2fe" stroke="#1e293b" strokeWidth="3" />
-           <rect x="32" y="72" width="36" height="10" rx="3.5" fill="#6366f1" stroke="#1e293b" strokeWidth="3" />
-           <ellipse cx="44" cy="28" rx="3.5" ry="5.5" fill="#1e293b" />
-           <ellipse cx="56" cy="28" rx="3.5" ry="5.5" fill="#1e293b" />
-        </svg>
-      );
-    } else if (cat.includes('pene') || cat.includes('dildo') || cat.includes('dildos')) {
-      return (
-        <svg className="w-[115px] h-[115px] drop-shadow-[0_12px_20px_rgba(0,0,0,0.5)] transform -rotate-6" viewBox="0 0 100 100" fill="none">
-           <path d="M38 82V28c0-6 5-11 11-11s11 5 11 11v54c0 4-3 7-7 7H45c-4 0-7-3-7-7z" fill="#fef9c3" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <path d="M38 82V28c0-6 5-11 11-11s11 5 11 11v54c0 4-3 7-7 7H45c-4 0-7-3-7-7z" fill="#fef9c3" stroke="#1e293b" strokeWidth="3" />
-           <ellipse cx="44" cy="38" rx="3.5" ry="5.5" fill="#1e293b" />
-           <ellipse cx="56" cy="38" rx="3.5" ry="5.5" fill="#1e293b" />
-        </svg>
-      );
-    } else {
-      return (
-        <svg className="w-[115px] h-[115px] drop-shadow-[0_12px_20px_rgba(0,0,0,0.5)] transform -rotate-6" viewBox="0 0 100 100" fill="none">
-           <rect x="26" y="38" width="48" height="48" rx="5" fill="#fee2e2" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <path d="M20 38h60v12H20V38z" fill="#dc2626" stroke={strokeColor} strokeWidth={strokeWidth} />
-           <rect x="26" y="38" width="48" height="48" rx="5" fill="#fee2e2" stroke="#1e293b" strokeWidth="3" />
-           <path d="M20 38h60v12H20V38z" fill="#dc2626" stroke="#1e293b" strokeWidth="3" />
-           <ellipse cx="44" cy="56" rx="3.5" ry="5.5" fill="#1e293b" />
-           <ellipse cx="56" cy="56" rx="3.5" ry="5.5" fill="#1e293b" />
-        </svg>
-      );
-    }
-  };
+  const categoriasMenu = [
+    { id: 'todos', label: 'Todos' },
+    { id: 'vibradores', label: 'Vibradores' },
+    { id: 'lencerias', label: 'Lencería' },
+    { id: 'anales', label: 'Plugs & Anales' },
+    { id: 'dildos', label: 'Dildos' },
+    { id: 'cosmetica', label: 'Cosmética & Sensorial' },
+    { id: 'accesorios', label: 'Accesorios & BDSM' },
+    { id: 'kits', label: 'Kits & Sorpresas' }
+  ];
 
   return (
-    <RoomWrapper 
-      theme="woody" 
-      wallpaperContent={<WoodyWallpaper />}
-      fullWallpaper={true}
-    >
-      <style>{`
-        .perspective-3d {
-          perspective: 1600px;
-        }
-        .preserve-3d {
-          transform-style: preserve-3d;
-        }
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-      `}</style>
+    <div className="min-h-screen relative flex flex-col overflow-x-hidden bg-gradient-to-b from-[#FFFDF0] via-[#FEF9C3]/35 to-[#FEF08A]/20 font-fredoka">
+      
+      {/* Patrón de Nubes Eróticas Sutiles de Andy (penes y vulvas oficiales) */}
+      <div className="fixed inset-0 pointer-events-none select-none z-0 opacity-[0.13]">
+        <AndyCloudsWallpaper />
+      </div>
 
-      <div className="p-4 md:p-10 min-h-screen flex flex-col items-center max-w-7xl mx-auto w-full">
+      {/* Navbar Superior */}
+      <Navbar />
+
+      {/* Contenido Principal */}
+      <main className="relative z-10 flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-24">
         
-        {/* Estantería Principal Vaquera */}
-        <div className="w-full max-w-[1250px] bg-[#5a361c] rounded-[2.5rem] p-5 shadow-[0_30px_60px_rgba(0,0,0,0.6)] border-[20px] border-[#3e2723] relative mt-16">
-           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-25 rounded-[1.8rem] pointer-events-none"></div>
+        {/* Encabezado Boutique */}
+        <section className="text-center max-w-3xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 bg-amber-100/90 border border-amber-300 text-amber-900 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shadow-xs mb-3">
+            <span>COLECCIÓN OFICIAL TOY STORE</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+            <span>SELECCIÓN WOODY</span>
+          </div>
 
-           {cargando ? (
-              <div className="flex flex-col items-center justify-center p-36 bg-[#b5865a]">
-                 <div className="w-12 h-12 border-4 border-white/20 border-t-amber-950 rounded-full animate-spin"></div>
-                 <p className="text-[#3e2723] text-xs font-black uppercase tracking-widest mt-4">Cargando mercancía...</p>
-              </div>
-           ) : (
-              <div className="flex-1 flex flex-col bg-[#b5865a] relative">
-                 <div className="absolute inset-0 pointer-events-none" style={{
-                    backgroundImage: 'linear-gradient(90deg, transparent 24.5%, rgba(0,0,0,0.12) 25%, transparent 25.5%, transparent 49.5%, rgba(0,0,0,0.12) 50%, transparent 50.5%, transparent 74.5%, rgba(0,0,0,0.12) 75%, transparent 75.5%)',
-                    backgroundSize: '100% 100%'
-                 }}></div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1e3a8a] tracking-tight uppercase">
+            Boutique de Placer & Fantasía
+          </h1>
 
-                 {estantes.map((estante, idx) => (
-                    <div 
-                      key={idx}
-                      className="relative pt-16 pb-16 px-10 flex flex-col justify-end shadow-[inset_0_15px_25px_rgba(0,0,0,0.15)] min-h-[460px]"
-                    >
-                       <div className="absolute top-0 inset-x-0 h-8 bg-gradient-to-b from-black/25 to-transparent pointer-events-none"></div>
+          <p className="mt-3 text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+            Explora juguetes sensoriales prémium, lencería de ensueño y cosmética íntima.
+            Empaque 100% discreto, confidencial y sin ningún distintivo exterior.
+          </p>
 
-                       {/* Fila de Cajas de Juguetes en 3D Real (Isométrico y Rotable) */}
-                       {/* Esquinas más cuadradas (diseño Youtooz recto) y mayor profundidad (110px) */}
-                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-12 gap-y-16 relative z-20 items-end">
-                          {estante.map((producto, pIdx) => {
-                             const globalIndex = inicio + (idx * 4) + pIdx;
-                             const box = getBoxClaims(producto, globalIndex);
-                             const imageSrc = getProductImage(producto);
-                             
-                             return (
-                                <div 
-                                  key={producto.id} 
-                                  className="w-[230px] h-[330px] mx-auto relative group perspective-3d animate-shine-hover"
-                                >
-                                   {/* Contenedor preserve-3d e inclinación isométrica inicial */}
-                                   <div 
-                                     className="w-full h-full relative preserve-3d transition-transform duration-500 ease-out cursor-pointer"
-                                     style={{
-                                       transform: 'rotateY(-16deg) rotateX(8deg) translateZ(0px)',
-                                     }}
-                                     onMouseEnter={(e) => {
-                                       e.currentTarget.style.transform = 'rotateY(-36deg) rotateX(12deg) scale(1.06) translateZ(10px)';
-                                     }}
-                                     onMouseLeave={(e) => {
-                                       e.currentTarget.style.transform = 'rotateY(-16deg) rotateX(8deg) translateZ(0px)';
-                                     }}
-                                   >
-                                      
-                                      {/* ====================================================
-                                          INTERIOR DIORAMA BACKCARD (translateZ(-50px) - Mayor Profundidad)
-                                          El fondo de color dentro de la caja de juguete
-                                          ==================================================== */}
-                                      <div 
-                                        className={`absolute inset-0 rounded-md p-4 flex flex-col justify-between overflow-hidden shadow-inner ${box.boxColor.replace('bg-[', 'bg-[')}`}
-                                        style={{
-                                          transform: 'translateZ(-50px)',
-                                          backfaceVisibility: 'hidden',
-                                          boxShadow: 'inset 0 16px 40px rgba(0,0,0,0.8)',
-                                        }}
-                                      >
-                                         {/* Patrón halftone en el fondo interior de la caja */}
-                                         <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1.2px,transparent_1.2px)] [background-size:14px_14px] opacity-20 pointer-events-none"></div>
-                                      </div>
+          {/* Barra de Búsqueda y Ordenamiento */}
+          <div className="mt-6 flex flex-col sm:flex-row items-center gap-3 w-full max-w-2xl mx-auto">
+            <div className="relative flex-1 w-full">
+              <input
+                type="text"
+                value={filtroTexto}
+                onChange={(e) => setFiltroTexto(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    setSearchParams(prev => {
+                      const n = new URLSearchParams(prev);
+                      if (filtroTexto.trim()) n.set('buscar', filtroTexto.trim());
+                      else n.delete('buscar');
+                      return n;
+                    });
+                  }
+                }}
+                placeholder="Buscar vibradores, lencería, plugs, aceites..."
+                className="w-full pl-11 pr-10 py-3.5 bg-white/95 rounded-2xl border-2 border-amber-200/80 focus:border-[#1e3a8a] focus:outline-none text-slate-800 text-sm font-semibold shadow-sm transition placeholder:text-slate-400"
+              />
+              <svg className="w-5 h-5 text-amber-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              {filtroTexto && (
+                <button
+                  onClick={() => {
+                    setFiltroTexto('');
+                    setSearchParams(prev => {
+                      const n = new URLSearchParams(prev);
+                      n.delete('buscar');
+                      return n;
+                    });
+                  }}
+                  className="w-6 h-6 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-xs font-black transition"
+                >
+                  ×
+                </button>
+              )}
+            </div>
 
-                                      {/* ====================================================
-                                          INTERIOR TOY IMAGE (translateZ(10px))
-                                          El juguete fotorrealista físico flotando dentro del blíster
-                                          ==================================================== */}
-                                      <div 
-                                        className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
-                                        style={{
-                                          transform: 'translateZ(10px)',
-                                          backfaceVisibility: 'hidden',
-                                        }}
-                                      >
-                                         <div className="absolute left-[30%] right-0 top-[56px] bottom-[76px] flex items-center justify-center">
-                                            <img 
-                                               src={imageSrc} 
-                                               alt={producto.nombre} 
-                                               className="h-[115%] max-w-[95%] object-contain relative z-10"
-                                            />
-                                         </div>
-                                      </div>
+            <button
+              onClick={() => {
+                setSearchParams(prev => {
+                  const n = new URLSearchParams(prev);
+                  if (filtroTexto.trim()) n.set('buscar', filtroTexto.trim());
+                  else n.delete('buscar');
+                  return n;
+                });
+              }}
+              className="w-full sm:w-auto px-6 py-3.5 bg-[#a6d4f2] hover:bg-[#7dd3fc] text-[#0c4a6e] font-black rounded-2xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95 whitespace-nowrap"
+            >
+              Buscar
+            </button>
 
-                                      {/* ====================================================
-                                          1. CARA FRONTAL (El Blíster Youtooz Recto y Cuadrado sin bordes negros - translateZ(55px))
-                                          ==================================================== */}
-                                      <div 
-                                        className="absolute inset-0 rounded-md p-3.5 pointer-events-none z-20"
-                                        style={{
-                                          transform: 'translateZ(55px)',
-                                          backfaceVisibility: 'hidden',
-                                        }}
-                                      >
-                                         {/* Textura de cartón impreso real sobre el frente */}
-                                         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-linen.png')] opacity-10 z-0 rounded-[4px]"></div>
+            <select
+              value={orden}
+              onChange={(e) => setOrden(e.target.value)}
+              className="w-full sm:w-auto px-4 py-3.5 bg-white/95 rounded-2xl border-2 border-amber-200/80 text-slate-700 text-xs font-black uppercase tracking-wider focus:border-[#1e3a8a] focus:outline-none shadow-sm cursor-pointer"
+            >
+              <option value="destacados">Destacados</option>
+              <option value="precio_asc">Precio: Menor a Mayor</option>
+              <option value="precio_desc">Precio: Mayor a Menor</option>
+              <option value="nombre_asc">Nombre: A a Z</option>
+            </select>
+          </div>
+        </section>
 
-                                         {/* El marco de cartón de color Youtooz sólido en el frente */}
-                                         {/* Hecho con overlays para lograr la ventana L-shaped transparente perfecta (SIN BORDES NEGROS) */}
-                                         <div className={`absolute top-0 inset-x-0 h-[56px] rounded-t-[4px] ${box.boxColor} z-10`}></div>
-                                         <div className={`absolute bottom-0 inset-x-0 h-[76px] rounded-b-[4px] ${box.boxColor} z-10`}></div>
-                                         <div className={`absolute top-[56px] bottom-[76px] left-0 w-[30%] ${box.boxColor} z-10`}></div>
+        {/* Píldoras de Categorías */}
+        <section className="mb-8">
+          <div className="flex items-center gap-2 overflow-x-auto pb-3 scrollbar-none justify-start sm:justify-center">
+            {categoriasMenu.map(cat => {
+              const activo = categoriaActiva === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    setSearchParams(prev => {
+                      const n = new URLSearchParams(prev);
+                      if (cat.id === 'todos') n.delete('cat');
+                      else n.set('cat', cat.id);
+                      return n;
+                    });
+                  }}
+                  className={`px-4 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider whitespace-nowrap transition-all shadow-xs border ${
+                    activo
+                      ? 'bg-[#1e3a8a] text-white border-[#1e3a8a] shadow-md scale-105'
+                      : 'bg-white/90 text-slate-700 border-amber-200/70 hover:bg-amber-100 hover:text-amber-900'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              );
+            })}
+          </div>
+        </section>
 
-                                         {/* El Acetato Plástico de la Ventana en la zona restante */}
-                                         <div className="absolute left-[30%] right-0 top-[56px] bottom-[76px] bg-white/5 border-l border-r border-white/15 shadow-[inset_0_6px_15px_rgba(0,0,0,0.75)] z-0">
-                                            {/* Reflejo de softbox de estudio sobre el acetato */}
-                                            <div className="absolute top-1.5 left-1.5 w-[85%] h-[30%] border-t-[1.5px] border-l-[1.5px] border-white/20 rounded-tl-[16px] pointer-events-none z-25"></div>
-                                         </div>
+        {/* Estado de Carga */}
+        {cargando ? (
+          <div className="flex flex-col items-center justify-center py-24">
+            <div className="w-12 h-12 border-4 border-amber-200 border-t-[#1e3a8a] rounded-full animate-spin"></div>
+            <p className="mt-4 text-xs font-black text-[#1e3a8a] uppercase tracking-widest">
+              Cargando selección boutique...
+            </p>
+          </div>
+        ) : productosVisibles.length === 0 ? (
+          <div className="bg-white/90 rounded-3xl p-12 text-center max-w-md mx-auto border-2 border-dashed border-amber-300 shadow-sm">
+            <div className="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 text-2xl font-black">
+              ?
+            </div>
+            <h3 className="text-lg font-black text-[#1e3a8a] uppercase">No encontramos productos</h3>
+            <p className="text-xs text-slate-500 mt-2">
+              Prueba buscando con otra palabra clave o selecciona la categoría "Todos".
+            </p>
+            <button
+              onClick={() => {
+                setFiltroTexto('');
+                setSearchParams({});
+              }}
+              className="mt-5 px-6 py-2.5 bg-[#a6d4f2] hover:bg-[#7dd3fc] text-[#0c4a6e] font-black rounded-xl text-xs uppercase tracking-wider"
+            >
+              Ver Todo el Catálogo
+            </button>
+          </div>
+        ) : (
+          /* Cuadrícula de Tarjetas Boutique */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {productosVisibles.map(producto => {
+              const imageSrc = resolveProductImage(producto);
+              const badge = getIntensityBadge(producto.nivel_juego);
 
-                                         {/* Número de Colección con diseño de insignia (Badge) en la esquina superior izquierda */}
-                                         <div className="absolute top-3 left-3 z-20 transform -rotate-6">
-                                            <div className={`relative flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-[0_4px_10px_rgba(0,0,0,0.2)] border-[2px] ${box.boxBorderColor}`}>
-                                               {/* Aro interior decorativo punteado */}
-                                               <div className={`absolute inset-[3px] rounded-full border border-dashed ${box.boxBorderColor} opacity-40`}></div>
-                                               <span className={`relative z-10 text-[13px] font-black tracking-tighter ${box.boxText} leading-none mt-0.5`}>
-                                                  #{box.seriesNum}
-                                               </span>
-                                            </div>
-                                         </div>
+              return (
+                <div
+                  key={producto.id}
+                  className="bg-white/95 backdrop-blur-sm rounded-3xl p-5 border border-amber-200/80 shadow-[0_10px_25px_rgba(245,158,11,0.06)] hover:shadow-[0_20px_40px_rgba(245,158,11,0.16)] hover:border-amber-400 transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between group relative overflow-hidden"
+                >
+                  {/* Insignias superiores */}
+                  <div className="flex items-center justify-between gap-2 mb-3 z-10">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-600 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+                      {producto.categoria}
+                    </span>
+                    <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${badge.color}`}>
+                      {badge.label}
+                    </span>
+                  </div>
 
-                                         {/* Logotipo de Marca TOY STORE oficial (Estilo Pegatina Diagonal) */}
-                                         <div className="absolute top-3.5 right-3.5 z-20 w-[85px] h-[52px] flex items-center justify-center transform -rotate-12 hover:scale-105 transition-transform duration-300">
-                                            <img 
-                                               src={logoNewImg} 
-                                               alt="Toy Store" 
-                                               className="w-full h-full object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]"
-                                            />
-                                         </div>
-
-                                         {/* Sticker de precio retro estilo etiqueta de oferta (Explosión Ovalada) */}
-                                         <div className="absolute bottom-[45px] -right-[15px] z-30 pointer-events-none">
-                                            {renderPriceSticker(producto.precio)}
-                                         </div>
-
-                                         {/* Warning Safety Label en la base del cartón (Detalle Premium Real) */}
-                                         <div className="absolute bottom-[58px] left-[34%] z-20 text-[4px] font-black tracking-widest uppercase text-white/50 leading-none">
-                                            WARNING: ADULT COLLECTIBLE. 18+ ONLY.
-                                         </div>
-
-                                            {/* Nombre del Juguete en la Base */}
-                                            <div className="absolute bottom-3 left-4 right-4 text-left z-20 flex flex-col justify-end">
-                                               <h3 className="text-white font-black text-[13px] tracking-tight uppercase leading-none line-clamp-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                                                  {producto.nombre.split(' ')[0]}
-                                               </h3>
-                                            </div>
-                                         </div>
-
-                                      {/* ====================================================
-                                          2. CARA DERECHA (Ventana lateral wrap-around + panel de especificaciones)
-                                          ==================================================== */}
-                                      <div 
-                                        className="absolute top-0 bottom-0 w-[110px] pointer-events-none z-20"
-                                        style={{
-                                          left: '50%',
-                                          marginLeft: '-55px',
-                                          transform: 'rotateY(90deg) translateZ(115px)',
-                                          backfaceVisibility: 'hidden',
-                                        }}
-                                      >
-                                         {/* Tapas sólidas superior e inferior del lateral */}
-                                         <div className={`absolute top-0 inset-x-0 h-[56px] ${box.boxColor} z-10`} />
-                                         <div className={`absolute bottom-0 inset-x-0 h-[76px] ${box.boxColor} z-10`} />
-                                         
-                                         {/* Ventana de Acetato Lateral (ocupa el 55% frontal) */}
-                                         <div className="absolute left-0 w-[55%] top-[56px] bottom-[76px] bg-white/5 border-l border-r border-white/15 shadow-[inset_6px_0_15px_rgba(0,0,0,0.75)] z-0">
-                                            {/* Reflejo inclinado en el acetato */}
-                                            <div className="absolute top-1.5 right-1.5 w-[80%] h-[30%] border-t-[1.5px] border-r-[1.5px] border-white/20 rounded-tr-[12px] pointer-events-none z-25"></div>
-                                         </div>
-
-                                         {/* Panel de especificaciones y Toy Facts en la parte trasera (ocupa el 45% restante) */}
-                                         <div className="absolute right-0 w-[45%] top-[56px] bottom-[76px] bg-white p-2 flex flex-col justify-between items-center z-10 border-l border-zinc-300">
-                                            <div className="w-full text-center">
-                                               <h4 className="text-[7px] font-black text-zinc-950 uppercase tracking-tighter border-b-2 border-zinc-950 pb-0.5 mt-0.5 text-left font-mono leading-none">
-                                                  TOY FACTS
-                                               </h4>
-                                               <p className="text-[4px] text-zinc-600 text-left font-mono scale-90 origin-left">Size: 1 Premium Unit</p>
-                                               <div className="w-full h-[1px] bg-zinc-950 my-1"></div>
-                                               
-                                               <div className="text-[4px] font-mono text-zinc-800 text-left scale-90 origin-left flex flex-col gap-0.5">
-                                                  <div>• Fun Index: 100%</div>
-                                                  <div>• Fit: Premium</div>
-                                                  <div>• Safe: 100%</div>
-                                               </div>
-                                            </div>
-
-                                            {/* Código de barras miniatura */}
-                                            <div className={`w-[90%] p-1 bg-white border border-zinc-400 rounded shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center mb-0.5`}>
-                                               <svg className="w-full h-4 text-zinc-900" viewBox="0 0 100 30" fill="currentColor">
-                                                  <rect x="5" y="0" width="3" height="20" />
-                                                  <rect x="10" y="0" width="1" height="20" />
-                                                  <rect x="13" y="0" width="4" height="20" />
-                                                  <rect x="20" y="0" width="2" height="20" />
-                                                  <rect x="24" y="0" width="1" height="20" />
-                                                  <rect x="27" y="0" width="3" height="20" />
-                                                  <rect x="33" y="0" width="2" height="20" />
-                                                  <rect x="38" y="0" width="4" height="20" />
-                                                  <rect x="44" y="0" width="1" height="20" />
-                                                  <rect x="47" y="0" width="3" height="20" />
-                                                  <rect x="53" y="0" width="2" height="20" />
-                                                  <rect x="57" y="0" width="1" height="20" />
-                                                  <rect x="60" y="0" width="4" height="20" />
-                                                  <rect x="66" y="0" width="2" height="20" />
-                                                  <rect x="70" y="0" width="1" height="20" />
-                                                  <rect x="73" y="0" width="3" height="20" />
-                                                  <rect x="78" y="0" width="2" height="20" />
-                                                  <rect x="82" y="0" width="4" height="20" />
-                                                  <rect x="88" y="0" width="1" height="20" />
-                                               </svg>
-                                            </div>
-                                         </div>
-                                      </div>
-
-                                      {/* ====================================================
-                                          3. CARA IZQUIERDA (Ilustración cómic full-bleed Youtooz - Sin bordes negros)
-                                          ==================================================== */}
-                                      <div 
-                                        className={`absolute top-0 bottom-0 w-[110px] p-2 flex flex-col justify-between items-center rounded-l-md z-0 overflow-hidden ${box.boxColorLight}`}
-                                        style={{
-                                          left: '50%',
-                                          marginLeft: '-55px',
-                                          transform: 'rotateY(-90deg) translateZ(115px)',
-                                          backfaceVisibility: 'hidden',
-                                          boxShadow: 'inset -10px 0 20px rgba(0,0,0,0.1)',
-                                        }}
-                                      >
-                                         {/* Escena cómic de fondo (nubes, estrellas y corazones) */}
-                                         <div className="absolute inset-0 pointer-events-none opacity-40 z-0">
-                                            <div className="absolute top-2 left-2 w-4 h-4 bg-yellow-400 rounded-full animate-ping"></div>
-                                            <div className="absolute bottom-6 right-2 text-2xl">💖</div>
-                                            <div className="absolute top-12 right-4 text-xl">⭐</div>
-                                            <div className="absolute bottom-12 left-4 text-2xl">✨</div>
-                                         </div>
-
-                                         <div className="w-full text-center z-10 relative">
-                                            <div className="bg-yellow-400 text-amber-950 font-black text-[5.5px] py-1 px-1.5 rounded shadow border border-amber-950/20 uppercase tracking-tight inline-block">
-                                               COLLECT THEM ALL!
-                                            </div>
-
-                                            {/* Personaje en la ilustración del panel lateral */}
-                                            <div className="mt-8 flex justify-center scale-90">
-                                               {renderYoutoozCartoonVector(producto.categoria, true)}
-                                            </div>
-                                         </div>
-
-                                         <div className="text-[5px] font-black text-zinc-600 uppercase tracking-widest text-center border-t border-zinc-400/20 pt-1.5 w-full mb-1 z-10 relative">
-                                            TOYSTORE CO.
-                                         </div>
-                                      </div>
-
-                                      {/* ====================================================
-                                          4. TAPA SUPERIOR (Lid de la caja con pliegues - Sin bordes negros)
-                                          ==================================================== */}
-                                      <div 
-                                        className={`absolute left-0 right-0 h-[110px] flex items-center justify-center rounded-t-md z-0 ${box.boxColorLight}`}
-                                        style={{
-                                          top: '50%',
-                                          marginTop: '-55px',
-                                          transform: 'rotateX(90deg) translateZ(165px)',
-                                          backfaceVisibility: 'hidden',
-                                          boxShadow: 'inset 0 10px 20px rgba(255,255,255,0.2)',
-                                        }}
-                                      >
-                                         {/* Circular cardboard notch (die-cut tab) */}
-                                         <div className="absolute top-1 w-8 h-2 bg-zinc-900/5 rounded-b-full"></div>
-                                         
-                                         <div className="w-8 h-8 rounded-full bg-white/20 border border-white/40 flex items-center justify-center font-black text-[8px] text-white">
-                                            TS
-                                         </div>
-                                      </div>
-
-                                      {/* ====================================================
-                                          5. TAPA INFERIOR (Soporte)
-                                          ==================================================== */}
-                                      <div 
-                                        className={`absolute left-0 right-0 h-[110px] rounded-b-md z-0 ${box.boxColorDarker}`}
-                                        style={{
-                                          top: '50%',
-                                          marginTop: '-55px',
-                                          transform: 'rotateX(-90deg) translateZ(165px)',
-                                          backfaceVisibility: 'hidden',
-                                        }}
-                                      />
-                                      
-                                   </div>
-                                </div>
-                             );
-                          })}
-                       </div>
-
-                       {/* Estante de Madera 3D */}
-                       <div className="absolute bottom-0 inset-x-0 h-7 bg-gradient-to-b from-[#a07147] to-[#704624] border-t-[3px] border-[#d7a778]/40 shadow-[0_6px_12px_rgba(0,0,0,0.35)] z-10">
-                          <div className="w-full h-[1px] bg-white/20 absolute top-0"></div>
-                       </div>
+                  {/* Pedestal de Imagen */}
+                  <div
+                    onClick={() => {
+                      setProductoSeleccionado(producto);
+                      setCantidadModal(1);
+                    }}
+                    className="bg-gradient-to-b from-amber-50/60 to-yellow-50/40 rounded-2xl h-[190px] flex items-center justify-center p-4 relative overflow-hidden group-hover:bg-amber-100/60 transition-colors cursor-pointer"
+                  >
+                    <img
+                      src={imageSrc}
+                      alt={producto.nombre}
+                      onError={(e) => { e.target.src = '/images/cerdito_travieso.png'; }}
+                      className="max-h-[150px] w-auto object-contain drop-shadow-md group-hover:scale-110 group-hover:rotate-2 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <span className="bg-white/95 text-[#1e3a8a] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full shadow-md">
+                        Ver Detalles
+                      </span>
                     </div>
-                 ))}
-              </div>
-           )}
+                  </div>
 
-           {/* Cajonera Inferior */}
-           <div className="h-36 bg-[#8c5e37] border-t-8 border-[#6b4221] p-4 flex gap-4 shadow-[inset_0_12px_15px_rgba(0,0,0,0.2)] relative z-20">
-              <div className="flex-1 bg-[#7b502e] border-[3px] border-[#5a361c] rounded-xl shadow-md flex items-center justify-center relative group overflow-hidden">
-                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-10"></div>
-                 <div className="w-24 h-4 bg-gradient-to-b from-[#3a200f] to-[#1e1007] rounded-md shadow border border-[#2b170a] group-hover:scale-105 transition-transform"></div>
-              </div>
-              <div className="flex-1 bg-[#7b502e] border-[3px] border-[#5a361c] rounded-xl shadow-md flex items-center justify-center relative group overflow-hidden">
-                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-10"></div>
-                 <div className="w-24 h-4 bg-gradient-to-b from-[#3a200f] to-[#1e1007] rounded-md shadow border border-[#2b170a] group-hover:scale-105 transition-transform"></div>
-              </div>
-           </div>
-        </div>
+                  {/* Información del Producto */}
+                  <div className="mt-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3
+                        onClick={() => {
+                          setProductoSeleccionado(producto);
+                          setCantidadModal(1);
+                        }}
+                        className="text-base font-black text-[#1e3a8a] leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer transition-colors"
+                        title={producto.nombre}
+                      >
+                        {producto.nombre}
+                      </h3>
+                      <p className="mt-1.5 text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                        {producto.descripcion}
+                      </p>
+                    </div>
+
+                    {/* Fila de Precio y Botón de Carrito */}
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Precio</span>
+                        <span className="text-lg font-black text-[#1e3a8a] leading-none">
+                          ${Number(producto.precio).toLocaleString('es-CO')}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() => agregarAlCarrito(producto, 1)}
+                        className="bg-[#a6d4f2] hover:bg-[#7dd3fc] text-[#0c4a6e] font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+                        title="Añadir a mi carrito"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
+                        </svg>
+                        <span>Añadir</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Paginación */}
         {totalPaginas > 1 && (
-           <div className="flex items-center gap-6 mt-10 bg-[#7c4d29] px-6 py-4 rounded-3xl border-4 border-[#5a361c] shadow-[0_15px_30px_rgba(0,0,0,0.5)] relative overflow-hidden">
-              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-20 pointer-events-none z-10"></div>
-              
-              <button 
-                onClick={() => setPagina(p => Math.max(p - 1, 1))}
-                disabled={pagina === 1}
-                className="z-20 px-5 py-2.5 bg-[#d7a778] hover:bg-[#ffe082] disabled:opacity-40 disabled:hover:bg-[#d7a778] text-[#3e2723] font-black text-xs uppercase tracking-wider rounded-2xl border-2 border-[#805430] shadow-[0_3px_6px_rgba(0,0,0,0.15)] transition-all active:scale-95 flex items-center gap-2"
-              >
-                 <span>◀</span>
-                 <span>Atrás</span>
-              </button>
+          <div className="mt-12 flex items-center justify-center gap-2">
+            <button
+              onClick={() => setPagina(p => Math.max(p - 1, 1))}
+              disabled={pagina === 1}
+              className="px-4 py-2 rounded-xl bg-white border border-amber-200 text-slate-700 text-xs font-black uppercase disabled:opacity-40 hover:bg-amber-50 transition"
+            >
+              Anterior
+            </button>
 
-              <div className="z-20 flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-[#ffca28] text-amber-950 font-black text-xs px-6 py-3 rounded-2xl border-2 border-[#b07d4b] shadow-md relative uppercase tracking-wider">
-                 <span>Estante {pagina} de {totalPaginas}</span>
+            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(num => (
+              <button
+                key={num}
+                onClick={() => setPagina(num)}
+                className={`w-9 h-9 rounded-xl text-xs font-black transition ${
+                  pagina === num
+                    ? 'bg-[#1e3a8a] text-white shadow-sm'
+                    : 'bg-white border border-amber-200 text-slate-700 hover:bg-amber-50'
+                }`}
+              >
+                {num}
+              </button>
+            ))}
+
+            <button
+              onClick={() => setPagina(p => Math.min(p + 1, totalPaginas))}
+              disabled={pagina === totalPaginas}
+              className="px-4 py-2 rounded-xl bg-white border border-amber-200 text-slate-700 text-xs font-black uppercase disabled:opacity-40 hover:bg-amber-50 transition"
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
+      </main>
+
+      {/* Botón Flotante del Carrito */}
+      <button
+        onClick={() => setCartDrawerOpen(true)}
+        className="fixed bottom-6 right-6 z-40 bg-[#1e3a8a] hover:bg-[#172554] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(30,58,138,0.4)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 group"
+        title="Abrir Carrito"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        {itemsCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[11px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-bounce">
+            {itemsCount}
+          </span>
+        )}
+      </button>
+
+      {/* Cajón Lateral del Carrito (Cart Drawer) */}
+      {cartDrawerOpen && (
+        <div className="fixed inset-0 z-50 overflow-hidden">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-xs transition-opacity" onClick={() => setCartDrawerOpen(false)}></div>
+          
+          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+              
+              {/* Encabezado del Carrito */}
+              <div className="p-5 bg-gradient-to-r from-amber-50 to-yellow-50 border-b border-amber-200 flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-black text-[#1e3a8a] uppercase">Tu Carrito Toy Store</h2>
+                  <p className="text-xs text-slate-500">{itemsCount} artículos seleccionados</p>
+                </div>
+                <button
+                  onClick={() => setCartDrawerOpen(false)}
+                  className="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:bg-slate-100 flex items-center justify-center font-bold text-sm"
+                >
+                  ×
+                </button>
               </div>
 
-              <button 
-                onClick={() => setPagina(p => Math.min(p + 1, totalPaginas))}
-                disabled={pagina === totalPaginas}
-                className="z-20 px-5 py-2.5 bg-[#d7a778] hover:bg-[#ffe082] disabled:opacity-40 disabled:hover:bg-[#d7a778] text-[#3e2723] font-black text-xs uppercase tracking-wider rounded-2xl border-2 border-[#805430] shadow-[0_3px_6px_rgba(0,0,0,0.15)] transition-all active:scale-95 flex items-center gap-2"
-              >
-                 <span>Siguiente</span>
-                 <span>▶</span>
-              </button>
-           </div>
-        )}
+              {/* Lista de Productos en el Carrito */}
+              <div className="flex-1 overflow-y-auto p-5 divide-y divide-slate-100">
+                {carrito.length === 0 ? (
+                  <div className="text-center py-16">
+                    <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center mx-auto mb-3 text-2xl font-black">
+                      🛒
+                    </div>
+                    <p className="text-sm font-black text-[#1e3a8a] uppercase">Tu carrito está vacío</p>
+                    <p className="text-xs text-slate-400 mt-1">Explora la boutique y añade tus favoritos.</p>
+                  </div>
+                ) : (
+                  carrito.map(item => (
+                    <div key={item.id} className="py-4 flex items-center gap-3">
+                      <img
+                        src={resolveProductImage(item)}
+                        alt={item.nombre}
+                        className="w-16 h-16 object-contain rounded-xl bg-amber-50/70 p-2 border border-amber-200/50"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-xs font-black text-[#1e3a8a] truncate">{item.nombre}</h4>
+                        <p className="text-xs font-black text-amber-700 mt-0.5">
+                          ${(Number(item.precio) * item.cantidad).toLocaleString('es-CO')} COP
+                        </p>
+                        
+                        {/* Controles de cantidad */}
+                        <div className="flex items-center gap-2 mt-2">
+                          <button
+                            onClick={() => modificarCantidad(item.id, -1)}
+                            className="w-6 h-6 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-black"
+                          >
+                            -
+                          </button>
+                          <span className="text-xs font-black text-slate-800 w-4 text-center">{item.cantidad}</span>
+                          <button
+                            onClick={() => modificarCantidad(item.id, 1)}
+                            className="w-6 h-6 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-black"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
 
-      </div>
-    </RoomWrapper>
+                      <button
+                        onClick={() => eliminarDelCarrito(item.id)}
+                        className="text-slate-400 hover:text-rose-500 p-2 text-xs font-bold"
+                        title="Quitar"
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Pie del Carrito */}
+              {carrito.length > 0 && (
+                <div className="p-5 border-t border-slate-100 bg-slate-50/50 flex flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Subtotal</span>
+                    <span className="text-xl font-black text-[#1e3a8a]">
+                      ${totalCarrito.toLocaleString('es-CO')} COP
+                    </span>
+                  </div>
+
+                  <div className="bg-amber-50 p-2.5 rounded-xl border border-amber-200 flex items-center gap-2 text-[11px] text-amber-900 font-semibold">
+                    <span>🔒</span>
+                    <span>Empaque discreto 100% garantizado sin marcas exteriores.</span>
+                  </div>
+
+                  <button
+                    onClick={enviarPedidoWhatsApp}
+                    className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-2xl text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-2 active:scale-95 transition"
+                  >
+                    <span>Pedir por WhatsApp</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setCartDrawerOpen(false);
+                      navigate('/carrito');
+                    }}
+                    className="w-full py-3 bg-[#a6d4f2] hover:bg-[#7dd3fc] text-[#0c4a6e] font-black rounded-2xl text-xs uppercase tracking-wider transition"
+                  >
+                    Ir a Finalizar Compra
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Detalle Rápido del Producto */}
+      {productoSeleccionado && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border-2 border-amber-200 animate-in fade-in zoom-in-95 duration-200">
+            <button
+              onClick={() => setProductoSeleccionado(null)}
+              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center absolute top-4 right-4 font-black text-sm"
+            >
+              ×
+            </button>
+
+            <div className="flex flex-col sm:flex-row gap-5 items-center">
+              <div className="w-full sm:w-1/2 bg-amber-50/70 rounded-2xl p-6 flex items-center justify-center border border-amber-200/50">
+                <img
+                  src={resolveProductImage(productoSeleccionado)}
+                  alt={productoSeleccionado.nombre}
+                  className="max-h-[180px] w-auto object-contain drop-shadow-lg"
+                />
+              </div>
+
+              <div className="w-full sm:w-1/2 flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                    {productoSeleccionado.categoria}
+                  </span>
+                  <h3 className="text-lg font-black text-[#1e3a8a] mt-2 leading-tight">
+                    {productoSeleccionado.nombre}
+                  </h3>
+                  <p className="text-xl font-black text-[#1e3a8a] mt-1">
+                    ${Number(productoSeleccionado.precio).toLocaleString('es-CO')} COP
+                  </p>
+                  <p className="mt-3 text-xs text-slate-600 leading-relaxed max-h-32 overflow-y-auto">
+                    {productoSeleccionado.descripcion}
+                  </p>
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-slate-100 flex items-center gap-3">
+                  <div className="flex items-center gap-2 border border-slate-200 rounded-xl px-2 py-1">
+                    <button
+                      onClick={() => setCantidadModal(c => Math.max(c - 1, 1))}
+                      className="w-5 h-5 font-black text-slate-500"
+                    >
+                      -
+                    </button>
+                    <span className="text-xs font-black text-slate-800">{cantidadModal}</span>
+                    <button
+                      onClick={() => setCantidadModal(c => c + 1)}
+                      className="w-5 h-5 font-black text-slate-500"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      agregarAlCarrito(productoSeleccionado, cantidadModal);
+                      setProductoSeleccionado(null);
+                    }}
+                    className="flex-1 py-2.5 bg-[#a6d4f2] hover:bg-[#7dd3fc] text-[#0c4a6e] font-black rounded-xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95"
+                  >
+                    Añadir al Carrito
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

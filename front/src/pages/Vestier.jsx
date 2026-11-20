@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import RoomWrapper from '../components/RoomWrapper';
+import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 import { useNavigate } from 'react-router-dom';
 
 /**
- * JessieOutfitBg: Fondo suavizado inspirado en Jessie
+ * JessieOutfitBg: Color insignia pastel de Jessie (melocotón / coral vaquero suave)
+ * combinado con los doodles eróticos sutiles (penes y vulvas) de Toy Store.
  */
 const JessieOutfitBg = () => (
-  <div className="absolute inset-0 flex flex-col overflow-hidden bg-amber-50/30 pointer-events-none">
-    <div className="h-[30%] bg-gradient-to-b from-yellow-400/10 via-amber-300/5 to-transparent"></div>
-    <div className="h-[20%] border-y border-red-400/10 bg-red-500/5"></div>
-    <div className="flex-1 bg-white/20"></div>
+  <div className="absolute inset-0 bg-gradient-to-b from-[#FFF7ED] via-[#FFEDD5]/60 to-[#FED7AA]/40 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 opacity-[0.13]">
+      <AndyCloudsWallpaper />
+    </div>
   </div>
 );
 

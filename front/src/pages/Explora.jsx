@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import RoomWrapper from '../components/RoomWrapper';
+import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 import { useNavigate } from 'react-router-dom';
 
 /**
- * AlienSpaceBg: Fondo suavizado inspirado en los Aliens de Pizza Planet
+ * AlienSpaceBg: Color insignia pastel de los Marcianitos (menta mística suave)
+ * combinado con los doodles eróticos sutiles (penes y vulvas) de Toy Store.
  */
 const AlienSpaceBg = () => (
-  <div className="absolute inset-0 flex flex-col overflow-hidden bg-slate-900/10 pointer-events-none">
-    <div className="h-[30%] bg-gradient-to-b from-emerald-500/10 via-emerald-400/5 to-transparent"></div>
-    <div className="h-[20%] border-y border-emerald-400/10 bg-blue-900/10"></div>
-    <div className="flex-1 bg-white/20"></div>
+  <div className="absolute inset-0 bg-gradient-to-b from-[#F0FDF4] via-[#DCFCE7]/60 to-[#BBF7D0]/40 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 opacity-[0.13]">
+      <AndyCloudsWallpaper />
+    </div>
   </div>
 );
 

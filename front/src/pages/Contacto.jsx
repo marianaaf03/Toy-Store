@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import RoomWrapper from '../components/RoomWrapper';
+import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 
 /**
- * BuzzSuitBg: Fondo espacial temático de Buzz Lightyear con transparencia suavizada
- * para permitir que el contenido frontal resalte con absoluta nitidez.
+ * BuzzSuitBg: Fondo color insignia pastel de Buzz Lightyear (lila aeroespacial / blanco)
+ * combinado con los doodles eróticos sutiles (penes y vulvas) de Toy Store.
  */
 const BuzzSuitBg = () => (
-  <div className="absolute inset-0 flex flex-col overflow-hidden bg-slate-50/40 pointer-events-none">
-    {/* Capa de protección superior */}
-    <div className="h-[35%] bg-gradient-to-b from-[#8b5cf6]/20 via-[#a855f7]/10 to-transparent"></div>
-    {/* Franja de mandos */}
-    <div className="h-[20%] bg-gradient-to-r from-lime-400/10 via-emerald-400/10 to-lime-400/10 border-y border-lime-400/20"></div>
-    {/* Base neutra */}
-    <div className="flex-1 bg-white/30"></div>
+  <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC] via-[#F5F3FF]/70 to-[#EDE9FE]/50 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 opacity-[0.13]">
+      <AndyCloudsWallpaper />
+    </div>
   </div>
 );
 
