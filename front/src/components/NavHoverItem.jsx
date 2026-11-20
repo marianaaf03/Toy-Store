@@ -121,7 +121,7 @@ const NavHoverItem = ({ label, path, iconType, baseColorClass, hoverColorClass, 
           </div>
        </div>
        
-       <a href={path || "#"} className={`relative z-10 transition-colors duration-300 font-bold uppercase tracking-widest text-[14px] md:text-[16px] px-2 py-1 ${isActive ? baseColorClass : 'text-blue-900 ' + hoverColorClass}`}>
+       <a href={path || "#"} className={`relative z-10 transition-colors duration-300 font-black uppercase tracking-wider lg:tracking-widest text-[15px] md:text-[17px] lg:text-[18px] px-2.5 py-1 ${isActive ? baseColorClass : 'text-blue-900 ' + hoverColorClass}`}>
           {label}
        </a>
     </div>
