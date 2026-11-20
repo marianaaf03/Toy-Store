@@ -232,8 +232,8 @@ export default function Explora() {
   const preg = preguntasQuizz[preguntaActual];
 
   return (
-    <RoomWrapper 
-      theme="aliens" 
+    <RoomWrapper
+      theme="aliens"
       wallpaperContent={<AndyCloudsWallpaper />}
       hideFloorToys={true}
     >
@@ -291,33 +291,50 @@ export default function Explora() {
 
       {/* =========================================================================
           CONTENEDOR PRINCIPAL: ESPACIADO FLUIDO IDÉNTICO A LAS DEMÁS PÁGINAS
+          Con altura completa para que el cartel quede en la pared y la máquina en el suelo
           ========================================================================= */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-8 pt-8 sm:pt-12 md:pt-14 pb-28 font-fredoka select-none flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-4 font-fredoka select-none flex-1 flex flex-col justify-between items-center min-h-[calc(100vh-80px)]">
         
         {/* =====================================================================
-            1. EL CARTEL OFICIAL DE LOS ALIENS (IMAGEN OFICIAL SUBIDA POR EL USUARIO)
-            Grande, centrado, con sus cuadros rojos y blancos y el marcianito
+            1. ZONA PARED: CARTEL REDIMENSIONADO + CUADRO COHETE PIZZA PLANET
+            Ambos ubicados sobre el tapiz verde alien con espacio de sobra de la navbar
             ===================================================================== */}
-        <div className="w-full max-w-3xl sm:max-w-4xl flex justify-center mb-8 sm:mb-12 transition-transform hover:scale-[1.01] duration-300">
-          <img 
-            src="/images/cartel_aliens.png" 
-            onError={(e) => { e.target.src = '/images/letrero_aliens.png'; }}
-            alt="¿Quieres explorarte y no sabes por dónde empezar? - Pizza Planet"
-            className="w-full h-auto object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.18)] rounded-2xl sm:rounded-3xl"
-          />
+        <div className="w-full flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-2 mb-4">
+          
+          {/* Cartel más pequeño y proporcionado */}
+          <div className="w-full max-w-[420px] sm:max-w-[480px] md:max-w-[530px] flex justify-center transition-transform hover:scale-[1.01] duration-300">
+            <img 
+              src="/images/cartel_aliens.png" 
+              onError={(e) => { e.target.src = '/images/letrero_aliens.png'; }}
+              alt="¿Quieres explorarte y no sabes por dónde empezar? - Pizza Planet"
+              className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(0,0,0,0.25)] rounded-2xl sm:rounded-3xl border-2 border-white/80"
+            />
+          </div>
+
+          {/* Cuadro de Pizza Planet colgado en la pared al lado del cartel */}
+          <div className="shrink-0 flex justify-center transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer">
+            <div className="relative rotate-2 drop-shadow-[0_15px_25px_rgba(0,0,0,0.3)]">
+              <img 
+                src="/images/cuadro_aliens.png" 
+                alt="Cuadro Cohete Pizza Planet"
+                className="w-28 sm:w-36 md:w-40 lg:w-44 h-auto object-contain rounded-xl"
+              />
+            </div>
+          </div>
+
         </div>
 
         {/* =====================================================================
-            2. EL GRAN BOTÓN ROJO EN EL CENTRO DE LA PÁGINA ("PRESIONAR AQUÍ")
+            2. ZONA CENTRAL: EL GRAN BOTÓN ROJO 3D ("PRESIONAR AQUÍ")
             ===================================================================== */}
-        <div className="flex flex-col items-center relative my-2">
-          
+        <div className="flex flex-col items-center my-auto py-2">
+
           {/* Aro exterior metálico / cromado */}
-          <div className="w-52 h-52 sm:w-64 sm:h-64 rounded-full bg-gradient-to-b from-slate-200 via-slate-400 to-slate-700 p-4 sm:p-5 shadow-[0_25px_60px_rgba(0,0,0,0.35)] flex items-center justify-center border-2 border-slate-300/80">
-            
+          <div className="w-44 h-44 sm:w-52 sm:h-52 md:w-56 md:h-56 rounded-full bg-gradient-to-b from-slate-200 via-slate-400 to-slate-700 p-3.5 sm:p-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex items-center justify-center border-2 border-slate-300/80">
+
             {/* Aro de advertencia neón rojo */}
             <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center ring-4 ring-[#E52521]/40 p-2 sm:p-2.5">
-              
+
               {/* CÚPULA 3D DEL BOTÓN ROJO TÁCTIL */}
               <button
                 type="button"
@@ -329,13 +346,13 @@ export default function Explora() {
                 }`}
                 title="Presionar aquí para abrir el quizz"
               >
-                <span className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
+                <span className="text-lg sm:text-2xl md:text-2xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
                   PRESIONAR
                 </span>
-                <span className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
+                <span className="text-lg sm:text-2xl md:text-2xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
                   AQUÍ
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-red-200 mt-1 uppercase opacity-90">
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-red-200 mt-0.5 uppercase opacity-90">
                   INICIAR QUIZZ
                 </span>
               </button>
@@ -344,16 +361,35 @@ export default function Explora() {
 
           </div>
 
-          {/* Marcianitos de Pizza Planet animando al usuario */}
-          <div className="mt-8 flex items-center gap-4 bg-white/95 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 max-w-md shadow-lg backdrop-blur-md">
-            <img 
-              src="/images/aliens_friends.png" 
-              alt="Marcianitos de Pizza Planet"
-              className="w-14 sm:w-16 h-auto object-contain shrink-0 drop-shadow-sm"
+        </div>
+
+        {/* =====================================================================
+            3. ZONA SUELO DE MADERA: MÁQUINA DE LA GARRA CON ALIENS ADENTRO
+            Ubicada exactamente en el suelo de madera, tal como los juguetes en Inicio
+            ===================================================================== */}
+        <div className="w-full flex items-end justify-between sm:justify-end px-2 sm:px-8 mt-2 pb-2">
+          
+          {/* Diálogo de los marcianitos */}
+          <div className="hidden sm:flex items-center gap-3 bg-white/95 border-2 border-slate-200 rounded-2xl p-2.5 sm:p-3 max-w-xs shadow-lg backdrop-blur-md mb-4 mr-4">
+            <img
+              src="/images/aliens_friends.png"
+              alt="Marcianitos Pizza Planet"
+              className="w-10 sm:w-12 h-auto object-contain shrink-0"
             />
-            <p className="text-xs sm:text-sm text-[#1e3a8a] font-bold italic leading-snug">
-              “¡Ooooh! ¡El gran botón rojo de La Garra! Púlsalo para descubrir tus juguetes y lencería ideales.”
+            <p className="text-[11px] sm:text-xs text-[#1e3a8a] font-bold italic leading-tight">
+              “¡Ooooh! ¡Nuestra máquina de La Garra en el suelo! Pulsa el botón para tu viaje sensorial.”
             </p>
+          </div>
+
+          {/* Máquina de los Aliens en el suelo */}
+          <div className="relative group transition-transform duration-300 hover:scale-105 cursor-pointer ml-auto">
+            <img 
+              src="/images/maquina_aliens.png" 
+              alt="Máquina de Marcianitos Pizza Planet"
+              className="w-36 sm:w-48 md:w-56 lg:w-64 h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.55)]"
+            />
+            {/* Sombra de contacto realista en la madera */}
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-3 bg-black/50 blur-md rounded-full pointer-events-none"></div>
           </div>
 
         </div>
@@ -366,7 +402,7 @@ export default function Explora() {
           ========================================================================= */}
       {modalAbierto && (
         <div className="fixed inset-0 z-[300] bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none font-fredoka">
-          
+
           <div className="relative w-full max-w-2xl bg-white rounded-[2rem] sm:rounded-[2.5rem] border-4 sm:border-[6px] border-[#E52521] shadow-[0_25px_80px_rgba(229,37,33,0.35)] overflow-hidden flex flex-col justify-between max-h-[92vh]">
             
             {/* FRANJA SUPERIOR A CUADROS ROJOS Y BLANCOS (IDÉNTICA AL CARTEL) */}
