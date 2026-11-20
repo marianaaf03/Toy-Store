@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PixarBall from './PixarBall';
 import ToyBlocks from './ToyBlocks';
+import WoodyFloorElements from './WoodyFloorElements';
 import Navbar from './Navbar';
 import LotsoFurImg from '../assets/lotso_fur_texture.png';
 import ProductSidebar from './ProductSidebar';
@@ -134,7 +135,7 @@ export default function RoomWrapper({
   const activeBlur = isBlurred || showFilterSidebar || showPurposeSidebar;
 
   return (
-    <div className="min-h-screen relative flex flex-col overflow-hidden">
+    <div className="min-h-screen relative flex flex-col overflow-x-hidden w-full">
       
       {/* 
       ========================================================================
@@ -152,14 +153,15 @@ export default function RoomWrapper({
       DIFERENTES PANTALLAS Y LOS ELEMENTOS SE SUPERPONDRÁN.
       ========================================================================
       */}
-      <div className={`absolute inset-0 z-0 transition-all duration-700 ${activeBlur ? 'blur-[6px]' : ''} pointer-events-none`}>
+      {/* Fondo Fijo (Fixed) para evitar desajustes o cortes al hacer scroll o filtrar */}
+      <div className={`fixed inset-0 z-0 transition-all duration-700 ${activeBlur ? 'blur-[6px]' : ''} pointer-events-none`}>
         {fullWallpaper && wallpaperContent ? (
-          /* MODO FONDO COMPLETO (E.j. Tienda Woody) */
+          /* MODO FONDO COMPLETO */
           <div className="absolute inset-0 z-0">
             {wallpaperContent}
           </div>
         ) : (
-          /* MODO DIORAMA (E.j. Inicio Andy - Las nubes van en la pared) */
+          /* MODO DIORAMA (La pared con el tapiz erótico, zócalo y suelo) */
           <div className="absolute inset-0 flex flex-col">
             {/* 1. PARED (Wall - Con color insignia del personaje y doodles eróticos) */}
             <div className={`relative flex-1 ${styles.wall}`}>
@@ -182,12 +184,18 @@ export default function RoomWrapper({
                </div>
                <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent"></div>
 
-               {/* 🛑 LOS JUGUETES 3D ESTÁN FUSIONADOS ESTÁTICAMENTE AL HORIZONTE DEL PISO 🛑 */}
+               {/* JUGUETES SOBRE EL SUELO: Personalizados según la página */}
                {!location.pathname.startsWith('/admin') && (
                  <div className="absolute top-0 left-0 w-full h-0 z-40">
                     <div className="max-w-7xl mx-auto relative w-full h-0 pointer-events-auto">
-                        <PixarBall />
-                        <ToyBlocks />
+                        {location.pathname === '/tienda' ? (
+                          <WoodyFloorElements />
+                        ) : (
+                          <>
+                            <PixarBall />
+                            <ToyBlocks />
+                          </>
+                        )}
                     </div>
                  </div>
                )}
