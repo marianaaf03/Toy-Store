@@ -496,7 +496,7 @@ export default function Tienda() {
               e.stopPropagation();
               navigate('/carrito');
             }}
-            className="absolute top-0 right-0 sm:-right-2 md:-right-4 lg:-right-6 z-30 cursor-pointer group pointer-events-auto select-none flex flex-col items-center animate-swing-sign"
+            className="absolute top-3 sm:top-4 md:top-5 right-3 sm:right-6 md:right-8 lg:right-10 z-30 cursor-pointer group pointer-events-auto select-none flex flex-col items-center animate-swing-sign"
             title="Ver Carrito de Compras"
           >
             {/* Barritas que sostienen el cartel de añadir al carrito */}
@@ -639,7 +639,7 @@ export default function Tienda() {
         <div className="w-full max-w-7xl bg-white/95 backdrop-blur-md rounded-t-[3.5rem] rounded-b-3xl border-4 border-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] p-4 sm:p-8 relative mt-3">
           
           {/* Sombrero de Woody agrandado y coronando la curvatura de la esquina superior del estante */}
-          <div className="absolute -top-11 -left-4 sm:-top-14 sm:-left-5 md:-top-16 md:-left-6 z-30 pointer-events-none -rotate-[16deg] transition-transform hover:rotate-0">
+          <div className="absolute -top-11 -left-7 sm:-top-14 sm:-left-9 md:-top-16 md:-left-12 lg:-left-14 z-30 pointer-events-none -rotate-[16deg] transition-transform hover:rotate-0">
             <img 
               src="/images/sombrero_vaquero.png" 
               alt="Sombrero Vaquero Woody" 

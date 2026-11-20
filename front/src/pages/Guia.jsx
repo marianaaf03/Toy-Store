@@ -1,128 +1,95 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoomWrapper from '../components/RoomWrapper';
 import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 
 export default function Guia() {
   const navigate = useNavigate();
-  const [moduloActivo, setModuloActivo] = useState(0);
-  const [quizSeleccion, setQuizSeleccion] = useState(0);
 
-  const modulos = [
-    {
-      id: 0,
-      titulo: 'Materiales & Silicona Médica',
-      subtitulo: 'La base de un bienestar íntimo seguro, higiénico y duradero',
-      colorBadge: 'bg-rose-100 text-rose-800 border-rose-200',
-      puntos: [
-        {
-          titulo: 'Silicona Líquida de Grado Médico',
-          texto: 'Es el estándar de oro absoluto en juguetería íntima. Al ser un material no poroso y biocompatible, no alberga bacterias, moho ni microorganismos, siendo ultrasuave y sedoso al contacto.'
-        },
-        {
-          titulo: 'Regla de Oro: Solo Lubricantes a Base de Agua',
-          texto: 'Los juguetes de silicona pura SIEMPRE deben usarse exclusivamente con lubricantes a base de agua. Los aceites, vaselina o lubricantes con silicona degradan la superficie del juguete de manera irreversible.'
-        },
-        {
-          titulo: '100% Libre de Tóxicos',
-          texto: 'Todos los productos de nuestro catálogo están certificados libres de ftalatos, plomo, látex nocivo y plastificantes industriales para proteger tu equilibrio íntimo.'
-        }
-      ]
-    },
+  const huellas = [
     {
       id: 1,
-      titulo: 'Ondas de Aire vs Vibración Clásica',
-      subtitulo: 'Entendiendo los dos universos de estimulación para elegir tu favorito',
-      colorBadge: 'bg-sky-100 text-[#1e3a8a] border-sky-200',
+      badge: 'HUELLA 01 • PRIMEROS PASOS',
+      titulo: '¿Primera Vez? Cero Nervios & a Tu Ritmo',
+      subtitulo: 'Aprende a conocer tu cuerpo con total libertad y curiosidad',
       puntos: [
         {
-          titulo: 'Ondas de Presión Pulsantes (Sónicas)',
-          texto: 'Estimulan las más de 8.000 terminaciones nerviosas del clítoris sin contacto mecánico ni fricción. Generan una sensación envolvente y succionante que evita el adormecimiento o la hipersensibilidad por roce.'
+          titulo: 'Sin expectativas de rendimiento',
+          desc: 'No hay prisa ni una forma obligatoria. Empieza a solas, con luz tenue y música que te relaje; el objetivo es conectar contigo misma y disfrutar el momento.'
         },
         {
-          titulo: 'Vibración Mecánica Continua',
-          texto: 'Ideal para estimulación profunda en zonas amplias y puntos internos (punto G). Sus patrones rítmicos y velocidades graduables permiten crear una curva de placer pausada y controlada.'
+          titulo: 'De menos a más',
+          desc: 'Comienza explorando zonas externas y sensibles como el cuello, el abdomen o la parte interna de los muslos antes de acercarte a las áreas íntimas.'
         },
         {
-          titulo: 'Estimulación Dual Sincronizada',
-          texto: 'Los modelos rabbit y varitas combinan ambos estímulos a la vez, permitiendo orgasmos dobles y simultáneos con ergonomía adaptada a cada anatomía.'
+          titulo: 'Control de intensidad gradual',
+          desc: 'Usa siempre la velocidad más baja al inicio. Deja que tu piel se acostumbre a las nuevas sensaciones rítmicas sin saturarte.'
         }
-      ]
+      ],
+      tip: 'Tip de amiga: Si sientes cosquillas intensas al principio, coloca una sábana de satén fina entre el juguete y tu piel.'
     },
     {
       id: 2,
-      titulo: 'Higiene, Limpieza & Cuidados',
-      subtitulo: 'Pasos simples para duplicar la vida útil de tus juguetes favoritos',
-      colorBadge: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      badge: 'HUELLA 02 • SALUD & CONFORT',
+      titulo: 'La Regla Sagrada del Lubricante',
+      subtitulo: 'El secreto para una experiencia 100% sedosa y sin molestias',
       puntos: [
         {
-          titulo: 'Lavado Antes y Después de Cada Uso',
-          texto: 'Lava tu dispositivo con agua tibia y jabón neutro sin alcohol, o utiliza una espuma antibacterial especializada para silicona. Enjuaga con abundante agua.'
+          titulo: 'Siempre a base de agua',
+          desc: 'Los juguetes de silicona pura médica SOLO deben usarse con lubricantes a base de agua. Los aceites, cremas corporales o vaselinas dañan el material.'
         },
         {
-          titulo: 'Resistencia al Agua (Certificación IPX7)',
-          texto: 'La mayoría de modelos son sumergibles para usar en la ducha o la bañera. Para proteger la batería, seca bien el puerto de carga magnética antes de conectarlo.'
+          titulo: 'Silicona médica hipoalergénica',
+          desc: 'Todos nuestros juguetes están hechos de silicona biocompatible no porosa, suave como piel de durazno y 100% libre de ftalatos o químicos nocivos.'
         },
         {
-          titulo: 'Almacenamiento Discreto y Fresco',
-          texto: 'Seca con una toalla de microfibra limpia que no deje pelusa y guarda cada juguete en su funda de satén transpirable, en un lugar fresco y protegido de la luz solar directa.'
+          titulo: 'La cantidad justa multiplica el placer',
+          desc: 'Un par de gotas de lubricante reducen cualquier fricción a cero y transforman el contacto en una caricia ultrasuave y deslizante.'
         }
-      ]
+      ],
+      tip: 'Tip de amiga: Aplica unas gotas tanto en tu piel como en el juguete para máxima comodidad y suavidad.'
     },
     {
       id: 3,
-      titulo: 'Placer en Pareja & Comunicación',
-      subtitulo: 'Derribando mitos para sumar complicidad, diversión y confianza',
-      colorBadge: 'bg-purple-100 text-purple-800 border-purple-200',
+      badge: 'HUELLA 03 • TIPOS DE SENSACIÓN',
+      titulo: '¿Ondas de Aire o Vibración Clásica?',
+      subtitulo: 'Descubre qué tecnología se adapta mejor a tu sensibilidad',
       puntos: [
         {
-          titulo: 'Aliados de Juego, No Reemplazos',
-          texto: 'Los juguetes íntimos son complementos diseñados para enriquecer el juego previo, explorar nuevas fantasías y abrir conversaciones íntimas desde la curiosidad y el respeto.'
+          titulo: 'Ondas de presión sónicas (Ideal principiantes)',
+          desc: 'Estimulan mediante pulsaciones envolventes de aire sin fricción mecánica directa, evitando adormecimientos o molestias por roce.'
         },
         {
-          titulo: 'Controles Inalámbricos y a Distancia',
-          texto: 'Permiten ceder el control de la intensidad y los patrones rítmicos a tu pareja, creando dinámicas de anticipación y complicidad tanto en citas públicas como en la intimidad.'
+          titulo: 'Vibración continua y profunda',
+          desc: 'Brinda un masaje rítmico perfecto para relajación general, zonas erógenas amplias o estimulación interna del punto G.'
         },
         {
-          titulo: 'El Consentimiento y la Curiosidad',
-          texto: 'Conversa sobre lo que te genera curiosidad en un momento relajado fuera de la cama. El placer compartido florece cuando ambos se sienten seguros y escuchados.'
+          titulo: 'Modelos duales (Rabbit)',
+          desc: 'Combinan ambos estímulos a la vez para sensaciones completas y simultáneas una vez que ya conozcas tus gustos favoritos.'
         }
-      ]
-    }
-  ];
-
-  const quizOpciones = [
-    {
-      pregunta: 'Busco sensaciones suaves, sin roce mecánico y sin riesgo de cosquillas excesivas.',
-      tituloRecomendado: 'Succionador Clitoriano por Ondas de Aire',
-      categoria: 'vibradores',
-      descripcion: 'Orgasmos intensos sin contacto directo gracias a pulsaciones sónicas de aire.',
-      img: '/images/succionadorclitoris.png',
-      link: '/tienda?cat=vibradores'
+      ],
+      tip: 'Tip de amiga: Si es tu primer juguete íntimo, un estimulador por ondas de aire suele ser la opción más amable y sorprendente.'
     },
     {
-      pregunta: 'Quiero estimulación simultánea interna y externa con vibraciones potentes y graduables.',
-      tituloRecomendado: 'Masajeador Rabbit Doble Estimulación',
-      categoria: 'vibradores',
-      descripcion: 'Doble motor independiente para punto G y clítoris con silicona líquida ultrasuave.',
-      img: '/images/rabbitbuzz.webp',
-      link: '/tienda?cat=vibradores'
-    },
-    {
-      pregunta: 'Deseo juegos de complicidad en pareja, lencería sensual y entrega a distancia.',
-      tituloRecomendado: 'Lencería Sexy & Vibrador con Control Remoto',
-      categoria: 'lencerias',
-      descripcion: 'Conjuntos con encaje sedoso y estimuladores controlables hasta 15 metros.',
-      img: '/images/lenceriabralette.png',
-      link: '/tienda?cat=lencerias'
-    },
-    {
-      pregunta: 'Me interesa explorar terapia de frío/calor y sensaciones de iniciación seguras.',
-      tituloRecomendado: 'Plug Metálico con Gema & Dildo de Cristal',
-      categoria: 'anales',
-      descripcion: 'Acero pulido y cristal borosilicato con bases acampanadas 100% seguras.',
-      img: '/images/pluganalconcristal.png',
-      link: '/tienda?cat=anales'
+      id: 4,
+      badge: 'HUELLA 04 • HIGIENE & DISCRECIÓN',
+      titulo: 'Limpieza en 1 Minuto & Privacidad',
+      subtitulo: 'Cuidados sencillos para que tu aliado íntimo dure muchos años',
+      puntos: [
+        {
+          titulo: 'Lavado fácil en 60 segundos',
+          desc: 'Lava con agua tibia y jabón neutro sin alcohol antes y después de cada uso. Enjuaga con abundante agua y sécalo con toalla limpia.'
+        },
+        {
+          titulo: 'Resistentes al agua (Certificación IPX7)',
+          desc: 'Puedes usarlos con total tranquilidad bajo la ducha o en la tina. Solo recuerda secar el puerto magnético antes de recargarlo.'
+        },
+        {
+          titulo: 'Empaque 100% discreto',
+          desc: 'Todos los pedidos se entregan en cajas lisas sin logotipos delatadores ni descripciones exteriores: tu privacidad está 100% protegida.'
+        }
+      ],
+      tip: 'Tip de amiga: Guárdalo siempre en su saquito de tela transpirable en un lugar fresco y protegido del sol directo.'
     }
   ];
 
@@ -133,212 +100,123 @@ export default function Guia() {
       hideFloorToys={true}
     >
       <style>{`
-        @keyframes floatGuideCard {
+        @keyframes floatPaw {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-3px); }
         }
-        .animate-guide-card {
-          animation: floatGuideCard 4.5s ease-in-out infinite;
+        .animate-paw-card {
+          animation: floatPaw 5s ease-in-out infinite;
         }
       `}</style>
 
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-0 pb-28 font-fredoka select-none flex flex-col items-center">
+      {/* CONTENEDOR PRINCIPAL: Espaciado superior cómodo y limpio bajo las nubes */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-3 sm:pt-4 pb-28 font-fredoka select-none flex flex-col items-center">
         
-        {/* =========================================================================
-            1. BANNER COLGANTE DE LA NUBE: GUÍA SENSORIAL TOY STORE
-            ========================================================================= */}
-        <div className="w-full relative flex flex-col items-center mb-8 -mt-2 sm:-mt-3 md:-mt-4">
-          
-          {/* Cuerdas colgantes con remaches dorados que conectan al techo/nube */}
-          <div className="w-full max-w-md flex justify-between px-16 -mb-1 relative z-0">
-            <div className="w-[3.5px] h-14 sm:h-16 md:h-18 bg-gradient-to-b from-slate-400 via-rose-600 to-rose-700 shadow-xs relative">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3px]"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3px]"></div>
-            </div>
-            <div className="w-[3.5px] h-14 sm:h-16 md:h-18 bg-gradient-to-b from-slate-400 via-rose-600 to-rose-700 shadow-xs relative">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -top-1 -left-[3px]"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-[#facc15] border border-[#78350f] absolute -bottom-1 -left-[3px]"></div>
-            </div>
-          </div>
-
-          {/* Placa Principal de la Guía */}
-          <div className="w-full bg-white/95 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-8 shadow-[0_16px_40px_rgba(236,72,153,0.18)] border-4 border-[#a6d4f2] text-center relative z-10 animate-guide-card">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-rose-50 text-rose-700 text-[11px] font-black tracking-widest uppercase border border-rose-200 mb-3">
-              Educación Íntima & Autocuidado
-            </span>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1e3a8a] tracking-tight uppercase leading-tight">
-              Manual de Exploración & Cuidado
-            </h1>
-            <p className="mt-2 text-xs sm:text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
-              Aprende sobre materiales biocompatibles, tipos de estimulación, higiene y bienestar íntimo para disfrutar al máximo con total libertad y confianza.
-            </p>
-          </div>
+        {/* Píldora de bienvenida tierna y sutil para primerizas (sin carteles gigantes) */}
+        <div className="flex items-center gap-2.5 mb-7 sm:mb-9 bg-white/95 backdrop-blur-md px-5 sm:px-6 py-2 rounded-full border-2 border-rose-300 shadow-sm">
+          <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+          <p className="text-xs sm:text-sm font-black text-[#1e3a8a] uppercase tracking-wider">
+            Guía de Confianza para Primerizas • Espacio Libre de Tabúes
+          </p>
         </div>
 
         {/* =========================================================================
-            2. SELECTOR DE CAPÍTULOS TIPO PÍLDORAS RESALTADAS
+            LAS 4 SECCIONES EN FORMA DE HUELLA DE OSITO LOTSO: 2 ARRIBA Y 2 ABAJO
             ========================================================================= */}
-        <div className="w-full max-w-4xl flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6">
-          {modulos.map((m) => {
-            const activo = moduloActivo === m.id;
-            return (
-              <button
-                key={m.id}
-                onClick={() => setModuloActivo(m.id)}
-                className={`px-4 sm:px-6 py-2.5 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider transition-all border cursor-pointer ${
-                  activo
-                    ? 'bg-[#a6d4f2] text-[#1e3a8a] border-[#1e3a8a] shadow-md scale-105 ring-2 ring-[#1e3a8a]/20'
-                    : 'bg-white/90 text-[#1e3a8a] border-slate-200 hover:bg-[#a6d4f2]/30 hover:border-[#a6d4f2]'
-                }`}
-              >
-                {m.titulo}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* =========================================================================
-            3. CONTENEDOR DEL CAPÍTULO ACTIVO: TARJETA AMPLIA CON CONTENIDO CLARO
-            ========================================================================= */}
-        <div className="w-full max-w-5xl bg-white/95 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.12)] border-4 border-white mb-10 relative">
-          
-          {/* Encabezado del capítulo */}
-          <div className="pb-5 mb-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <span className={`inline-block px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-wider border ${modulos[moduloActivo].colorBadge}`}>
-                Capítulo {moduloActivo + 1} de {modulos.length}
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#1e3a8a] mt-2 uppercase">
-                {modulos[moduloActivo].titulo}
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                {modulos[moduloActivo].subtitulo}
-              </p>
-            </div>
-
-            <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-[#1e3a8a] bg-sky-50 px-4 py-2 rounded-xl border border-sky-100">
-              <svg className="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" strokeWidth="2.3" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-              <span>Certificado Toy Store</span>
-            </div>
-          </div>
-
-          {/* Puntos clave ilustrados */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {modulos[moduloActivo].puntos.map((punto, idx) => (
-              <div 
-                key={idx}
-                className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:border-sky-300 transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-8 h-8 rounded-xl bg-[#a6d4f2]/40 text-[#1e3a8a] flex items-center justify-center font-black text-sm mb-3">
-                    0{idx + 1}
-                  </div>
-                  <h3 className="text-sm font-black text-[#1e3a8a] mb-2 leading-snug">
-                    {punto.titulo}
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    {punto.texto}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Botón de acción al pie del capítulo */}
-          <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-slate-500 font-medium text-center sm:text-left">
-              ¿Quieres poner en práctica lo aprendido o ver los juguetes diseñados con estos estándares?
-            </p>
-            <button
-              onClick={() => navigate('/tienda')}
-              className="px-6 py-3 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-sm border-2 border-white cursor-pointer whitespace-nowrap"
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-12 sm:gap-y-16 w-full max-w-5xl justify-items-center">
+          {huellas.map((h, idx) => (
+            <div 
+              key={h.id}
+              className="relative w-full max-w-[480px] group flex flex-col items-center transition-all duration-300 hover:-translate-y-1.5"
             >
-              Explorar Catálogo en Tienda →
-            </button>
-          </div>
-        </div>
-
-        {/* =========================================================================
-            4. TEST INTERACTIVO RÁPIDO: ENCUENTRA TU EXPERIENCIA IDEAL
-            ========================================================================= */}
-        <div className="w-full max-w-5xl bg-white/95 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.12)] border-4 border-[#a6d4f2] relative">
-          
-          <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="inline-block px-3 py-1 rounded-full bg-sky-50 text-[#1e3a8a] text-[10px] font-black uppercase tracking-wider border border-sky-200 mb-2">
-              Asesor Sensorial Interactivo
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#1e3a8a] uppercase tracking-tight">
-              Encuentra Tu Experiencia Ideal en 1 Clic
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Selecciona la sensación que más te llama la atención hoy y te mostraremos la recomendación perfecta:
-            </p>
-          </div>
-
-          {/* Opciones del test */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-            {quizOpciones.map((opcion, idx) => {
-              const seleccionada = quizSeleccion === idx;
-              return (
-                <div
-                  key={idx}
-                  onClick={() => setQuizSeleccion(idx)}
-                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-start gap-3 ${
-                    seleccionada
-                      ? 'bg-sky-50/80 border-[#1e3a8a] shadow-sm scale-[1.01]'
-                      : 'bg-white border-slate-200 hover:border-sky-300'
-                  }`}
-                >
-                  <div className={`w-5 h-5 rounded-full border-2 mt-0.5 shrink-0 flex items-center justify-center transition-colors ${
-                    seleccionada ? 'border-[#1e3a8a] bg-[#1e3a8a]' : 'border-slate-300'
-                  }`}>
-                    {seleccionada && <div className="w-2 h-2 rounded-full bg-white"></div>}
-                  </div>
-                  <span className={`text-xs sm:text-sm leading-snug font-bold ${
-                    seleccionada ? 'text-[#1e3a8a]' : 'text-slate-700'
-                  }`}>
-                    {opcion.pregunta}
-                  </span>
+              {/* DEDITOS DE LA HUELLA DEL OSITO LOTSO (4 almohadillas arqueadas en la parte superior) */}
+              <div className="flex items-end justify-center gap-2 sm:gap-3.5 -mb-5 sm:-mb-6 relative z-20">
+                {/* Dedo 1 (Izquierdo exterior) */}
+                <div className="w-9 h-11 sm:w-11 sm:h-13 rounded-[50%] bg-gradient-to-b from-rose-200 via-pink-200 to-rose-300 border-[3.5px] border-[#e11d48] shadow-sm transform -rotate-18 flex items-center justify-center transition-transform group-hover:scale-110">
+                  <div className="w-4 h-6 sm:w-5 sm:h-7 rounded-[50%] bg-white/80 border border-rose-300/60"></div>
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Resultado interactivo destacado */}
-          {quizOpciones[quizSeleccion] && (
-            <div className="bg-gradient-to-r from-sky-50 via-rose-50/40 to-sky-50 rounded-3xl p-6 border-2 border-sky-200 flex flex-col md:flex-row items-center justify-between gap-6 animate-in fade-in duration-300">
-              <div className="flex items-center gap-5">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white border border-sky-200 p-2 flex items-center justify-center shrink-0 shadow-xs">
-                  <img 
-                    src={quizOpciones[quizSeleccion].img} 
-                    alt={quizOpciones[quizSeleccion].tituloRecomendado}
-                    className="max-h-full max-w-full object-contain drop-shadow-sm"
-                  />
+                {/* Dedo 2 (Central izquierdo más alto) */}
+                <div className="w-11 h-13 sm:w-13 sm:h-16 rounded-[50%] bg-gradient-to-b from-rose-200 via-pink-200 to-rose-300 border-[3.5px] border-[#e11d48] shadow-sm transform -rotate-6 flex items-center justify-center -translate-y-2 transition-transform group-hover:scale-110">
+                  <div className="w-5 h-8 sm:w-6 sm:h-9 rounded-[50%] bg-white/80 border border-rose-300/60"></div>
                 </div>
-                <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-rose-700 bg-rose-100/80 px-2.5 py-0.5 rounded-md border border-rose-200 inline-block mb-1">
-                    Recomendación Personalizada
-                  </span>
-                  <h3 className="text-lg sm:text-xl font-black text-[#1e3a8a] uppercase leading-tight">
-                    {quizOpciones[quizSeleccion].tituloRecomendado}
-                  </h3>
-                  <p className="text-xs text-slate-600 mt-1 max-w-md leading-relaxed">
-                    {quizOpciones[quizSeleccion].descripcion}
-                  </p>
+                {/* Dedo 3 (Central derecho más alto) */}
+                <div className="w-11 h-13 sm:w-13 sm:h-16 rounded-[50%] bg-gradient-to-b from-rose-200 via-pink-200 to-rose-300 border-[3.5px] border-[#e11d48] shadow-sm transform rotate-6 flex items-center justify-center -translate-y-2 transition-transform group-hover:scale-110">
+                  <div className="w-5 h-8 sm:w-6 sm:h-9 rounded-[50%] bg-white/80 border border-rose-300/60"></div>
+                </div>
+                {/* Dedo 4 (Derecho exterior) */}
+                <div className="w-9 h-11 sm:w-11 sm:h-13 rounded-[50%] bg-gradient-to-b from-rose-200 via-pink-200 to-rose-300 border-[3.5px] border-[#e11d48] shadow-sm transform rotate-18 flex items-center justify-center transition-transform group-hover:scale-110">
+                  <div className="w-4 h-6 sm:w-5 sm:h-7 rounded-[50%] bg-white/80 border border-rose-300/60"></div>
                 </div>
               </div>
 
-              <button
-                onClick={() => navigate(quizOpciones[quizSeleccion].link)}
-                className="w-full md:w-auto px-6 py-3.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95 border-2 border-white cursor-pointer whitespace-nowrap"
-              >
-                Ver en la Tienda →
-              </button>
-            </div>
-          )}
+              {/* ALMOHADILLA PRINCIPAL (CUERPO DE LA HUELLA) */}
+              <div className="w-full bg-white/95 backdrop-blur-md rounded-[2.8rem] border-4 border-[#f472b6] shadow-[0_16px_36px_rgba(225,29,72,0.14)] p-6 sm:p-7 pt-9 sm:pt-10 relative z-10 flex flex-col justify-between transition-all duration-300 group-hover:shadow-[0_22px_45px_rgba(225,29,72,0.24)] group-hover:border-[#e11d48]">
+                
+                {/* Cabecera de la Huella */}
+                <div className="border-b border-rose-100 pb-3.5 mb-4 text-center">
+                  <span className="inline-block px-3 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-black uppercase tracking-wider border border-rose-200 mb-1.5">
+                    {h.badge}
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-black text-[#1e3a8a] uppercase leading-tight tracking-tight">
+                    {h.titulo}
+                  </h3>
+                  <p className="text-xs text-slate-500 font-medium mt-1">
+                    {h.subtitulo}
+                  </p>
+                </div>
 
+                {/* Lista de Puntos Clave Claros y Amigables */}
+                <div className="flex flex-col gap-3 my-1">
+                  {h.puntos.map((punto, pIdx) => (
+                    <div key={pIdx} className="bg-rose-50/40 rounded-2xl p-3 sm:p-3.5 border border-rose-100/80 flex items-start gap-2.5">
+                      <div className="w-5 h-5 rounded-full bg-[#f472b6]/20 text-rose-700 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5 border border-[#f472b6]/40">
+                        0{pIdx + 1}
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-xs sm:text-[13px] font-black text-[#1e3a8a] leading-snug">
+                          {punto.titulo}
+                        </h4>
+                        <p className="text-[11px] sm:text-xs text-slate-600 mt-0.5 leading-relaxed font-medium">
+                          {punto.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Tip de Confianza al Pie de la Huella */}
+                <div className="mt-4 pt-3 border-t border-rose-100">
+                  <div className="bg-gradient-to-r from-rose-100/70 to-pink-100/70 rounded-2xl p-2.5 px-3.5 border border-rose-200/80 flex items-center gap-2">
+                    <svg className="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-[11px] font-bold text-rose-800 leading-tight">
+                      {h.tip}
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* =========================================================================
+            BOTÓN INFERIOR: EXPLORAR LA TIENDA DE JUGUETES
+            ========================================================================= */}
+        <div className="mt-12 sm:mt-14 flex flex-col items-center gap-3">
+          <p className="text-xs sm:text-sm font-bold text-[#1e3a8a] bg-white/90 px-4 py-1.5 rounded-full border border-rose-200 shadow-xs">
+            ¿Lista para poner en práctica lo aprendido con total libertad y discreción?
+          </p>
+          <button
+            onClick={() => navigate('/tienda')}
+            className="px-8 py-3.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs sm:text-sm uppercase tracking-wider transition-all shadow-md active:scale-95 border-2 border-white cursor-pointer flex items-center gap-2.5"
+          >
+            <span>Explorar Juguetes en la Tienda</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
         </div>
 
       </div>

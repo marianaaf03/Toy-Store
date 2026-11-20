@@ -318,11 +318,10 @@ export default function ToyBoxCard({ producto, index = 0, onClick, isModalView =
   return (
     <div
       onClick={onClick}
-      className={`group cursor-pointer flex flex-col items-center transition-all duration-300 select-none ${
-        isModalView 
-          ? 'w-[260px] sm:w-[290px]' 
+      className={`group cursor-pointer flex flex-col items-center transition-all duration-300 select-none ${isModalView
+          ? 'w-[260px] sm:w-[290px]'
           : 'w-full max-w-[170px] sm:max-w-[190px] md:max-w-[210px] hover:-translate-y-2.5 active:scale-95'
-      }`}
+        }`}
     >
       {/* 1. PESTAÑA COLGANTE TIPO BLÍSTER DE JUGUETE */}
       <div className={`w-[90%] ${isModalView ? 'h-10' : 'h-8'} ${theme.headerBg} border-3 ${theme.borderColor} border-b-0 rounded-t-xl relative flex items-center justify-center shadow-xs transition-colors`}>
@@ -337,7 +336,7 @@ export default function ToyBoxCard({ producto, index = 0, onClick, isModalView =
 
       {/* 2. CUERPO DE LA CAJA (DE FRENTE - PAQUETE COLECCIONABLE) */}
       <div className={`w-full bg-white rounded-2xl border-4 ${theme.borderColor} shadow-[0_12px_24px_rgba(0,0,0,0.12)] group-hover:shadow-[0_20px_35px_rgba(0,0,0,0.22)] overflow-hidden flex flex-col justify-between transition-all duration-300 relative`}>
-        
+
         {/* Cabecera interna */}
         <div className={`${theme.headerBg} px-2.5 py-1.5 flex items-center justify-between border-b-2 ${theme.borderColor}`}>
           <span className={`${isModalView ? 'text-xs' : 'text-[9px]'} font-black tracking-widest text-[#1e3a8a] uppercase`}>
