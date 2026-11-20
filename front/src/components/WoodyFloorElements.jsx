@@ -1,89 +1,205 @@
 import React from 'react';
 
 /**
- * WoodyFloorElements: Elementos vaqueros auténticos de Woody
- * para el suelo de la tienda: Serpiente, Cartel "Se Busca Toyito",
- * Estrellas de Sheriff y Herraduras.
+ * WoodyFloorElements: Elementos de utilería temática del piso de Woody para la Tienda.
+ * Incluye: Sombrero de vaquero, Cartel "SE BUSCA TOYITO", Estrella de Sheriff,
+ * Herradura dorada y la Serpiente juguetona ("Hay una serpiente en mi bota").
  */
 export default function WoodyFloorElements() {
   return (
-    <div className="absolute top-0 left-0 w-full h-0 z-40 pointer-events-none select-none">
+    <div className="absolute top-0 left-0 w-full h-0 z-40 select-none pointer-events-none">
       <div className="max-w-7xl mx-auto relative w-full h-0">
-        
-        {/* 1. CARTEL DE "SE BUSCA: TOYITO" (Lado Izquierdo en el suelo) */}
-        <div className="absolute left-6 md:left-20 top-8 md:top-14 transform -rotate-6 transition-transform hover:rotate-0 hover:scale-110 pointer-events-auto cursor-pointer drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
-          <div className="w-28 sm:w-36 bg-[#fef3c7] border-2 border-[#b45309] rounded-lg p-2.5 shadow-inner text-center font-fredoka">
-            <span className="text-[10px] sm:text-xs font-black text-[#78350f] tracking-widest uppercase block border-b border-[#b45309]/30 pb-0.5">
-              SE BUSCA
-            </span>
-            <div className="my-1 w-14 h-14 sm:w-16 sm:h-16 mx-auto bg-[#fde68a] rounded-full border border-[#d97706] flex items-center justify-center overflow-hidden">
-              <img 
-                src="/images/Mascota Toy Store Sonriente.png" 
-                alt="Toyito" 
-                className="w-12 h-12 object-contain"
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
-            </div>
-            <span className="text-[9px] sm:text-[10px] font-black text-[#92400e] block">
-              TOYITO EL VAQUERO
-            </span>
-            <span className="text-[8px] sm:text-[9px] font-bold text-rose-700 block mt-0.5">
-              RECOMPENSA: AMOR
-            </span>
-          </div>
-        </div>
 
-        {/* 2. ESTRELLA DE SHERIFF DORADA (Cerca del cartel) */}
-        <div className="absolute left-36 md:left-64 top-24 md:top-36 transform rotate-12 drop-shadow-md pointer-events-auto">
-          <svg className="w-9 h-9 sm:w-12 sm:h-12 text-[#facc15] hover:scale-125 transition-transform cursor-pointer" viewBox="0 0 24 24" fill="currentColor" stroke="#b45309" strokeWidth="1.2">
-            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-            <circle cx="12" cy="12" r="3" fill="#fef08a" stroke="#b45309" strokeWidth="1" />
+        {/* 1. SOMBRERO DE VAQUERO DE WOODY (Lado izquierdo) */}
+        <div 
+          className="absolute -top-16 sm:-top-24 left-2 sm:left-10 w-28 sm:w-44 h-24 sm:h-36 -rotate-12 transition-transform hover:scale-105 pointer-events-auto cursor-pointer drop-shadow-[0_15px_20px_rgba(0,0,0,0.45)]"
+          title="El sombrero de Woody"
+        >
+          <svg viewBox="0 0 160 120" className="w-full h-full overflow-visible">
+            {/* Sombra proyectada */}
+            <ellipse cx="80" cy="98" rx="65" ry="14" fill="rgba(0,0,0,0.3)" />
+            {/* Ala ancha del sombrero con costuras */}
+            <path
+              d="M15 88 C 25 65, 135 65, 145 88 C 135 106, 25 106, 15 88 Z"
+              fill="#8B4513"
+              stroke="#5C2E0B"
+              strokeWidth="4"
+            />
+            {/* Dobladillo curvado del ala */}
+            <path
+              d="M 22 86 Q 80 72 138 86"
+              fill="none"
+              stroke="#D2691E"
+              strokeWidth="2.5"
+              strokeDasharray="4 3"
+            />
+            {/* Copa del sombrero con hendidura vaquera */}
+            <path
+              d="M 52 75 C 50 35, 62 24, 74 32 C 80 35, 84 35, 90 32 C 102 24, 114 35, 112 75 Z"
+              fill="#A0522D"
+              stroke="#5C2E0B"
+              strokeWidth="4"
+            />
+            {/* Cinta de cuero marrón oscura */}
+            <path
+              d="M 51 72 Q 82 78 113 72"
+              fill="none"
+              stroke="#3D1C06"
+              strokeWidth="7"
+              strokeLinecap="round"
+            />
+            {/* Hebilla dorada miniatura */}
+            <rect x="77" y="68" width="10" height="9" rx="2" fill="#FBBF24" stroke="#78350F" strokeWidth="1.5" />
+            <rect x="80" y="71" width="4" height="3" fill="#3D1C06" />
           </svg>
         </div>
 
-        {/* 3. LA SERPIENTE DE LA BOTA (Lado Derecho en el suelo) */}
-        <div className="absolute right-10 md:right-28 top-6 md:top-12 transform rotate-3 drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)] pointer-events-auto">
-          <div className="group cursor-pointer hover:scale-110 transition-transform">
-            <svg className="w-28 sm:w-36 h-20 sm:h-24" viewBox="0 0 140 90" fill="none">
-              {/* Cuerpo serpenteante verde lima */}
-              <path 
-                d="M10 70 C 25 50, 40 85, 60 65 C 80 45, 95 80, 115 50 C 122 40, 130 35, 135 25" 
-                stroke="#22c55e" 
-                strokeWidth="14" 
-                strokeLinecap="round" 
-              />
-              {/* Manchas en la espalda */}
-              <path 
-                d="M10 70 C 25 50, 40 85, 60 65 C 80 45, 95 80, 115 50 C 122 40, 130 35, 135 25" 
-                stroke="#15803d" 
-                strokeWidth="4" 
-                strokeDasharray="4 10" 
-                strokeLinecap="round" 
-              />
-              {/* Cabeza redonda simpática */}
-              <circle cx="134" cy="24" r="10" fill="#22c55e" stroke="#15803d" strokeWidth="1.5" />
-              {/* Ojitos tiernos */}
-              <circle cx="131" cy="21" r="2.5" fill="white" />
-              <circle cx="131" cy="21" r="1.2" fill="#1e293b" />
-              <circle cx="137" cy="21" r="2.5" fill="white" />
-              <circle cx="137" cy="21" r="1.2" fill="#1e293b" />
-              {/* Lengüita bífida roja */}
-              <path d="M143 24l7-3m-7 3l7 3" stroke="#ef4444" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
-            <span className="text-[9px] font-black text-amber-200 block text-right -mt-2 pr-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              ¡Hay una serpiente en mi bota!
-            </span>
+        {/* 2. CARTEL DE SE BUSCA TOYITO (Parchment Wanted Poster - Centro Izquierda) */}
+        <div 
+          className="absolute -top-20 sm:-top-28 left-[24%] sm:left-[22%] w-24 sm:w-36 h-32 sm:h-44 rotate-6 transition-transform hover:scale-105 pointer-events-auto cursor-pointer drop-shadow-[0_12px_18px_rgba(0,0,0,0.35)]"
+          title="Se Busca Toyito - Recompensa"
+        >
+          <div className="w-full h-full bg-[#fde68a] border-2 sm:border-3 border-[#92400e] rounded-sm p-1.5 sm:p-2.5 flex flex-col items-center justify-between text-[#78350f] font-black relative overflow-hidden shadow-inner">
+            {/* Esquina doblada vintage */}
+            <div className="absolute top-0 right-0 w-4 h-4 bg-[#d97706]/40 border-b border-l border-[#92400e]"></div>
+
+            <div className="text-center w-full">
+              <span className="text-[7px] sm:text-[9px] tracking-widest block uppercase text-[#b45309]">WANTED</span>
+              <span className="text-[10px] sm:text-xs tracking-tight font-black block leading-none text-[#78350f]">SE BUSCA</span>
+            </div>
+
+            {/* Retrato de Toyito */}
+            <div className="w-14 sm:w-20 h-14 sm:h-20 bg-amber-50 border-2 border-dashed border-[#b45309] rounded-lg flex items-center justify-center p-1 my-0.5">
+              <img src="/images/logo_official.png" alt="Toyito Wanted" className="w-full h-full object-contain filter sepia" />
+            </div>
+
+            <div className="text-center w-full leading-none">
+              <span className="text-[6px] sm:text-[8px] font-bold block text-red-700 uppercase">VIVO O MUERTO</span>
+              <span className="text-[8px] sm:text-[10px] font-black block text-[#92400e] mt-0.5">RECOMPENSA: 10.000</span>
+            </div>
           </div>
         </div>
 
-        {/* 4. HERRADURA DE CABALLO PLATEADA (En el centro derecho) */}
-        <div className="absolute right-40 md:right-72 top-20 md:top-32 transform -rotate-12 drop-shadow-md pointer-events-auto">
-          <svg className="w-8 h-8 sm:w-11 sm:h-11 text-slate-300 hover:rotate-45 transition-transform cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2.8" strokeLinecap="round">
-            <path d="M6 3v8a6 6 0 0 0 12 0V3" />
-            <circle cx="7" cy="11" r="0.8" fill="#1e293b" />
-            <circle cx="17" cy="11" r="0.8" fill="#1e293b" />
-            <circle cx="9" cy="14" r="0.8" fill="#1e293b" />
-            <circle cx="15" cy="14" r="0.8" fill="#1e293b" />
+        {/* 3. ESTRELLA DE SHERIFF DORADA (Centro) */}
+        <div 
+          className="absolute -top-10 sm:-top-16 left-[50%] -translate-x-1/2 w-14 sm:w-20 h-14 sm:h-20 rotate-12 transition-transform hover:rotate-45 hover:scale-110 pointer-events-auto cursor-pointer drop-shadow-[0_10px_15px_rgba(234,179,8,0.5)]"
+          title="Estrella Oficial del Sheriff Woody"
+        >
+          <svg viewBox="0 0 100 100" className="w-full h-full">
+            {/* Estrella de 5 puntas con bolas en los extremos */}
+            <polygon
+              points="50,5 63,35 95,38 71,60 78,92 50,75 22,92 29,60 5,38 37,35"
+              fill="url(#goldGradientSheriff)"
+              stroke="#B45309"
+              strokeWidth="3"
+            />
+            {/* Bolitas doradas en las puntas */}
+            <circle cx="50" cy="5" r="4" fill="#FDE047" stroke="#B45309" strokeWidth="1.5" />
+            <circle cx="95" cy="38" r="4" fill="#FDE047" stroke="#B45309" strokeWidth="1.5" />
+            <circle cx="78" cy="92" r="4" fill="#FDE047" stroke="#B45309" strokeWidth="1.5" />
+            <circle cx="22" cy="92" r="4" fill="#FDE047" stroke="#B45309" strokeWidth="1.5" />
+            <circle cx="5" cy="38" r="4" fill="#FDE047" stroke="#B45309" strokeWidth="1.5" />
+
+            {/* Círculo central con texto */}
+            <circle cx="50" cy="53" r="16" fill="#FEF08A" stroke="#B45309" strokeWidth="2" />
+            <text x="50" y="57" textAnchor="middle" fontSize="9" fontWeight="900" fill="#78350F" letterSpacing="0.5">
+              SHERIFF
+            </text>
+
+            <defs>
+              <linearGradient id="goldGradientSheriff" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FEF08A" />
+                <stop offset="50%" stopColor="#FBBF24" />
+                <stop offset="100%" stopColor="#D97706" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        {/* 4. HERRADURA DE LA SUERTE (Centro Derecha) */}
+        <div 
+          className="absolute -top-12 sm:-top-18 right-[24%] sm:right-[20%] w-14 sm:w-22 h-14 sm:h-22 -rotate-15 transition-transform hover:scale-110 pointer-events-auto cursor-pointer drop-shadow-[0_12px_18px_rgba(0,0,0,0.4)]"
+          title="Herradura de la suerte de Tiro al Blanco"
+        >
+          <svg viewBox="0 0 100 100" className="w-full h-full">
+            {/* Herradura en forma de U */}
+            <path
+              d="M 24 25 C 20 60, 25 85, 50 85 C 75 85, 80 60, 76 25 L 62 28 C 65 52, 60 70, 50 70 C 40 70, 35 52, 38 28 Z"
+              fill="url(#goldGradientHerradura)"
+              stroke="#78350F"
+              strokeWidth="3"
+            />
+            {/* Agujeros de clavos */}
+            <circle cx="28" cy="40" r="2.5" fill="#451A03" />
+            <circle cx="29" cy="55" r="2.5" fill="#451A03" />
+            <circle cx="33" cy="70" r="2.5" fill="#451A03" />
+            <circle cx="72" cy="40" r="2.5" fill="#451A03" />
+            <circle cx="71" cy="55" r="2.5" fill="#451A03" />
+            <circle cx="67" cy="70" r="2.5" fill="#451A03" />
+
+            <defs>
+              <linearGradient id="goldGradientHerradura" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FDE68A" />
+                <stop offset="50%" stopColor="#F59E0B" />
+                <stop offset="100%" stopColor="#B45309" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        {/* 5. SERPIENTE JUGUETONA ENROSCADA ("Hay una serpiente en mi bota") - Lado Derecho */}
+        <div 
+          className="absolute -top-16 sm:-top-24 right-2 sm:right-8 w-24 sm:w-36 h-24 sm:h-36 rotate-6 transition-transform hover:scale-110 pointer-events-auto cursor-pointer drop-shadow-[0_15px_22px_rgba(0,0,0,0.4)]"
+          title="¡Hay una serpiente en mi bota!"
+        >
+          <svg viewBox="0 0 120 120" className="w-full h-full overflow-visible">
+            {/* Sombra de la serpiente */}
+            <ellipse cx="60" cy="100" rx="45" ry="12" fill="rgba(0,0,0,0.25)" />
+
+            {/* Cuerpo enrollado */}
+            <path
+              d="M 25 95 C 20 80, 45 70, 65 72 C 85 74, 98 85, 92 95 C 85 104, 35 104, 25 95 Z"
+              fill="#22C55E"
+              stroke="#15803D"
+              strokeWidth="3.5"
+            />
+            {/* Espiral central */}
+            <path
+              d="M 40 82 C 40 68, 65 62, 80 72 C 88 78, 80 88, 65 86 C 50 84, 48 76, 55 70"
+              fill="none"
+              stroke="#16A34A"
+              strokeWidth="10"
+              strokeLinecap="round"
+            />
+            {/* Patrón de manchas en la espalda */}
+            <circle cx="45" cy="85" r="3" fill="#FACC15" />
+            <circle cx="65" cy="78" r="3" fill="#FACC15" />
+            <circle cx="85" cy="88" r="3" fill="#FACC15" />
+            <circle cx="35" cy="94" r="2.5" fill="#FACC15" />
+
+            {/* Cabeza de serpiente tierna */}
+            <path
+              d="M 72 58 C 72 45, 95 45, 98 58 C 100 70, 75 70, 72 58 Z"
+              fill="#4ADE80"
+              stroke="#15803D"
+              strokeWidth="3"
+            />
+            {/* Ojos grandes y tiernos tipo Pixar */}
+            <circle cx="82" cy="52" r="4.5" fill="white" stroke="#15803D" strokeWidth="1" />
+            <circle cx="83" cy="52" r="2.5" fill="#1E293B" />
+            <circle cx="84" cy="51" r="1" fill="white" />
+
+            <circle cx="92" cy="53" r="4.5" fill="white" stroke="#15803D" strokeWidth="1" />
+            <circle cx="93" cy="53" r="2.5" fill="#1E293B" />
+            <circle cx="94" cy="52" r="1" fill="white" />
+
+            {/* Lengüita bífida roja que sale */}
+            <path
+              d="M 98 62 L 108 64 M 108 64 L 112 61 M 108 64 L 112 67"
+              stroke="#EF4444"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
           </svg>
         </div>
 

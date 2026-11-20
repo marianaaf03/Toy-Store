@@ -201,11 +201,9 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
         {/* LADO IZQUIERDO: LOGO (POSICIÓN UNIFICADA Y CENTRADA EN LA NUBE) */}
         <div 
           className={`flex flex-col items-center mt-3.5 md:mt-6 pt-1 md:pt-1.5 relative cursor-pointer transition-all duration-300 ${
-            isDrawerOpen 
-              ? 'translate-x-0 md:translate-x-1' 
-              : isSimple 
-                ? 'translate-x-2 sm:translate-x-3 md:translate-x-6' 
-                : 'translate-x-0 md:translate-x-2'
+            isSimple
+              ? 'translate-x-3 sm:translate-x-6 md:translate-x-9'
+              : (isDrawerOpen ? 'translate-x-0 md:translate-x-1' : 'translate-x-0 md:translate-x-2')
           }`} 
           onClick={() => !isSimple && navigate('/')}
         >
@@ -215,7 +213,7 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
               alt="Toy Store Woody Icon" 
               onClick={() => navigate('/')} 
               onError={(e) => { e.target.src = corazonWoodyImg; }}
-              className="h-[74px] sm:h-[96px] md:h-[126px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer" 
+              className="h-[74px] sm:h-[96px] md:h-[130px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer" 
             />
           ) : (
             <>

@@ -83,7 +83,6 @@ export default function RoomWrapper({
   };
 
   const isAnyDrawerOpen = showConfesionesDrawer || showFilterSidebar || showPurposeSidebar;
-  const isHome = location.pathname === '/';
   
   const getThemeStyles = () => {
     switch (theme) {
@@ -136,7 +135,7 @@ export default function RoomWrapper({
   const activeBlur = isBlurred || showFilterSidebar || showPurposeSidebar;
 
   return (
-    <div className="min-h-screen relative flex flex-col overflow-x-hidden w-full">
+    <div className="min-h-screen relative flex flex-col overflow-hidden">
       
       {/* 
       ========================================================================
@@ -154,24 +153,23 @@ export default function RoomWrapper({
       DIFERENTES PANTALLAS Y LOS ELEMENTOS SE SUPERPONDRÁN.
       ========================================================================
       */}
-      {/* Capa de Fondo (Diorama de la Habitación de Andy) */}
       <div className={`absolute inset-0 z-0 transition-all duration-700 ${activeBlur ? 'blur-[6px]' : ''} pointer-events-none`}>
         {fullWallpaper && wallpaperContent ? (
-          /* MODO FONDO COMPLETO */
+          /* MODO FONDO COMPLETO (E.j. Tienda Woody) */
           <div className="absolute inset-0 z-0">
             {wallpaperContent}
           </div>
         ) : (
-          /* MODO DIORAMA (La pared con el tapiz erótico, zócalo y suelo) */
+          /* MODO DIORAMA (E.j. Inicio Andy - Las nubes van en la pared) */
           <div className="absolute inset-0 flex flex-col">
-            {/* 1. PARED (Wall - Con color insignia del personaje y tapiz con siluetas) */}
-            <div className={`relative flex-1 ${isHome ? '' : 'min-h-[calc(100vh-280px)]'} ${styles.wall}`}>
+            {/* 1. PARED (Wall - Con color insignia del personaje y doodles eróticos) */}
+            <div className={`relative flex-1 ${styles.wall}`}>
                {wallpaperContent}
                <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/5 pointer-events-none"></div>
             </div>
 
             {/* 2. ZÓCALO / MADERA BLANCA (Mid Section) */}
-            <div className={`${isHome ? 'h-[25vh] md:h-[30vh] border-t-8 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]' : 'h-16 sm:h-20 border-t-4 shadow-[0_-6px_20px_rgba(0,0,0,0.04)]'} bg-[#fcf8f2] relative border-white`}>
+            <div className={`h-[25vh] md:h-[30vh] bg-[#fcf8f2] relative border-t-8 border-white shadow-[0_-10px_30px_rgba(0,0,0,0.05)]`}>
               <div className="absolute inset-0 opacity-10" 
                    style={{ backgroundImage: 'linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '150px 100%' }}>
               </div>
@@ -179,26 +177,24 @@ export default function RoomWrapper({
             </div>
 
             {/* 3. SUELO COORDINADO CON EL TEMA (Bottom Section) */}
-            <div className={`${isHome ? 'min-h-[480px] md:h-[40vh]' : 'min-h-[300px] sm:min-h-[360px]'} ${styles.floor} relative shadow-[inset_0_20px_40px_rgba(0,0,0,0.4)] transition-colors duration-700`}>
+            <div className={`min-h-[480px] md:h-[40vh] ${styles.floor} relative shadow-[inset_0_20px_40px_rgba(0,0,0,0.4)] transition-colors duration-700`}>
                <div className="absolute inset-0 opacity-20" 
                     style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent 0, transparent 80px, rgba(0,0,0,0.5) 81px)' }}>
                </div>
                <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent"></div>
 
-               {/* JUGUETES SOBRE EL SUELO: Personalizados según la página */}
+               {/* 🛑 ELEMENTOS 3D FUSIONADOS ESTÁTICAMENTE AL HORIZONTE DEL PISO 🛑 */}
                {!location.pathname.startsWith('/admin') && (
-                 <div className="absolute top-0 left-0 w-full h-0 z-40">
-                    <div className="max-w-7xl mx-auto relative w-full h-0 pointer-events-auto">
-                        {location.pathname === '/tienda' ? (
-                          <WoodyFloorElements />
-                        ) : (
-                          <>
-                            <PixarBall />
-                            <ToyBlocks />
-                          </>
-                        )}
-                    </div>
-                 </div>
+                 (theme === 'woody' || location.pathname === '/tienda') ? (
+                   <WoodyFloorElements />
+                 ) : (
+                   <div className="absolute top-0 left-0 w-full h-0 z-40">
+                      <div className="max-w-7xl mx-auto relative w-full h-0 pointer-events-auto">
+                          <PixarBall />
+                          <ToyBlocks />
+                      </div>
+                   </div>
+                 )
                )}
             </div>
           </div>

@@ -30,7 +30,16 @@ const getProductos = async (req, res) => {
       params.push(nivelJuego);
     }
 
-    query += ' ORDER BY created_at DESC';
+    query += ` ORDER BY CASE 
+      WHEN LOWER(categoria) LIKE '%vibra%' THEN 1
+      WHEN LOWER(categoria) LIKE '%lence%' THEN 2
+      WHEN LOWER(categoria) LIKE '%anal%' OR LOWER(categoria) LIKE '%plug%' THEN 3
+      WHEN LOWER(categoria) LIKE '%dildo%' THEN 4
+      WHEN LOWER(categoria) LIKE '%cosmet%' THEN 5
+      WHEN LOWER(categoria) LIKE '%acces%' THEN 6
+      WHEN LOWER(categoria) LIKE '%kit%' THEN 7
+      ELSE 8
+    END ASC, id ASC`;
 
     const [rows] = await db.query(query, params);
     res.json(rows);
