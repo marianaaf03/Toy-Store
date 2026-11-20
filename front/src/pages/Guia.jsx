@@ -124,50 +124,22 @@ export default function Guia() {
               >
                 {/* LOTSO ABRAZADOR PARADO AL FINAL DEL RECUADRO Y ABRAZANDO EL BORDE */}
                 {esPrimeraHuella && (
-                  <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 -right-12 sm:-right-16 md:-right-22 lg:-right-26 z-30 pointer-events-none select-none transition-transform group-hover:scale-105 duration-300">
+                  <div className="absolute bottom-1 sm:bottom-2 md:bottom-2.5 left-full -ml-3 sm:-ml-3.5 md:-ml-4 z-30 pointer-events-none select-none transition-transform group-hover:scale-105 duration-300">
                     <img 
                       src="/images/lotso_abrazador.png" 
                       alt="Lotso Abrazador"
-                      className="w-20 sm:w-24 md:w-28 lg:w-32 h-auto object-contain drop-shadow-2xl" 
+                      className="w-20 sm:w-24 md:w-28 lg:w-30 h-auto object-contain drop-shadow-2xl" 
                     />
                   </div>
                 )}
 
-                {/* DEDITOS DE LA HUELLA DEL OSITO LOTSO DE PELUCHE (4 almohadillas detalladas y arqueadas) */}
-                <div className="flex items-end justify-center gap-2.5 sm:gap-4 -mb-6 sm:-mb-7 relative z-20">
-                  
-                  {/* Dedo 1 (Izquierdo exterior) */}
-                  <div className="flex flex-col items-center transform -rotate-[20deg] -translate-x-1 transition-transform group-hover:scale-110">
-                    <div className="w-2.5 h-3.5 bg-rose-100 rounded-t-full border border-rose-300 shadow-xs -mb-1 relative z-30"></div>
-                    <div className="w-10 h-13 sm:w-12 sm:h-15 rounded-[50%] bg-gradient-to-b from-[#f472b6] via-[#db2777] to-[#9d174d] border-[3.5px] border-[#831843] shadow-[0_6px_12px_rgba(0,0,0,0.22)] flex items-center justify-center p-1 relative z-20">
-                      <div className="w-5 h-7 sm:w-6 sm:h-9 rounded-[50%] bg-gradient-to-b from-white/95 to-rose-200/90 border border-rose-300/80 shadow-inner"></div>
-                    </div>
-                  </div>
-
-                  {/* Dedo 2 (Central izquierdo más alto) */}
-                  <div className="flex flex-col items-center transform -rotate-[7deg] -translate-y-2.5 transition-transform group-hover:scale-110">
-                    <div className="w-2.5 h-4 bg-rose-100 rounded-t-full border border-rose-300 shadow-xs -mb-1 relative z-30"></div>
-                    <div className="w-12 h-15 sm:w-14 sm:h-18 rounded-[50%] bg-gradient-to-b from-[#f472b6] via-[#db2777] to-[#9d174d] border-[3.5px] border-[#831843] shadow-[0_6px_14px_rgba(0,0,0,0.24)] flex items-center justify-center p-1.5 relative z-20">
-                      <div className="w-6 h-8 sm:w-7 sm:h-10 rounded-[50%] bg-gradient-to-b from-white/95 to-rose-200/90 border border-rose-300/80 shadow-inner"></div>
-                    </div>
-                  </div>
-
-                  {/* Dedo 3 (Central derecho más alto) */}
-                  <div className="flex flex-col items-center transform rotate-[7deg] -translate-y-2.5 transition-transform group-hover:scale-110">
-                    <div className="w-2.5 h-4 bg-rose-100 rounded-t-full border border-rose-300 shadow-xs -mb-1 relative z-30"></div>
-                    <div className="w-12 h-15 sm:w-14 sm:h-18 rounded-[50%] bg-gradient-to-b from-[#f472b6] via-[#db2777] to-[#9d174d] border-[3.5px] border-[#831843] shadow-[0_6px_14px_rgba(0,0,0,0.24)] flex items-center justify-center p-1.5 relative z-20">
-                      <div className="w-6 h-8 sm:w-7 sm:h-10 rounded-[50%] bg-gradient-to-b from-white/95 to-rose-200/90 border border-rose-300/80 shadow-inner"></div>
-                    </div>
-                  </div>
-
-                  {/* Dedo 4 (Derecho exterior) */}
-                  <div className="flex flex-col items-center transform rotate-[20deg] translate-x-1 transition-transform group-hover:scale-110">
-                    <div className="w-2.5 h-3.5 bg-rose-100 rounded-t-full border border-rose-300 shadow-xs -mb-1 relative z-30"></div>
-                    <div className="w-10 h-13 sm:w-12 sm:h-15 rounded-[50%] bg-gradient-to-b from-[#f472b6] via-[#db2777] to-[#9d174d] border-[3.5px] border-[#831843] shadow-[0_6px_12px_rgba(0,0,0,0.22)] flex items-center justify-center p-1 relative z-20">
-                      <div className="w-5 h-7 sm:w-6 sm:h-9 rounded-[50%] bg-gradient-to-b from-white/95 to-rose-200/90 border border-rose-300/80 shadow-inner"></div>
-                    </div>
-                  </div>
-
+                {/* HUELLITAS DE LOTSO ESTILO CRAYOLA (IMAGEN OFICIAL SUBIDA POR EL USUARIO) */}
+                <div className="flex justify-center -mb-5 sm:-mb-6 relative z-20 pointer-events-none">
+                  <img 
+                    src="/images/lotso_huellas.png" 
+                    alt="Huellitas Lotso"
+                    className="h-14 sm:h-16 md:h-20 w-auto object-contain drop-shadow-md transition-transform group-hover:scale-105" 
+                  />
                 </div>
 
                 {/* ALMOHADILLA PRINCIPAL (CUERPO ANCHO DE LA HUELLA CON MARGEN EXTRA GRUESO TIPO PELAJE) */}

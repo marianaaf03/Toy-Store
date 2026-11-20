@@ -9,6 +9,8 @@ import AvatarHat from './AvatarHat';
 import corazonWoodyImg from '../assets/corazon_woody.png';
 import corazonLotsoImg from '../assets/corazon_lotso.png';
 import corazonJessyImg from '../assets/corazon_jessy.png';
+import corazonAlienImg from '../assets/corazon_alien.png';
+import corazonBuzzImg from '../assets/corazon_buzz.png';
 import lotsoBearImg from '../assets/lotso_bear.png';
 import jessyHeartImg from '../assets/jessy_heart.png';
 import aliensFriendsImg from '../assets/aliens_friends.png';
@@ -229,6 +231,22 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
               alt="Toy Store Jessy Icon" 
               onClick={() => navigate('/')} 
               onError={(e) => { e.target.src = '/images/corazon_jessy.png'; }}
+              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1" 
+            />
+          ) : location.pathname === '/explora' ? (
+            <img 
+              src={corazonAlienImg} 
+              alt="Toy Store Alien Icon" 
+              onClick={() => navigate('/')} 
+              onError={(e) => { e.target.src = '/images/corazon_alien.png'; }}
+              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1" 
+            />
+          ) : location.pathname === '/contacto' ? (
+            <img 
+              src={corazonBuzzImg} 
+              alt="Toy Store Buzz Icon" 
+              onClick={() => navigate('/')} 
+              onError={(e) => { e.target.src = '/images/corazon_buzz.png'; }}
               className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1" 
             />
           ) : (
