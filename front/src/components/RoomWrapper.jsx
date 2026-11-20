@@ -103,9 +103,9 @@ export default function RoomWrapper({
         };
       case 'aliens':
         return {
-          wall: 'bg-[#4DBA2D]', // Verde Alien vibrante oficial idéntico al logo corazon_alien.png
+          wall: 'bg-[#1E1B4B]', // Azul noche cósmico Marcianos (Pizza Planet retro original)
           floor: 'bg-[#B45309]',
-          accent: 'border-[#4DBA2D]',
+          accent: 'border-[#1E1B4B]',
           wallpaper: '',
         };
       case 'lotso':

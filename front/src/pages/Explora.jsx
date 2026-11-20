@@ -6,14 +6,14 @@ import { CATALOGO_REAL } from '../data/catalogoProductos';
 
 // Franja a cuadros rojos y blancos idéntica a la del cartel oficial de Pizza Planet
 const CheckeredStripe = () => (
-  <div 
-    className="w-full h-4 sm:h-5 shrink-0" 
+  <div
+    className="w-full h-4 sm:h-5 shrink-0"
     style={{
       backgroundImage: 'linear-gradient(45deg, #E52521 25%, transparent 25%), linear-gradient(-45deg, #E52521 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #E52521 75%), linear-gradient(-45deg, transparent 75%, #E52521 75%)',
       backgroundSize: '16px 16px',
       backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px',
       backgroundColor: '#ffffff'
-    }} 
+    }}
   />
 );
 
@@ -280,10 +280,10 @@ export default function Explora() {
               opacity: p.opacity
             }}
           >
-            <img 
-              src="/images/rodaja_pizza.png" 
+            <img
+              src="/images/rodaja_pizza.png"
               alt="Rodaja de Pizza Planet"
-              className="w-full h-auto object-contain filter drop-shadow-xs" 
+              className="w-full h-auto object-contain filter drop-shadow-xs"
             />
           </div>
         ))}
@@ -291,105 +291,171 @@ export default function Explora() {
 
       {/* =========================================================================
           CONTENEDOR PRINCIPAL: ESPACIADO FLUIDO IDÉNTICO A LAS DEMÁS PÁGINAS
-          Con altura completa para que el cartel quede en la pared y la máquina en el suelo
+          Con vibra retro-futurista Pizza Planet original: cartel, posters y arcade
           ========================================================================= */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-4 font-fredoka select-none flex-1 flex flex-col justify-between items-center min-h-[calc(100vh-80px)]">
-        
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-8 font-fredoka select-none flex-1 flex flex-col justify-between items-center min-h-[calc(100vh-80px)]">
+
         {/* =====================================================================
-            1. ZONA PARED: CARTEL REDIMENSIONADO + CUADRO COHETE PIZZA PLANET
-            Ambos ubicados sobre el tapiz verde alien con espacio de sobra de la navbar
+            1. ZONA PARED: CARTEL HANGING SIGN + 3 POSTERS REGADOS EN LA PARED
             ===================================================================== */}
-        <div className="w-full flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-2 mb-4">
+        <div className="w-full flex flex-col items-center mt-2 mb-6">
           
-          {/* Cartel más pequeño y proporcionado */}
-          <div className="w-full max-w-[420px] sm:max-w-[480px] md:max-w-[530px] flex justify-center transition-transform hover:scale-[1.01] duration-300">
-            <img 
-              src="/images/cartel_aliens.png" 
-              onError={(e) => { e.target.src = '/images/letrero_aliens.png'; }}
-              alt="¿Quieres explorarte y no sabes por dónde empezar? - Pizza Planet"
-              className="w-full h-auto object-contain drop-shadow-[0_15px_35px_rgba(0,0,0,0.25)] rounded-2xl sm:rounded-3xl border-2 border-white/80"
-            />
+          <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 xl:gap-10">
+
+            {/* POSTER 1 (Izquierda superior) */}
+            <div className="hidden lg:block shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-3 self-center">
+              <div className="p-2 sm:p-2.5 bg-white/95 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.7)] border-2 border-slate-300/40">
+                <img 
+                  src="/images/cuadro_aliens.png" 
+                  alt="Poster Cohete Pizza Planet"
+                  className="w-44 xl:w-52 h-auto object-contain rounded-xl"
+                />
+              </div>
+            </div>
+
+            {/* CARTEL PRINCIPAL HANGING SIGN CON CADENAS Y REMACHES */}
+            <div className="relative flex flex-col items-center w-full max-w-[560px] sm:max-w-[640px] md:max-w-[700px] lg:max-w-[740px]">
+              
+              {/* Cadenas metálicas de suspensión retro arcade */}
+              <div className="w-full flex justify-between px-14 sm:px-20 -mb-3 z-10 pointer-events-none">
+                <div className="w-2.5 h-10 sm:h-12 bg-gradient-to-b from-slate-400 via-slate-600 to-slate-800 rounded-sm shadow-md border border-slate-900/60"></div>
+                <div className="w-2.5 h-10 sm:h-12 bg-gradient-to-b from-slate-400 via-slate-600 to-slate-800 rounded-sm shadow-md border border-slate-900/60"></div>
+              </div>
+
+              {/* Marco arcade oscuro con remaches y neón sutil */}
+              <div className="w-full p-2 sm:p-2.5 bg-gradient-to-b from-[#2a2d3d] via-[#1a1c26] to-[#0e1017] rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.85),0_0_35px_rgba(229,37,33,0.3)] border-2 border-slate-700/80 relative transition-transform hover:scale-[1.01] duration-300">
+                
+                {/* Remaches metálicos en las 4 esquinas */}
+                <div className="absolute top-3 left-3 w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-slate-500 via-slate-300 to-white border border-slate-600 shadow-inner z-20"></div>
+                <div className="absolute top-3 right-3 w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-slate-500 via-slate-300 to-white border border-slate-600 shadow-inner z-20"></div>
+                <div className="absolute bottom-3 left-3 w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-slate-500 via-slate-300 to-white border border-slate-600 shadow-inner z-20"></div>
+                <div className="absolute bottom-3 right-3 w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-slate-500 via-slate-300 to-white border border-slate-600 shadow-inner z-20"></div>
+
+                <img 
+                  src="/images/cartel_aliens.png?v=2" 
+                  onError={(e) => { e.target.src = '/images/letrero_aliens.png'; }}
+                  alt="¿Quieres explorarte y no sabes por dónde empezar? - Pizza Planet"
+                  className="w-full h-auto object-contain rounded-2xl"
+                />
+              </div>
+
+            </div>
+
+            {/* POSTER 2 (Derecha superior) */}
+            <div className="hidden lg:block shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-3 self-center">
+              <div className="p-2 sm:p-2.5 bg-white/95 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.7)] border-2 border-slate-300/40">
+                <img 
+                  src="/images/cuadro_aliens2.jpg" 
+                  alt="Poster Retro Pizza Planet Space"
+                  className="w-44 xl:w-52 h-auto object-contain rounded-xl"
+                />
+              </div>
+            </div>
+
           </div>
 
-          {/* Cuadro de Pizza Planet colgado en la pared al lado del cartel */}
-          <div className="shrink-0 flex justify-center transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer">
-            <div className="relative rotate-2 drop-shadow-[0_15px_25px_rgba(0,0,0,0.3)]">
-              <img 
-                src="/images/cuadro_aliens.png" 
-                alt="Cuadro Cohete Pizza Planet"
-                className="w-28 sm:w-36 md:w-40 lg:w-44 h-auto object-contain rounded-xl"
-              />
+          {/* POSTERS REGADOS EN LA PARED (Visibles en todas las pantallas con rotaciones lúdicas) */}
+          <div className="w-full flex items-center justify-center lg:justify-start gap-4 sm:gap-8 mt-5 px-4 max-w-4xl">
+            {/* En móviles mostramos Poster 1 aquí */}
+            <div className="lg:hidden shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 -rotate-3 cursor-pointer">
+              <div className="p-1.5 sm:p-2 bg-white/95 rounded-xl shadow-lg border border-slate-300/40">
+                <img 
+                  src="/images/cuadro_aliens.png" 
+                  alt="Poster Cohete Pizza Planet"
+                  className="w-28 sm:w-36 h-auto object-contain rounded-lg"
+                />
+              </div>
+            </div>
+
+            {/* POSTER 3: Regado en la pared */}
+            <div className="shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-2 lg:-rotate-2 lg:ml-16">
+              <div className="p-2 sm:p-2.5 bg-white/95 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.7)] border-2 border-slate-300/40">
+                <img 
+                  src="/images/cuadro_aliens3.png" 
+                  alt="Poster Marcianitos Pizza Planet"
+                  className="w-32 sm:w-40 lg:w-48 xl:w-52 h-auto object-contain rounded-xl"
+                />
+              </div>
+            </div>
+
+            {/* En móviles mostramos Poster 2 aquí */}
+            <div className="lg:hidden shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 rotate-3 cursor-pointer">
+              <div className="p-1.5 sm:p-2 bg-white/95 rounded-xl shadow-lg border border-slate-300/40">
+                <img 
+                  src="/images/cuadro_aliens2.jpg" 
+                  alt="Poster Retro Pizza Planet Space"
+                  className="w-28 sm:w-36 h-auto object-contain rounded-lg"
+                />
+              </div>
             </div>
           </div>
 
         </div>
 
         {/* =====================================================================
-            2. ZONA CENTRAL: EL GRAN BOTÓN ROJO 3D ("PRESIONAR AQUÍ")
+            2. ZONA CENTRAL: BOTÓN RETRO ARCADE 1990s ("PRESIONAR AQUÍ")
+            Inspirado en los pulsadores mecánicos originales de Pizza Planet
             ===================================================================== */}
-        <div className="flex flex-col items-center my-auto py-2">
+        <div className="flex flex-col items-center my-auto py-4">
 
-          {/* Aro exterior metálico / cromado */}
-          <div className="w-44 h-44 sm:w-52 sm:h-52 md:w-56 md:h-56 rounded-full bg-gradient-to-b from-slate-200 via-slate-400 to-slate-700 p-3.5 sm:p-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex items-center justify-center border-2 border-slate-300/80">
+          {/* Bisel/carcasa circular negra de arcade tradicional */}
+          <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-[#18181b] border-4 sm:border-[6px] border-[#27272a] shadow-[0_20px_45px_rgba(0,0,0,0.9),inset_0_3px_6px_rgba(255,255,255,0.15)] flex items-center justify-center p-3 sm:p-4 relative">
 
-            {/* Aro de advertencia neón rojo */}
-            <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center ring-4 ring-[#E52521]/40 p-2 sm:p-2.5">
+            {/* Aro interior de encaje del pulsador */}
+            <div className="w-full h-full rounded-full bg-[#09090b] p-2 flex items-center justify-center border-2 border-black shadow-inner">
 
-              {/* CÚPULA 3D DEL BOTÓN ROJO TÁCTIL */}
+              {/* CÚPULA CONVEXA ROJO CEREZA ARCADE */}
               <button
                 type="button"
                 onClick={handlePulsarBotonRojo}
-                className={`w-full h-full rounded-full bg-gradient-to-b from-[#ff3834] via-[#E52521] to-[#991b1b] text-white font-black flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 shadow-[inset_0_8px_16px_rgba(255,255,255,0.5),0_15px_30px_rgba(153,27,27,0.7)] animate-red-button-glow ${
+                className={`w-full h-full rounded-full bg-gradient-to-b from-[#ff3834] via-[#d61e1b] to-[#7f1d1d] text-white font-black flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 shadow-[inset_0_6px_12px_rgba(255,255,255,0.45),0_10px_20px_rgba(0,0,0,0.6)] animate-red-button-glow ${
                   isPressingBtn 
-                    ? 'scale-90 translate-y-3 shadow-inner' 
-                    : 'hover:scale-105 active:scale-95 active:translate-y-2'
+                    ? 'scale-90 translate-y-2 shadow-[inset_0_6px_14px_rgba(0,0,0,0.85)]' 
+                    : 'hover:scale-[1.03] active:scale-95 active:translate-y-2'
                 }`}
-                title="Presionar aquí para abrir el quizz"
+                title="Presionar aquí para abrir la trivia"
               >
-                <span className="text-lg sm:text-2xl md:text-2xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
+                {/* Reflejo superior de la cúpula */}
+                <div className="w-20 h-3 bg-white/25 rounded-full blur-[1px] -mt-1 mb-1"></div>
+
+                <span className="text-xl sm:text-2xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
                   PRESIONAR
                 </span>
-                <span className="text-lg sm:text-2xl md:text-2xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
+                <span className="text-xl sm:text-2xl font-black uppercase tracking-wider drop-shadow-md leading-tight">
                   AQUÍ
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-red-200 mt-0.5 uppercase opacity-90">
-                  INICIAR QUIZZ
-                </span>
+
+                {/* Placa retro arcade amarilla */}
+                <div className="mt-1.5 px-2.5 py-0.5 rounded-full bg-black/60 border border-amber-400/80">
+                  <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-widest text-amber-300 uppercase">
+                    1 JUGADOR • START
+                  </span>
+                </div>
               </button>
 
             </div>
 
           </div>
 
+          <span className="text-[11px] font-black uppercase tracking-widest text-slate-400 mt-2 opacity-80">
+            PIZZA PLANET ARCADE • TEST SENSORIAL
+          </span>
+
         </div>
 
         {/* =====================================================================
-            3. ZONA SUELO DE MADERA: MÁQUINA DE LA GARRA CON ALIENS ADENTRO
-            Ubicada exactamente en el suelo de madera, tal como los juguetes en Inicio
+            3. ZONA SUELO: MÁQUINA DE LA GARRA ARCADE (MÁS GRANDE Y MÁS ARRIBA)
             ===================================================================== */}
-        <div className="w-full flex items-end justify-between sm:justify-end px-2 sm:px-8 mt-2 pb-2">
+        <div className="w-full flex justify-center sm:justify-end px-4 sm:px-12 -translate-y-12 sm:-translate-y-18 md:-translate-y-24 lg:-translate-y-28 pointer-events-auto">
           
-          {/* Diálogo de los marcianitos */}
-          <div className="hidden sm:flex items-center gap-3 bg-white/95 border-2 border-slate-200 rounded-2xl p-2.5 sm:p-3 max-w-xs shadow-lg backdrop-blur-md mb-4 mr-4">
-            <img
-              src="/images/aliens_friends.png"
-              alt="Marcianitos Pizza Planet"
-              className="w-10 sm:w-12 h-auto object-contain shrink-0"
-            />
-            <p className="text-[11px] sm:text-xs text-[#1e3a8a] font-bold italic leading-tight">
-              “¡Ooooh! ¡Nuestra máquina de La Garra en el suelo! Pulsa el botón para tu viaje sensorial.”
-            </p>
-          </div>
-
-          {/* Máquina de los Aliens en el suelo */}
-          <div className="relative group transition-transform duration-300 hover:scale-105 cursor-pointer ml-auto">
+          <div className="relative group transition-transform duration-300 hover:scale-105 cursor-pointer">
             <img 
               src="/images/maquina_aliens.png" 
               alt="Máquina de Marcianitos Pizza Planet"
-              className="w-36 sm:w-48 md:w-56 lg:w-64 h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.55)]"
+              className="w-56 sm:w-72 md:w-84 lg:w-96 xl:w-[410px] h-auto object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.7)]"
             />
-            {/* Sombra de contacto realista en la madera */}
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-3 bg-black/50 blur-md rounded-full pointer-events-none"></div>
+            {/* Sombra de contacto realista en el piso */}
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-4 bg-black/70 blur-xl rounded-full pointer-events-none"></div>
           </div>
 
         </div>
@@ -404,7 +470,7 @@ export default function Explora() {
         <div className="fixed inset-0 z-[300] bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none font-fredoka">
 
           <div className="relative w-full max-w-2xl bg-white rounded-[2rem] sm:rounded-[2.5rem] border-4 sm:border-[6px] border-[#E52521] shadow-[0_25px_80px_rgba(229,37,33,0.35)] overflow-hidden flex flex-col justify-between max-h-[92vh]">
-            
+
             {/* FRANJA SUPERIOR A CUADROS ROJOS Y BLANCOS (IDÉNTICA AL CARTEL) */}
             <CheckeredStripe />
 
@@ -423,7 +489,7 @@ export default function Explora() {
               {!mostrarResultados ? (
                 /* ================= MODO PREGUNTAS (1 A 7) ================= */
                 <div className="flex flex-col items-center">
-                  
+
                   {/* Cabecera con Fase y Progreso */}
                   <div className="text-center w-full mb-6">
                     <div className="flex items-center justify-between text-xs font-black text-[#E52521] uppercase tracking-widest mb-2 px-1">
@@ -438,7 +504,7 @@ export default function Explora() {
 
                     {/* Barra de progreso en rojo Pizza Planet */}
                     <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200 p-0.5">
-                      <div 
+                      <div
                         className="h-full bg-gradient-to-r from-red-500 via-rose-500 to-[#E52521] rounded-full transition-all duration-300 shadow-xs"
                         style={{ width: `${((preguntaActual + 1) / 7) * 100}%` }}
                       ></div>
@@ -480,7 +546,7 @@ export default function Explora() {
               ) : (
                 /* ================= MODO RESULTADOS: RECOMENDACIÓN DE PRODUCTOS Y LENCERÍA ================= */
                 <div className="flex flex-col items-center animate-in fade-in zoom-in-95 duration-300">
-                  
+
                   {/* Cabecera del Resultado */}
                   <div className="text-center mb-6">
                     <span className="inline-block px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-[#E52521] text-[11px] font-black tracking-widest uppercase mb-2">
@@ -500,7 +566,7 @@ export default function Explora() {
                       Secciones recomendadas:
                     </span>
                     {recomendacion.categorias.map((cat, idx) => (
-                      <span 
+                      <span
                         key={idx}
                         className="px-3 py-1 rounded-full bg-red-50 text-[#E52521] border border-red-300 text-xs font-black uppercase shadow-2xs"
                       >
@@ -512,14 +578,14 @@ export default function Explora() {
                   {/* Tarjetas de los 3 productos recomendados de CATALOGO_REAL */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 w-full mb-6">
                     {recomendacion.productos.map(p => (
-                      <div 
+                      <div
                         key={p.id}
                         className="bg-slate-50/80 rounded-2xl border-2 border-slate-200 p-3 flex flex-col justify-between text-center group hover:border-[#E52521] transition shadow-xs"
                       >
                         <div className="w-full h-28 rounded-xl bg-white flex items-center justify-center p-2 mb-2 group-hover:scale-105 transition-transform overflow-hidden shadow-2xs">
-                          <img 
-                            src={p.imagen} 
-                            alt={p.nombre} 
+                          <img
+                            src={p.imagen}
+                            alt={p.nombre}
                             className="max-h-full max-w-full object-contain drop-shadow-sm"
                           />
                         </div>
