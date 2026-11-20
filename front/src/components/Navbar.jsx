@@ -206,14 +206,13 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
           onClick={() => !isSimple && navigate('/')}
         >
           {isSimple ? (
-            <div className="flex justify-center items-center md:min-w-[150px]" onClick={() => navigate('/')}>
-              <img 
-                src={corazonWoodyImg} 
-                alt="Toy Store Woody Icon" 
-                onError={(e) => { e.target.src = corazonWoodyImg; }}
-                className="h-[85px] sm:h-[105px] md:h-[135px] w-auto object-contain z-20 drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] transition-transform hover:scale-108 active:scale-95 cursor-pointer" 
-              />
-            </div>
+            <img 
+              src={corazonWoodyImg} 
+              alt="Toy Store Woody Icon" 
+              onClick={() => navigate('/')} 
+              onError={(e) => { e.target.src = corazonWoodyImg; }}
+              className="h-[64px] sm:h-[84px] md:h-[118px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer" 
+            />
           ) : (
             <>
               <img 

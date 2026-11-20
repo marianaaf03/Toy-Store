@@ -14,22 +14,24 @@ export default function Tienda() {
   const [pagina, setPagina] = useState(1);
   const [filtroTexto, setFiltroTexto] = useState(busqueda);
 
-  // Carrito guardado en localStorage
+  // Carrito sincronizado con localStorage (clave toy_carrito)
   const [carrito, setCarrito] = useState(() => {
     try {
-      const guardado = localStorage.getItem('toy_cart');
-      return guardado ? JSON.parse(guardado) : [];
-    } catch {
-      return [];
-    }
+      const stored = localStorage.getItem('toy_carrito') || localStorage.getItem('toy_cart');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch {}
+    return [];
   });
-  const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
 
-  // Modal emergente del producto al hacer clic en la caja de juguete
+  // Modal emergente del producto al hacer clic en cualquier caja de juguete
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [cantidadModal, setCantidadModal] = useState(1);
+  const [agregadoExito, setAgregadoExito] = useState(false);
 
-  const ITEMS_POR_PAGINA = 12; // 3 estantes de 4 cajas = 12 cajas por estantería
+  const ITEMS_POR_PAGINA = 12; // 3 estantes x 4 cajas = 12 cajas
 
   useEffect(() => {
     fetchProductos();
@@ -37,10 +39,9 @@ export default function Tienda() {
 
   useEffect(() => {
     try {
+      localStorage.setItem('toy_carrito', JSON.stringify(carrito));
       localStorage.setItem('toy_cart', JSON.stringify(carrito));
-    } catch {
-      // Ignorar
-    }
+    } catch {}
   }, [carrito]);
 
   useEffect(() => {
@@ -81,38 +82,11 @@ export default function Tienda() {
       }
       return [...prev, { ...producto, cantidad }];
     });
-    setCartDrawerOpen(true);
+    setAgregadoExito(true);
+    setTimeout(() => setAgregadoExito(false), 2200);
   };
 
-  const modificarCantidad = (id, delta) => {
-    setCarrito(prev => prev.map(item => {
-      if (item.id === id) {
-        const nueva = item.cantidad + delta;
-        return nueva > 0 ? { ...item, cantidad: nueva } : null;
-      }
-      return item;
-    }).filter(Boolean));
-  };
-
-  const eliminarDelCarrito = (id) => {
-    setCarrito(prev => prev.filter(item => item.id !== id));
-  };
-
-  const totalCarrito = carrito.reduce((sum, item) => sum + (Number(item.precio) * item.cantidad), 0);
-  const itemsCount = carrito.reduce((sum, item) => sum + item.cantidad, 0);
-
-  const enviarPedidoWhatsApp = () => {
-    if (carrito.length === 0) return;
-    let mensaje = `*¡Hola Toy Store! Quiero realizar el siguiente pedido discreto:*\n\n`;
-    carrito.forEach((item, idx) => {
-      mensaje += `${idx + 1}. *${item.nombre}* x${item.cantidad} - $${(Number(item.precio) * item.cantidad).toLocaleString('es-CO')} COP\n`;
-    });
-    mensaje += `\n*TOTAL:* $${totalCarrito.toLocaleString('es-CO')} COP\n`;
-    mensaje += `*Solicito empaque 100% discreto y confidencial.*`;
-    
-    const url = `https://wa.me/573009028001?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, '_blank');
-  };
+  const totalArticulosCarrito = carrito.reduce((sum, item) => sum + item.cantidad, 0);
 
   // Filtrado de productos
   const productosFiltrados = productos.filter(p => {
@@ -127,7 +101,7 @@ export default function Tienda() {
   const inicio = (pagina - 1) * ITEMS_POR_PAGINA;
   const productosVisibles = productosFiltrados.slice(inicio, inicio + ITEMS_POR_PAGINA);
 
-  // Agrupar en hasta 3 estantes de 4 cajas cada uno
+  // Agrupar en hasta 3 estantes de 4 cajas
   const estantes = [];
   for (let i = 0; i < productosVisibles.length; i += 4) {
     estantes.push(productosVisibles.slice(i, i + 4));
@@ -143,7 +117,7 @@ export default function Tienda() {
     { id: 'anales', label: 'Plugs & Anales' },
     { id: 'dildos', label: 'Dildos' },
     { id: 'cosmetica', label: 'Cosmética' },
-    { id: 'accesorios', label: 'Accesorios' },
+    { id: 'accesorios', label: 'Accesorios & BDSM' },
     { id: 'kits', label: 'Kits & Sorpresas' }
   ];
 
@@ -152,115 +126,164 @@ export default function Tienda() {
       theme="woody" 
       wallpaperContent={<AndyCloudsWallpaper />}
     >
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-3 sm:px-6 pt-6 pb-24 font-fredoka flex flex-col items-center">
+      <style>{`
+        @keyframes swingSign {
+          0%, 100% { transform: rotate(-4.5deg); }
+          50% { transform: rotate(4.5deg); }
+        }
+        .animate-swing-sign {
+          transform-origin: top center;
+          animation: swingSign 3.5s ease-in-out infinite;
+        }
+        @keyframes floatHangingCloud {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-5px); }
+        }
+        .animate-hanging-cloud {
+          animation: floatHangingCloud 4s ease-in-out infinite;
+        }
+      `}</style>
+
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-3 sm:px-6 pt-2 pb-24 font-fredoka flex flex-col items-center">
         
-        {/* TÍTULO Y FILTROS SOBRE LA ESTANTERÍA */}
-        <div className="text-center max-w-3xl mx-auto mb-6">
-          <div className="inline-flex items-center gap-2 bg-white/95 border-2 border-amber-300 text-[#1e3a8a] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shadow-md mb-2">
-            <span>ARMARIO DE JUGUETES DE WOODY</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-            <span>EDICIÓN COLECCIONISTA</span>
-          </div>
+        {/* =========================================================================
+            ZONA SUPERIOR: NUBE BUSCADORA COLGANTE Y CARTEL "ADD TO CART"
+            ========================================================================= */}
+        <div className="w-full relative flex items-center justify-center my-3 min-h-[160px]">
+          
+          {/* 1. SEGUNDA NUBE: EL BUSCADOR Y SECCIONES COLGANDO DE LA NUBE PRINCIPAL */}
+          <div className="relative z-10 flex flex-col items-center animate-hanging-cloud max-w-2xl w-full mx-auto px-2">
+            
+            {/* Cuerdas colgantes que conectan con la nube superior */}
+            <div className="w-full max-w-md flex justify-between px-12 -mb-1 relative z-0">
+              <div className="w-[2.5px] h-8 sm:h-11 bg-slate-400/70 shadow-xs"></div>
+              <div className="w-[2.5px] h-8 sm:h-11 bg-slate-400/70 shadow-xs"></div>
+            </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)] tracking-tight uppercase">
-            Tienda Toy Store
-          </h1>
+            {/* La Nube Blanca con forma suave y sombra */}
+            <div className="w-full bg-white/95 backdrop-blur-md rounded-[2.6rem] p-4 sm:p-5 shadow-[0_15px_35px_rgba(0,0,0,0.18)] border-3 border-sky-200 relative z-10">
+              
+              {/* Barra de entrada de búsqueda */}
+              <div className="flex items-center gap-2 w-full">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    value={filtroTexto}
+                    onChange={(e) => setFiltroTexto(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        setSearchParams(prev => {
+                          const n = new URLSearchParams(prev);
+                          if (filtroTexto.trim()) n.set('buscar', filtroTexto.trim());
+                          else n.delete('buscar');
+                          return n;
+                        });
+                      }
+                    }}
+                    placeholder="Buscar en el baúl de juguetes..."
+                    className="w-full pl-10 pr-9 py-2.5 bg-amber-50/60 rounded-2xl border-2 border-amber-200 text-slate-800 text-xs sm:text-sm font-bold shadow-inner focus:outline-none focus:border-[#1e3a8a] focus:bg-white transition placeholder:text-slate-400"
+                  />
+                  <svg className="w-4 h-4 text-amber-600 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  {filtroTexto && (
+                    <button
+                      onClick={() => {
+                        setFiltroTexto('');
+                        setSearchParams(prev => {
+                          const n = new URLSearchParams(prev);
+                          n.delete('buscar');
+                          return n;
+                        });
+                      }}
+                      className="w-5 h-5 rounded-full bg-slate-200 text-slate-600 absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center justify-center text-xs font-bold"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
 
-          {/* Barra de Búsqueda */}
-          <div className="mt-4 flex flex-col sm:flex-row items-center gap-2 w-full max-w-xl mx-auto">
-            <div className="relative flex-1 w-full">
-              <input
-                type="text"
-                value={filtroTexto}
-                onChange={(e) => setFiltroTexto(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                <button
+                  onClick={() => {
                     setSearchParams(prev => {
                       const n = new URLSearchParams(prev);
                       if (filtroTexto.trim()) n.set('buscar', filtroTexto.trim());
                       else n.delete('buscar');
                       return n;
                     });
-                  }
-                }}
-                placeholder="Buscar juguetes en el armario..."
-                className="w-full pl-10 pr-9 py-2.5 bg-white/95 rounded-2xl border-2 border-amber-300 text-slate-800 text-xs font-bold shadow-md focus:outline-none focus:border-[#1e3a8a]"
-              />
-              <svg className="w-4 h-4 text-amber-600 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              {filtroTexto && (
-                <button
-                  onClick={() => {
-                    setFiltroTexto('');
-                    setSearchParams(prev => {
-                      const n = new URLSearchParams(prev);
-                      n.delete('buscar');
-                      return n;
-                    });
                   }}
-                  className="w-5 h-5 rounded-full bg-slate-200 text-slate-600 absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center justify-center text-xs font-bold"
+                  className="px-5 py-2.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95 whitespace-nowrap border-2 border-white"
                 >
-                  ×
+                  Buscar
                 </button>
-              )}
-            </div>
+              </div>
 
-            <button
-              onClick={() => {
-                setSearchParams(prev => {
-                  const n = new URLSearchParams(prev);
-                  if (filtroTexto.trim()) n.set('buscar', filtroTexto.trim());
-                  else n.delete('buscar');
-                  return n;
-                });
-              }}
-              className="px-5 py-2.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider shadow-md transition active:scale-95 whitespace-nowrap border-2 border-white"
-            >
-              Buscar
-            </button>
+              {/* Secciones y Categorías en Píldoras que NO se cortan (flex-wrap limpio) */}
+              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-3 pt-2 border-t border-slate-100">
+                {categoriasMenu.map(cat => {
+                  const activo = categoriaActiva === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        setSearchParams(prev => {
+                          const n = new URLSearchParams(prev);
+                          if (cat.id === 'todos') n.delete('cat');
+                          else n.set('cat', cat.id);
+                          return n;
+                        });
+                      }}
+                      className={`px-3 py-1 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all border ${
+                        activo
+                          ? 'bg-[#1e3a8a] text-white border-[#1e3a8a] shadow-md scale-105'
+                          : 'bg-slate-50 text-[#1e3a8a] border-slate-200 hover:bg-amber-100 hover:border-amber-300'
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
-          {/* Píldoras de Categorías */}
-          <div className="mt-4 flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none justify-start sm:justify-center">
-            {categoriasMenu.map(cat => {
-              const activo = categoriaActiva === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => {
-                    setSearchParams(prev => {
-                      const n = new URLSearchParams(prev);
-                      if (cat.id === 'todos') n.delete('cat');
-                      else n.set('cat', cat.id);
-                      return n;
-                    });
-                  }}
-                  className={`px-3 py-1.5 rounded-xl text-[11px] font-black uppercase tracking-wider whitespace-nowrap transition-all border ${
-                    activo
-                      ? 'bg-[#1e3a8a] text-white border-white shadow-md scale-105'
-                      : 'bg-white/90 text-[#1e3a8a] border-amber-200 hover:bg-white'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              );
-            })}
+          {/* 2. CARTEL COLGANTE ANIMADO: "ADD TO CART" (DERECHA, CON CUERDAS Y BALANCEO) */}
+          <div 
+            onClick={() => navigate('/carrito')}
+            className="hidden sm:flex flex-col items-center absolute right-0 lg:right-4 top-0 z-30 cursor-pointer group animate-swing-sign"
+            title="Ir a mi Carrito de Compras"
+          >
+            {/* Cuerdas del cartel conectadas con la nube superior */}
+            <div className="flex justify-between w-14 -mb-1 relative z-0">
+              <div className="w-[2px] h-9 bg-amber-400 shadow-xs"></div>
+              <div className="w-[2px] h-9 bg-amber-400 shadow-xs"></div>
+            </div>
+
+            {/* Placa / Cartel estilo juguetería Woody (Amarillo y Rojo) */}
+            <div className="bg-gradient-to-b from-[#fbbf24] via-[#f59e0b] to-[#d97706] border-4 border-[#dc2626] rounded-2xl shadow-[0_12px_25px_rgba(0,0,0,0.35)] px-3.5 py-2 flex flex-col items-center justify-center transition-transform group-hover:scale-110 active:scale-95 relative">
+              <span className="text-[10px] font-black text-[#dc2626] tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] leading-none">
+                ADD TO
+              </span>
+              <span className="text-xs font-black text-[#1e3a8a] tracking-tight uppercase flex items-center gap-1 leading-tight mt-0.5">
+                <span>CART</span>
+                <span className="text-sm">🛒</span>
+              </span>
+
+              {/* Insignia / Contador de artículos */}
+              {totalArticulosCarrito > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#dc2626] text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-md animate-bounce">
+                  {totalArticulosCarrito}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
         {/* =========================================================================
             LA ESTANTERÍA / ARMARIO DE JUGUETES (BLANCO, ELEGANTE, ESTILO CANVA)
             ========================================================================= */}
-        <div className="w-full max-w-5xl bg-white/95 backdrop-blur-md rounded-t-[3.5rem] rounded-b-3xl border-4 border-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] p-4 sm:p-8 relative">
+        <div className="w-full max-w-5xl bg-white/95 backdrop-blur-md rounded-t-[3.5rem] rounded-b-3xl border-4 border-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] p-4 sm:p-8 relative mt-3">
           
-          {/* Corona superior arqueada con adorno Toy Store */}
-          <div className="text-center -mt-2 mb-6">
-            <span className="text-[11px] font-black text-amber-700 uppercase tracking-widest bg-amber-50 border border-amber-200 px-4 py-1 rounded-full">
-              Colección Oficial • Paquetes Sorpresa
-            </span>
-          </div>
-
           {cargando ? (
             <div className="py-24 flex flex-col items-center justify-center">
               <div className="w-12 h-12 border-4 border-amber-300 border-t-[#1e3a8a] rounded-full animate-spin"></div>
@@ -376,7 +399,7 @@ export default function Tienda() {
             </button>
 
             <div className="flex flex-col sm:flex-row gap-6 items-center">
-              {/* Vista del Juguete */}
+              {/* Vista de la Caja */}
               <div className="w-full sm:w-1/2 bg-gradient-to-b from-amber-50 to-yellow-50 rounded-2xl p-6 flex items-center justify-center border-2 border-amber-200 shadow-inner">
                 <ToyBoxCard producto={productoSeleccionado} index={0} />
               </div>
@@ -388,40 +411,55 @@ export default function Tienda() {
                     {productoSeleccionado.categoria}
                   </span>
 
-                  <h3 className="text-xl font-black text-[#1e3a8a] mt-2.5 leading-tight">
+                  <h3 className="text-xl font-black text-[#1e3a8a] mt-2 leading-tight">
                     {productoSeleccionado.nombre}
                   </h3>
 
-                  <p className="text-2xl font-black text-[#1e3a8a] mt-2">
+                  <p className="text-2xl font-black text-[#1e3a8a] mt-1.5">
                     ${Number(productoSeleccionado.precio).toLocaleString('es-CO')} COP
                   </p>
 
-                  <p className="mt-3 text-xs text-slate-600 leading-relaxed max-h-36 overflow-y-auto">
+                  <p className="mt-3 text-xs text-slate-600 leading-relaxed max-h-32 overflow-y-auto">
                     {productoSeleccionado.descripcion}
                   </p>
 
-                  {/* Garantías y Discreción */}
-                  <div className="mt-3 p-2.5 bg-amber-50 rounded-xl border border-amber-200 text-[10px] text-amber-900 font-semibold space-y-1">
-                    <p>• Empaque 100% neutro sin distintivos.</p>
-                    <p>• Silicona médica hipoalergénica.</p>
+                  <div className="mt-3 p-2.5 bg-amber-50 rounded-xl border border-amber-200 text-[10px] text-amber-900 font-semibold space-y-0.5">
+                    <p>• Empaque 100% sellado y discreto.</p>
+                    <p>• Silicona médica biocompatible.</p>
                   </div>
                 </div>
 
-                {/* Controles de Cantidad y Botón Añadir */}
-                <div className="mt-5 pt-4 border-t border-slate-100 flex items-center gap-3">
-                  <div className="flex items-center gap-2 border border-slate-200 rounded-xl px-2 py-1 bg-slate-50">
+                {/* Feedback de agregado */}
+                {agregadoExito && (
+                  <div className="mt-2 text-center text-xs font-black text-emerald-600 bg-emerald-50 py-1 rounded-lg border border-emerald-200 animate-pulse">
+                    ¡Añadido a tu carrito con éxito!
+                  </div>
+                )}
+
+                {/* Acciones */}
+                <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center border-2 border-slate-200 rounded-xl px-2 py-1 bg-slate-50">
+                      <button
+                        onClick={() => setCantidadModal(c => Math.max(c - 1, 1))}
+                        className="w-5 h-5 font-black text-slate-600"
+                      >
+                        -
+                      </button>
+                      <span className="text-xs font-black text-slate-800 w-5 text-center">{cantidadModal}</span>
+                      <button
+                        onClick={() => setCantidadModal(c => c + 1)}
+                        className="w-5 h-5 font-black text-slate-600"
+                      >
+                        +
+                      </button>
+                    </div>
+
                     <button
-                      onClick={() => setCantidadModal(c => Math.max(c - 1, 1))}
-                      className="w-5 h-5 font-black text-slate-600"
+                      onClick={() => agregarAlCarrito(productoSeleccionado, cantidadModal)}
+                      className="flex-1 py-2.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95"
                     >
-                      -
-                    </button>
-                    <span className="text-xs font-black text-slate-800">{cantidadModal}</span>
-                    <button
-                      onClick={() => setCantidadModal(c => c + 1)}
-                      className="w-5 h-5 font-black text-slate-600"
-                    >
-                      +
+                      Añadir al Carrito
                     </button>
                   </div>
 
@@ -429,119 +467,15 @@ export default function Tienda() {
                     onClick={() => {
                       agregarAlCarrito(productoSeleccionado, cantidadModal);
                       setProductoSeleccionado(null);
+                      navigate('/carrito');
                     }}
-                    className="flex-1 py-3 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-xl text-xs uppercase tracking-wider shadow-md transition active:scale-95"
+                    className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-xl text-xs uppercase tracking-wider shadow-md transition active:scale-95 flex items-center justify-center gap-1.5"
                   >
-                    Añadir al Carrito
+                    <span>Comprar Ahora y Ver Carrito</span>
+                    <span>→</span>
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Botón Flotante del Carrito */}
-      <button
-        onClick={() => setCartDrawerOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-[#1e3a8a] hover:bg-[#172554] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(30,58,138,0.5)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 group"
-        title="Abrir Carrito"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-        </svg>
-        {itemsCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[11px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-bounce">
-            {itemsCount}
-          </span>
-        )}
-      </button>
-
-      {/* Drawer Lateral del Carrito */}
-      {cartDrawerOpen && (
-        <div className="fixed inset-0 z-50 overflow-hidden font-fredoka">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-xs transition-opacity" onClick={() => setCartDrawerOpen(false)}></div>
-          
-          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-            <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col">
-              
-              <div className="p-5 bg-gradient-to-r from-amber-50 to-yellow-50 border-b border-amber-200 flex items-center justify-between">
-                <div>
-                  <h2 className="text-lg font-black text-[#1e3a8a] uppercase">Tu Carrito Toy Store</h2>
-                  <p className="text-xs text-slate-500">{itemsCount} artículos seleccionados</p>
-                </div>
-                <button
-                  onClick={() => setCartDrawerOpen(false)}
-                  className="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:bg-slate-100 flex items-center justify-center font-bold text-sm"
-                >
-                  ×
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-5 divide-y divide-slate-100">
-                {carrito.length === 0 ? (
-                  <div className="text-center py-16">
-                    <p className="text-sm font-black text-[#1e3a8a] uppercase">Tu carrito está vacío</p>
-                    <p className="text-xs text-slate-400 mt-1">Explora la estantería y añade juguetes a tu baúl.</p>
-                  </div>
-                ) : (
-                  carrito.map(item => (
-                    <div key={item.id} className="py-4 flex items-center gap-3">
-                      <div className="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center p-1 border border-amber-200">
-                        <span className="text-xs font-black text-amber-700 uppercase">TOY</span>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-black text-[#1e3a8a] truncate">{item.nombre}</h4>
-                        <p className="text-xs font-black text-amber-700 mt-0.5">
-                          ${(Number(item.precio) * item.cantidad).toLocaleString('es-CO')} COP
-                        </p>
-                        
-                        <div className="flex items-center gap-2 mt-2">
-                          <button
-                            onClick={() => modificarCantidad(item.id, -1)}
-                            className="w-6 h-6 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-black"
-                          >
-                            -
-                          </button>
-                          <span className="text-xs font-black text-slate-800 w-4 text-center">{item.cantidad}</span>
-                          <button
-                            onClick={() => modificarCantidad(item.id, 1)}
-                            className="w-6 h-6 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-black"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-
-                      <button
-                        onClick={() => eliminarDelCarrito(item.id)}
-                        className="text-slate-400 hover:text-rose-500 p-2 text-xs font-bold"
-                        title="Quitar"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              {carrito.length > 0 && (
-                <div className="p-5 border-t border-slate-100 bg-slate-50/50 flex flex-col gap-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Subtotal</span>
-                    <span className="text-xl font-black text-[#1e3a8a]">
-                      ${totalCarrito.toLocaleString('es-CO')} COP
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={enviarPedidoWhatsApp}
-                    className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-2xl text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-2 active:scale-95 transition"
-                  >
-                    Pedir por WhatsApp
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>

@@ -87,9 +87,9 @@ export default function RoomWrapper({
     switch (theme) {
       case 'woody':
         return {
-          wall: 'bg-[#EAB308]', // Amarillo dorado cálido Woody (idéntico a la referencia)
+          wall: 'bg-[#FFC72C]', // Amarillo vibrante oficial de Woody (idéntico al logo)
           floor: 'bg-[#B45309]', // Suelo de madera Andy
-          accent: 'border-[#EAB308]',
+          accent: 'border-[#FFC72C]',
           wallpaper: '',
         };
       case 'buzz':
