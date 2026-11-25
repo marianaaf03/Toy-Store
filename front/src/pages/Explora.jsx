@@ -304,17 +304,18 @@ export default function Explora() {
 
       {/* =========================================================================
           CONTENEDOR PRINCIPAL: VIBRA RETRO-FUTURISTA PIZZA PLANET
-          Posters bajados sin cinta, flecha neón grande bien proporcionada,
-          botón con "APRETAR AQUÍ" y máquina arcade a la derecha elevada y más grande
+          Cartel colgante, posters sin cinta, flecha neón nítida y botón rojo central.
+          Sin la máquina arcade pesada para mantener la misma proporción del diorama
+          de la página de inicio sin scrolls excesivos ni suelos vacíos.
           ========================================================================= */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-8 pb-8 font-fredoka select-none flex-1 flex flex-col justify-between items-center min-h-[calc(100vh-80px)]">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 pb-12 font-fredoka select-none flex-1 flex flex-col items-center">
 
         {/* ZONA SUPERIOR / PARED: POSTERS + CARTEL */}
-        <div className="w-full flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 lg:gap-8 xl:gap-10 mt-2 sm:mt-4">
+        <div className="w-full flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 lg:gap-8 xl:gap-12 mt-2 sm:mt-4">
 
           {/* COLUMNA IZQUIERDA: 2 POSTERS (POSTER RETRO 2 ARRIBA + POSTER PIZZA ABAJO)
               Bajados respetando el margen de la navbar clouds, sin cinta adhesiva */}
-          <div className="hidden lg:flex flex-col items-center gap-6 shrink-0 self-start mt-12 xl:mt-14">
+          <div className="hidden lg:flex flex-col items-center gap-6 shrink-0 self-start mt-10 xl:mt-12">
             
             {/* POSTER RETRO 2 (Sin recuadro blanco ni cinta) */}
             <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-2">
@@ -365,7 +366,7 @@ export default function Explora() {
               </div>
             </div>
 
-            {/* FLECHA NEÓN RETRO ROJA: MÁS GRANDE Y CON ESPACIO RACIONAL EQUILIBRADO */}
+            {/* FLECHA NEÓN RETRO ROJA: GRANDE Y CON ESPACIO RACIONAL EQUILIBRADO */}
             <div className="flex flex-col items-center my-3 sm:my-4 select-none pointer-events-none">
               <div className="animate-neon-arrow flex flex-col items-center">
                 <svg 
@@ -403,7 +404,7 @@ export default function Explora() {
             </div>
 
             {/* BOTÓN RETRO ARCADE: "APRETAR AQUÍ" */}
-            <div className="flex flex-col items-center mb-4 z-20">
+            <div className="flex flex-col items-center mb-6 z-20">
               <div className="w-44 h-44 sm:w-52 sm:h-52 md:w-56 md:h-56 rounded-full bg-[#18181b] border-4 sm:border-[6px] border-[#27272a] shadow-[0_25px_50px_rgba(0,0,0,0.95),inset_0_3px_6px_rgba(255,255,255,0.15)] flex items-center justify-center p-3 sm:p-4 relative">
                 <div className="w-full h-full rounded-full bg-[#09090b] p-2 flex items-center justify-center border-2 border-black shadow-inner">
                   <button
@@ -433,7 +434,7 @@ export default function Explora() {
           </div>
 
           {/* COLUMNA DERECHA: POSTER RETRO 1 (Bajado sin cinta adhesiva) */}
-          <div className="hidden lg:flex flex-col items-center shrink-0 self-start mt-12 xl:mt-14">
+          <div className="hidden lg:flex flex-col items-center shrink-0 self-start mt-10 xl:mt-12">
             <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-2">
               <img 
                 src="/images/poster_retro.png" 
@@ -458,31 +459,15 @@ export default function Explora() {
           </div>
         </div>
 
-        {/* MÁQUINA DE ARCADE (ALIENS) ELEVADA A LA DERECHA Y MÁS GRANDE
-            Ubicada a la derecha, mirando a la izquierda hacia el botón central,
-            elevada con margen negativo inteligente en pantallas grandes para lucir
-            a la par de la acción sin obligar al usuario a un scroll excesivo */}
-        <div className="w-full flex justify-end items-end px-2 sm:px-8 lg:px-14 mt-4 lg:-mt-32 xl:-mt-44 pointer-events-auto">
-          <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
-            <img
-              src="/images/maquina_aliens.png"
-              alt="Máquina de Marcianitos Pizza Planet a Tamaño Real"
-              className="w-72 sm:w-88 md:w-[420px] lg:w-[480px] xl:w-[540px] 2xl:w-[580px] h-auto object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.85)]"
-            />
-            {/* Sombra de contacto profunda al ras del suelo */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-6 bg-black/85 blur-xl rounded-full pointer-events-none"></div>
-          </div>
-        </div>
-
       </div>
 
       {/* =========================================================================
           VENTANA EMERGENTE CENTRAL: QUIZZ INSPIRADO EN CAJA DE PIZZA PLANET
-          Con desenfoque suave (bg-black/25 backdrop-blur-xs), bordes rectos tipo caja
-          de pizza y botón "VER EN TIENDA" que redirige a la categoría recomendada
+          Con desenfoque suave y luminoso (bg-white/20 backdrop-blur-[6px]), bordes
+          rectangulares tipo caja de pizza y botón "VER EN TIENDA" con filtro automático
           ========================================================================= */}
       {modalAbierto && (
-        <div className="fixed inset-0 z-[400] bg-black/25 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none font-fredoka">
+        <div className="fixed inset-0 z-[400] bg-white/20 backdrop-blur-[6px] flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none font-fredoka">
           <div className="relative w-full max-w-2xl bg-white rounded-lg sm:rounded-xl border-4 sm:border-[6px] border-[#E52521] shadow-[0_25px_70px_rgba(229,37,33,0.35)] overflow-hidden flex flex-col justify-between max-h-[90vh]">
 
             {/* FRANJA SUPERIOR A CUADROS ROJOS Y BLANCOS (ESTILO CAJA DE PIZZA) */}
