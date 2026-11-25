@@ -459,15 +459,28 @@ export default function Explora() {
           </div>
         </div>
 
+        {/* MÁQUINA DE ARCADE (ALIENS) A LA DERECHA APOYADA AL RAS DEL SUELO */}
+        <div className="w-full flex justify-end items-end px-2 sm:px-8 lg:px-14 mt-4 lg:-mt-24 pointer-events-auto">
+          <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
+            <img
+              src="/images/maquina_aliens.png"
+              alt="Máquina de Marcianitos Pizza Planet a Tamaño Real"
+              className="w-72 sm:w-88 md:w-[420px] lg:w-[480px] xl:w-[540px] 2xl:w-[580px] h-auto object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.85)]"
+            />
+            {/* Sombra de contacto profunda al ras del suelo */}
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-6 bg-black/85 blur-xl rounded-full pointer-events-none"></div>
+          </div>
+        </div>
+
       </div>
 
       {/* =========================================================================
           VENTANA EMERGENTE CENTRAL: QUIZZ INSPIRADO EN CAJA DE PIZZA PLANET
-          Con desenfoque suave y luminoso (bg-white/20 backdrop-blur-[6px]), bordes
+          Con desenfoque suave y muy leve (bg-black/10 backdrop-blur-[3px]), bordes
           rectangulares tipo caja de pizza y botón "VER EN TIENDA" con filtro automático
           ========================================================================= */}
       {modalAbierto && (
-        <div className="fixed inset-0 z-[400] bg-white/20 backdrop-blur-[6px] flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none font-fredoka">
+        <div className="fixed inset-0 z-[400] bg-black/10 backdrop-blur-[3px] flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none font-fredoka">
           <div className="relative w-full max-w-2xl bg-white rounded-lg sm:rounded-xl border-4 sm:border-[6px] border-[#E52521] shadow-[0_25px_70px_rgba(229,37,33,0.35)] overflow-hidden flex flex-col justify-between max-h-[90vh]">
 
             {/* FRANJA SUPERIOR A CUADROS ROJOS Y BLANCOS (ESTILO CAJA DE PIZZA) */}
