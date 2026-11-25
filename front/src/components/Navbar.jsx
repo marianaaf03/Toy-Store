@@ -202,59 +202,52 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
 
       <div className={`h-[64px] md:h-[80px] flex justify-between items-center pointer-events-auto relative z-10 w-full max-w-[1536px] mx-auto transition-all duration-300 ${isDrawerOpen ? 'px-4 md:px-10' : 'px-4 md:px-12'}`}>
 
-        {/* LADO IZQUIERDO: LOGO (POSICIÓN UNIFICADA Y CENTRADA EN LA NUBE) */}
+        {/* LADO IZQUIERDO: LOGO (POSICIÓN UNIFICADA Y CENTRADA EN LA NUBE - SIN NAVEGACIÓN POR CLIC) */}
         <div
-          className={`flex flex-col items-center mt-3.5 md:mt-6 pt-1 md:pt-1.5 relative cursor-pointer transition-all duration-300 ${isDrawerOpen ? 'translate-x-0 md:translate-x-1' : 'translate-x-0 md:translate-x-2'
+          className={`flex flex-col items-center mt-3.5 md:mt-6 pt-1 md:pt-1.5 relative select-none transition-all duration-300 ${isDrawerOpen ? 'translate-x-0 md:translate-x-1' : 'translate-x-0 md:translate-x-2'
             }`}
-          onClick={() => !isSimple && navigate('/')}
         >
           {isSimple ? (
             <img
               src={corazonWoodyImg}
               alt="Toy Store Woody Icon"
-              onClick={() => navigate('/')}
               onError={(e) => { e.target.src = corazonWoodyImg; }}
-              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1"
+              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md ml-2 sm:ml-4 md:ml-5 -translate-y-1 pointer-events-none"
             />
           ) : location.pathname === '/guia' ? (
             <img
               src={corazonLotsoImg}
               alt="Toy Store Lotso Icon"
-              onClick={() => navigate('/')}
               onError={(e) => { e.target.src = '/images/corazon_lotso.png'; }}
-              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1"
+              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md ml-2 sm:ml-4 md:ml-5 -translate-y-1 pointer-events-none"
             />
           ) : location.pathname === '/vestier' ? (
             <img
               src={corazonJessyImg}
               alt="Toy Store Jessy Icon"
-              onClick={() => navigate('/')}
               onError={(e) => { e.target.src = '/images/corazon_jessy.png'; }}
-              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1"
+              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md ml-2 sm:ml-4 md:ml-5 -translate-y-1 pointer-events-none"
             />
           ) : location.pathname === '/explora' ? (
             <img
               src={corazonAlienImg}
               alt="Toy Store Alien Icon"
-              onClick={() => navigate('/')}
               onError={(e) => { e.target.src = '/images/corazon_alien.png'; }}
-              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1"
+              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md ml-2 sm:ml-4 md:ml-5 -translate-y-1 pointer-events-none"
             />
           ) : location.pathname === '/contacto' ? (
             <img
               src={corazonBuzzImg}
               alt="Toy Store Buzz Icon"
-              onClick={() => navigate('/')}
               onError={(e) => { e.target.src = '/images/corazon_buzz.png'; }}
-              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer ml-2 sm:ml-4 md:ml-5 -translate-y-1"
+              className="h-[82px] sm:h-[106px] md:h-[138px] w-auto object-contain z-20 drop-shadow-md ml-2 sm:ml-4 md:ml-5 -translate-y-1 pointer-events-none"
             />
           ) : (
             <>
               <img
                 src={ToyStoreLogoImg}
                 alt="Toy Store Logo"
-                onClick={() => navigate('/')}
-                className="h-[64px] sm:h-[84px] md:h-[118px] w-auto object-contain z-20 drop-shadow-sm transition-transform hover:scale-105 cursor-pointer"
+                className="h-[64px] sm:h-[84px] md:h-[118px] w-auto object-contain z-20 drop-shadow-sm pointer-events-none"
               />
               {/* Toy Mobile SOLO en la página de inicio como solicitó el usuario */}
               {location.pathname === '/' && (
