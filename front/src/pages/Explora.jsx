@@ -265,11 +265,11 @@ export default function Explora() {
         @keyframes retroNeonFlicker {
           0%, 18.999%, 21%, 59.999%, 61%, 67%, 100% {
             opacity: 1;
-            filter: drop-shadow(0 0 6px #FDE047) drop-shadow(0 0 16px #EAB308) drop-shadow(0 0 30px #DC2626);
+            filter: drop-shadow(0 0 8px #FF0055) drop-shadow(0 0 22px #FF0044) drop-shadow(0 0 45px #FF0033);
           }
           19%, 20.999%, 60%, 60.999%, 66%, 66.999% {
-            opacity: 0.3;
-            filter: drop-shadow(0 0 2px #FDE047);
+            opacity: 0.35;
+            filter: drop-shadow(0 0 3px #FF0055);
           }
         }
         .animate-neon-arrow {
@@ -305,33 +305,47 @@ export default function Explora() {
       {/* =========================================================================
           CONTENEDOR PRINCIPAL: ESPACIADO FLUIDO IDÉNTICO A LAS DEMÁS PÁGINAS
           Con vibra retro-futurista Pizza Planet original: cartel sujeto a la nube navbar,
-          posters pegados con cinta, luz neón parpadeante, botón puro y arcade a escala
+          posters pegados con cinta sin recuadro blanco, flecha neón roja gruesa,
+          botón con "APRETAR AQUÍ" y máquina arcade a la derecha al ras del suelo
           ========================================================================= */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-2 sm:pt-4 md:pt-6 pb-6 font-fredoka select-none flex-1 flex flex-col justify-between items-center min-h-[calc(100vh-80px)]">
 
         {/* =====================================================================
-            1. ZONA PARED: CARTEL COLGADO DE LA NUBE NAVBAR + POSTERS PEGADOS
+            1. ZONA PARED: CARTEL COLGADO + POSTERS REGADOS SIN RECUADRO BLANCO
             ===================================================================== */}
         <div className="w-full flex flex-col items-center mt-1 mb-2">
 
-          <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 xl:gap-10">
+          <div className="w-full flex flex-col lg:flex-row items-start justify-center gap-6 lg:gap-8 xl:gap-10">
 
-            {/* POSTER RETRO 2 (Izquierda superior, pegado con cinta a la pared) */}
-            <div className="hidden lg:block shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-2 self-center relative">
-              {/* Cinta adhesiva en la parte superior */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-14 h-4 bg-amber-100/40 backdrop-blur-xs border border-amber-200/50 shadow-xs rotate-[-3deg] z-20 pointer-events-none rounded-xs"></div>
-              <div className="p-1 bg-white/95 rounded-xl shadow-[0_15px_35px_rgba(0,0,0,0.7)] border border-slate-300/40 overflow-hidden">
+            {/* COLUMNA IZQUIERDA: 2 POSTERS (POSTER RETRO 2 ARRIBA + POSTER PIZZA ABAJO) */}
+            <div className="hidden lg:flex flex-col items-center gap-6 shrink-0 self-start mt-2">
+              
+              {/* POSTER RETRO 2 (Sin recuadro blanco, con cinta adhesiva) */}
+              <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-2">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-14 h-4 bg-amber-100/40 backdrop-blur-xs border border-amber-200/50 shadow-xs rotate-[-3deg] z-20 pointer-events-none rounded-xs"></div>
                 <img 
                   src="/images/poster_retro2.png" 
                   alt="Poster Retro Pizza Planet 2"
-                  className="w-44 xl:w-52 h-auto object-contain rounded-lg"
+                  className="w-40 xl:w-48 h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)]"
                 />
               </div>
+
+              {/* POSTER RETRO 3: PIZZA (Debajo del otro poster en la izquierda) */}
+              <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-2">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-14 h-4 bg-amber-100/40 backdrop-blur-xs border border-amber-200/50 shadow-xs rotate-[2deg] z-20 pointer-events-none rounded-xs"></div>
+                <img 
+                  src="/images/poster_retro3.jpg" 
+                  onError={(e) => { e.target.src = '/images/poster_retro3.png'; }}
+                  alt="Poster Retro Say Hi To Pizza"
+                  className="w-36 xl:w-44 h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)]"
+                />
+              </div>
+
             </div>
 
             {/* CARTEL PRINCIPAL HANGING SIGN: EXTENDIDO HACIA LA NUBE DEL NAVBAR */}
             <div className="relative flex flex-col items-center w-full max-w-[560px] sm:max-w-[640px] md:max-w-[700px] lg:max-w-[740px]">
-              
+
               {/* Cadenas metálicas que suben hasta quedar sujetas a la nube del navbar */}
               <div className="w-full flex justify-between px-14 sm:px-20 -mb-2 z-10 pointer-events-none">
                 <div className="w-2.5 sm:w-3 h-14 sm:h-18 md:h-22 bg-gradient-to-b from-slate-300 via-slate-500 to-slate-800 rounded-sm shadow-md border border-slate-900/60 -mt-2"></div>
@@ -340,7 +354,7 @@ export default function Explora() {
 
               {/* Marco arcade oscuro con remaches y neón sutil */}
               <div className="w-full p-2 sm:p-2.5 bg-gradient-to-b from-[#2a2d3d] via-[#1a1c26] to-[#0e1017] rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.85),0_0_35px_rgba(229,37,33,0.3)] border-2 border-slate-700/80 relative transition-transform hover:scale-[1.01] duration-300">
-                
+
                 {/* Remaches metálicos en las 4 esquinas */}
                 <div className="absolute top-3 left-3 w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-slate-500 via-slate-300 to-white border border-slate-600 shadow-inner z-20"></div>
                 <div className="absolute top-3 right-3 w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-slate-500 via-slate-300 to-white border border-slate-600 shadow-inner z-20"></div>
@@ -348,7 +362,7 @@ export default function Explora() {
                 <div className="absolute bottom-3 right-3 w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-slate-500 via-slate-300 to-white border border-slate-600 shadow-inner z-20"></div>
 
                 <img 
-                  src="/images/cartel_aliens.png?v=3" 
+                  src="/images/cartel_aliens.png?v=4" 
                   onError={(e) => { e.target.src = '/images/letrero_aliens.png'; }}
                   alt="¿Quieres explorarte y no sabes por dónde empezar? - Pizza Planet"
                   className="w-full h-auto object-contain rounded-2xl"
@@ -357,87 +371,78 @@ export default function Explora() {
 
             </div>
 
-            {/* POSTER RETRO 1 (Derecha superior, pegado con cinta a la pared) */}
-            <div className="hidden lg:block shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-2 self-center relative">
-              {/* Cinta adhesiva en la parte superior */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-14 h-4 bg-amber-100/40 backdrop-blur-xs border border-amber-200/50 shadow-xs rotate-[2deg] z-20 pointer-events-none rounded-xs"></div>
-              <div className="p-1 bg-white/95 rounded-xl shadow-[0_15px_35px_rgba(0,0,0,0.7)] border border-slate-300/40 overflow-hidden">
+            {/* COLUMNA DERECHA: POSTER RETRO 1 (Sin recuadro blanco, con cinta) */}
+            <div className="hidden lg:flex flex-col items-center shrink-0 self-start mt-2">
+              <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-2">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-14 h-4 bg-amber-100/40 backdrop-blur-xs border border-amber-200/50 shadow-xs rotate-[3deg] z-20 pointer-events-none rounded-xs"></div>
                 <img 
                   src="/images/poster_retro.png" 
                   alt="Poster Retro Pizza Planet 1"
-                  className="w-44 xl:w-52 h-auto object-contain rounded-lg"
+                  className="w-40 xl:w-48 h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)]"
                 />
               </div>
             </div>
 
           </div>
 
-          {/* POSTERS REGADOS EN LA PARED: VISIBLES EN TODAS LAS PANTALLAS */}
-          <div className="w-full flex items-center justify-center lg:justify-end gap-4 sm:gap-8 mt-4 px-4 max-w-5xl">
-            {/* En pantallas móviles mostramos Poster Retro 1 */}
-            <div className="lg:hidden shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 -rotate-2 cursor-pointer relative">
+          {/* POSTERS REGADOS EN LA PARED: VISIBLES EN PANTALLAS MÓVILES (SIN RECUADRO BLANCO) */}
+          <div className="lg:hidden w-full flex items-center justify-around gap-3 mt-4 px-2 max-w-lg">
+            {/* Poster Retro 2 */}
+            <div className="relative rotate-2 shrink-0">
+              <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-10 h-3.5 bg-amber-100/40 backdrop-blur-xs border border-amber-200/50 shadow-xs rotate-[-3deg] z-20 pointer-events-none rounded-xs"></div>
+              <img src="/images/poster_retro2.png" alt="Poster Retro 2" className="w-24 sm:w-32 h-auto object-contain rounded-md drop-shadow-md" />
+            </div>
+
+            {/* Poster Retro 3 (Pizza en la izquierda) */}
+            <div className="relative -rotate-2 shrink-0">
               <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-10 h-3.5 bg-amber-100/40 backdrop-blur-xs border border-amber-200/50 shadow-xs rotate-[2deg] z-20 pointer-events-none rounded-xs"></div>
-              <div className="p-1 bg-white/95 rounded-xl shadow-lg border border-slate-300/40 overflow-hidden">
-                <img 
-                  src="/images/poster_retro.png" 
-                  alt="Poster Retro Pizza Planet 1"
-                  className="w-28 sm:w-36 h-auto object-contain rounded-lg"
-                />
-              </div>
+              <img src="/images/poster_retro3.jpg" onError={(e) => { e.target.src = '/images/poster_retro3.png'; }} alt="Poster Pizza" className="w-24 sm:w-30 h-auto object-contain rounded-md drop-shadow-md" />
             </div>
 
-            {/* En pantallas móviles mostramos Poster Retro 2 */}
-            <div className="lg:hidden shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 rotate-2 cursor-pointer relative">
+            {/* Poster Retro 1 */}
+            <div className="relative rotate-1 shrink-0">
               <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-10 h-3.5 bg-amber-100/40 backdrop-blur-xs border border-amber-200/50 shadow-xs rotate-[-2deg] z-20 pointer-events-none rounded-xs"></div>
-              <div className="p-1 bg-white/95 rounded-xl shadow-lg border border-slate-300/40 overflow-hidden">
-                <img 
-                  src="/images/poster_retro2.png" 
-                  alt="Poster Retro Pizza Planet 2"
-                  className="w-28 sm:w-36 h-auto object-contain rounded-lg"
-                />
-              </div>
-            </div>
-
-            {/* POSTER RETRO 3: VERTICAL, PEGADO A LA DERECHA */}
-            <div className="shrink-0 transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-1 lg:rotate-2 relative mr-0 lg:mr-10">
-              {/* Cinta adhesiva en la parte superior */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-14 h-4 bg-amber-100/40 backdrop-blur-xs border border-amber-200/50 shadow-xs rotate-[-1deg] z-20 pointer-events-none rounded-xs"></div>
-              <div className="p-1 bg-white/95 rounded-xl shadow-[0_15px_35px_rgba(0,0,0,0.7)] border border-slate-300/40 overflow-hidden">
-                <img 
-                  src="/images/poster_retro3.jpg" 
-                  onError={(e) => { e.target.src = '/images/poster_retro3.png'; }}
-                  alt="Poster Retro Pizza Planet 3"
-                  className="w-32 sm:w-40 lg:w-44 xl:w-48 h-auto object-contain rounded-lg"
-                />
-              </div>
+              <img src="/images/poster_retro.png" alt="Poster Retro 1" className="w-24 sm:w-32 h-auto object-contain rounded-md drop-shadow-md" />
             </div>
           </div>
 
         </div>
 
         {/* =====================================================================
-            2. ZONA CENTRAL: LUZ NEÓN RETRO (FLECHA PARPADEANTE) + BOTÓN ARCADE PURO
+            2. ZONA CENTRAL: LUZ NEÓN RETRO (FLECHA ROJA GRUESA) + BOTÓN CON "APRETAR AQUÍ"
             ===================================================================== */}
         <div className="flex flex-col items-center my-auto py-2 z-20">
 
-          {/* LUZ NEÓN RETRO: FLECHA APUNTANDO AL BOTÓN CON PARPADEO VINTAGE */}
-          <div className="flex flex-col items-center mb-2 select-none pointer-events-none">
+          {/* LUZ NEÓN RETRO: FLECHA ROJA GRUESA CON TAIL EN CHEVRON (ESTILO IMAGEN DE REFERENCIA) */}
+          <div className="flex flex-col items-center my-1 select-none pointer-events-none">
             <div className="animate-neon-arrow flex flex-col items-center">
-              <svg className="w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-18" viewBox="0 0 60 80" fill="none">
-                {/* Tubo de neón exterior resplandeciente amarillo/dorado */}
+              <svg 
+                className="w-16 h-24 sm:w-20 sm:h-28 md:w-24 md:h-32" 
+                viewBox="0 0 100 130" 
+                fill="none"
+              >
+                {/* Tubo de soporte oscuro de fondo */}
                 <path 
-                  d="M30 6 L30 54 M14 38 L30 62 L46 38" 
-                  stroke="#EAB308" 
+                  d="M 22 14 L 50 36 L 78 14 L 66 34 L 66 70 L 92 70 L 50 120 L 8 70 L 34 70 L 34 34 Z" 
+                  stroke="#38000A" 
+                  strokeWidth="12" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                />
+                {/* Tubo exterior de neón rojo resplandeciente */}
+                <path 
+                  d="M 22 14 L 50 36 L 78 14 L 66 34 L 66 70 L 92 70 L 50 120 L 8 70 L 34 70 L 34 34 Z" 
+                  stroke="#FF0044" 
                   strokeWidth="8" 
                   strokeLinecap="round" 
                   strokeLinejoin="round" 
-                  strokeOpacity="0.85" 
+                  strokeOpacity="0.9" 
                 />
-                {/* Núcleo interior incandescente blanco/crema */}
+                {/* Núcleo interior de gas blanco/rosado incandescente */}
                 <path 
-                  d="M30 6 L30 54 M14 38 L30 62 L46 38" 
-                  stroke="#FEF9C3" 
-                  strokeWidth="3.5" 
+                  d="M 22 14 L 50 36 L 78 14 L 66 34 L 66 70 L 92 70 L 50 120 L 8 70 L 34 70 L 34 34 Z" 
+                  stroke="#FFF0F5" 
+                  strokeWidth="3.2" 
                   strokeLinecap="round" 
                   strokeLinejoin="round" 
                 />
@@ -446,24 +451,31 @@ export default function Explora() {
           </div>
 
           {/* Bisel/carcasa circular negra de arcade tradicional */}
-          <div className="w-44 h-44 sm:w-52 sm:h-52 md:w-56 md:h-56 rounded-full bg-[#18181b] border-4 sm:border-[6px] border-[#27272a] shadow-[0_25px_50px_rgba(0,0,0,0.95),inset_0_3px_6px_rgba(255,255,255,0.15)] flex items-center justify-center p-3 sm:p-4 relative">
+          <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-60 md:h-60 rounded-full bg-[#18181b] border-4 sm:border-[6px] border-[#27272a] shadow-[0_25px_50px_rgba(0,0,0,0.95),inset_0_3px_6px_rgba(255,255,255,0.15)] flex items-center justify-center p-3 sm:p-4 relative">
 
             {/* Aro interior de encaje del pulsador */}
             <div className="w-full h-full rounded-full bg-[#09090b] p-2 flex items-center justify-center border-2 border-black shadow-inner">
 
-              {/* CÚPULA CONVEXA ROJO CEREZA ARCADE LIMPIA (SIN TEXTO) */}
+              {/* CÚPULA CONVEXA ROJO CEREZA ARCADE CON TEXTO "APRETAR AQUÍ" */}
               <button
                 type="button"
                 onClick={handlePulsarBotonRojo}
-                className={`w-full h-full rounded-full bg-gradient-to-b from-[#ff3834] via-[#d61e1b] to-[#7f1d1d] text-white flex flex-col items-center justify-center cursor-pointer transition-all duration-150 shadow-[inset_0_6px_12px_rgba(255,255,255,0.45),0_10px_20px_rgba(0,0,0,0.6)] animate-red-button-glow ${
+                className={`w-full h-full rounded-full bg-gradient-to-b from-[#ff3834] via-[#d61e1b] to-[#7f1d1d] text-white flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 shadow-[inset_0_6px_12px_rgba(255,255,255,0.45),0_10px_20px_rgba(0,0,0,0.6)] animate-red-button-glow ${
                   isPressingBtn 
                     ? 'scale-90 translate-y-2 shadow-[inset_0_6px_14px_rgba(0,0,0,0.85)]' 
                     : 'hover:scale-[1.03] active:scale-95 active:translate-y-2'
                 }`}
-                title="Presionar para iniciar el test"
+                title="Apretar aquí para iniciar el test"
               >
                 {/* Reflejo superior de la cúpula convexa */}
-                <div className="w-24 sm:w-28 h-4 sm:h-5 bg-white/30 rounded-full blur-[1px] -mt-1"></div>
+                <div className="w-24 sm:w-28 h-3.5 sm:h-4 bg-white/25 rounded-full blur-[1px] -mt-1 mb-1"></div>
+
+                <span className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-wider text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] leading-tight">
+                  APRETAR
+                </span>
+                <span className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-wider text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] leading-tight">
+                  AQUÍ
+                </span>
               </button>
 
             </div>
@@ -473,19 +485,19 @@ export default function Explora() {
         </div>
 
         {/* =====================================================================
-            3. ZONA SUELO: MÁQUINA ARCADE TAMAÑO REAL A LA IZQUIERDA
-            Para no opacar el botón central y dar sensación de escala real en el cuarto
+            3. ZONA SUELO: MÁQUINA ARCADE TAMAÑO REAL A LA DERECHA APOYADA AL RAS DEL SUELO
+            Ubicada a la derecha mirando hacia la izquierda hacia el botón central
             ===================================================================== */}
-        <div className="w-full flex justify-start items-end px-2 sm:px-6 md:px-12 lg:px-16 -translate-y-16 sm:-translate-y-24 md:-translate-y-36 lg:-translate-y-44 pointer-events-auto">
+        <div className="w-full flex justify-end items-end px-4 sm:px-10 lg:px-16 mt-auto pointer-events-auto">
           
           <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
             <img
               src="/images/maquina_aliens.png"
               alt="Máquina de Marcianitos Pizza Planet a Tamaño Real"
-              className="w-64 sm:w-80 md:w-96 lg:w-[460px] xl:w-[520px] 2xl:w-[580px] h-auto object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.75)]"
+              className="w-72 sm:w-88 md:w-[440px] lg:w-[500px] xl:w-[560px] h-auto object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.85)]"
             />
-            {/* Sombra de contacto realista en el suelo */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-5 bg-black/75 blur-xl rounded-full pointer-events-none"></div>
+            {/* Sombra de contacto profunda al ras del suelo de madera */}
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-6 bg-black/85 blur-xl rounded-full pointer-events-none"></div>
           </div>
 
         </div>

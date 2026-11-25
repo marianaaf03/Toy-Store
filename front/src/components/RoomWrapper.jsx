@@ -170,7 +170,7 @@ export default function RoomWrapper({
             </div>
 
             {/* 2. ZÓCALO / MADERA BLANCA (Mid Section) */}
-            <div className={`h-[10vh] md:h-[12vh] bg-[#fcf8f2] relative border-t-8 border-white shadow-[0_-10px_30px_rgba(0,0,0,0.05)]`}>
+            <div className={`h-[25vh] md:h-[30vh] bg-[#fcf8f2] relative border-t-8 border-white shadow-[0_-10px_30px_rgba(0,0,0,0.05)]`}>
               <div className="absolute inset-0 opacity-10" 
                    style={{ backgroundImage: 'linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '150px 100%' }}>
               </div>
@@ -178,7 +178,7 @@ export default function RoomWrapper({
             </div>
 
             {/* 3. SUELO COORDINADO CON EL TEMA (Bottom Section) */}
-            <div className={`min-h-[160px] md:min-h-[200px] h-[22vh] md:h-[26vh] ${styles.floor} relative shadow-[inset_0_20px_40px_rgba(0,0,0,0.4)] transition-colors duration-700`}>
+            <div className={`min-h-[480px] md:h-[40vh] ${styles.floor} relative shadow-[inset_0_20px_40px_rgba(0,0,0,0.4)] transition-colors duration-700`}>
                <div className="absolute inset-0 opacity-20" 
                     style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent 0, transparent 80px, rgba(0,0,0,0.5) 81px)' }}>
                </div>
