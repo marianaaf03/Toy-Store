@@ -260,11 +260,10 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
         </div>
 
         {/* CENTRO: NAVEGACIÓN (SOLO EN DESKTOP PARA EVITAR MONTARSE EN MÓVILES) */}
-        <div className={`hidden md:flex items-center text-blue-900 font-bold uppercase transition-all duration-300 z-30 ${
-          isDrawerOpen 
-            ? 'relative mx-auto gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-xs lg:text-[14px] tracking-normal lg:tracking-wider pl-2 md:pl-6' 
-            : 'absolute left-1/2 -translate-x-1/2 gap-6 md:gap-8 lg:gap-14 xl:gap-16 text-[15px] lg:text-[17px] tracking-wider lg:tracking-widest'
-        }`}>
+        <div className={`hidden md:flex items-center text-blue-900 font-bold uppercase transition-all duration-300 z-30 ${isDrawerOpen
+          ? 'relative mx-auto gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-xs lg:text-[14px] tracking-normal lg:tracking-wider pl-2 md:pl-6'
+          : 'absolute left-1/2 -translate-x-1/2 gap-6 md:gap-8 lg:gap-14 xl:gap-16 text-[15px] lg:text-[17px] tracking-wider lg:tracking-widest'
+          }`}>
           <NavHoverItem label="Inicio" iconType="vagina" baseColorClass="text-blue-500" hoverColorClass="hover:text-blue-500" isActive={isActive('/')} onClick={() => navigate('/')} />
           <NavHoverItem label="Tienda" iconType="phallic" baseColorClass="text-yellow-500" hoverColorClass="hover:text-yellow-500" isActive={isActive('/tienda')} onClick={() => navigate('/tienda')} />
           <NavHoverItem label="Guía" iconType="handcuffs" baseColorClass="text-pink-600" hoverColorClass="hover:text-pink-600" isActive={isActive('/guia')} onClick={() => navigate('/guia')} />

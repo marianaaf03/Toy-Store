@@ -275,6 +275,58 @@ export default function Explora() {
         .animate-neon-arrow {
           animation: retroNeonFlicker 3s ease-in-out infinite;
         }
+        @keyframes alienJump {
+          0%, 100% {
+            transform: translateY(0) scale(1, 1);
+          }
+          12% {
+            transform: translateY(4px) scale(1.1, 0.9);
+          }
+          32% {
+            transform: translateY(-42px) scale(0.95, 1.05);
+          }
+          50% {
+            transform: translateY(-64px) scale(1, 1);
+          }
+          68% {
+            transform: translateY(-24px) scale(0.97, 1.03);
+          }
+          84% {
+            transform: translateY(0) scale(1.14, 0.86);
+          }
+          92% {
+            transform: translateY(-10px) scale(0.98, 1.02);
+          }
+        }
+        .animate-alien-jump {
+          animation: alienJump 1.7s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+          transform-origin: bottom center;
+        }
+        @keyframes alienShadowScale {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 0.65;
+          }
+          12% {
+            transform: scale(1.22);
+            opacity: 0.85;
+          }
+          50% {
+            transform: scale(0.42);
+            opacity: 0.2;
+          }
+          84% {
+            transform: scale(1.28);
+            opacity: 0.9;
+          }
+          92% {
+            transform: scale(0.8);
+            opacity: 0.45;
+          }
+        }
+        .animate-alien-shadow {
+          animation: alienShadowScale 1.7s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+        }
       `}</style>
 
       {/* =========================================================================
@@ -459,31 +511,43 @@ export default function Explora() {
       </div>
 
       {/* =========================================================================
-          ZONA SUELO DE MADERA: ALFOMBRA RETRO DEL USUARIO + ARCADE GRANDE A LA DERECHA
-          Ubicados al ras del inicio del suelo, sin vitrinas ni footers no deseados
+          ZONA SUELO DE MADERA: ALFOMBRA RETRO GRANDE, ALIEN SALTANDO Y ARCADE A LA DERECHA
           ========================================================================= */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-2 sm:px-6 md:px-8 pb-12 font-fredoka select-none flex flex-col justify-end">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-2 sm:px-4 md:px-6 pb-6 font-fredoka select-none flex flex-col justify-end">
 
-        <div className="w-full flex flex-col lg:flex-row items-center lg:items-end justify-between gap-6 relative">
+        <div className="w-full flex flex-col lg:flex-row items-center lg:items-end justify-between gap-4 sm:gap-6 relative">
 
-          {/* LADO IZQUIERDO / CENTRO: ALFOMBRA RETRO DEL USUARIO APOYADA EN EL SUELO */}
-          <div className="flex-1 flex justify-center lg:justify-start items-end pl-0 sm:pl-4 md:pl-8 lg:pl-12 pb-2">
+          {/* LADO IZQUIERDO: ALIENCITO EN EL SUELO CON ANIMACIÓN SALTANDO */}
+          <div className="shrink-0 flex flex-col items-center z-20 pl-2 sm:pl-6 md:pl-10 lg:pl-14 mb-4 lg:mb-2 pointer-events-none">
+            <div className="relative flex flex-col items-center">
+              <img
+                src="/images/aliencito.png"
+                alt="Aliencito saltando en el suelo de Pizza Planet"
+                className="w-36 sm:w-44 md:w-52 lg:w-60 xl:w-68 h-auto object-contain animate-alien-jump drop-shadow-[0_20px_25px_rgba(0,0,0,0.65)] select-none"
+              />
+              {/* Sombra de contacto sincronizada con el salto */}
+              <div className="w-28 sm:w-36 md:w-40 h-4 bg-black/60 blur-md rounded-full -mt-2 animate-alien-shadow pointer-events-none"></div>
+            </div>
+          </div>
+
+          {/* ZONA CENTRO / FONDO DEL SUELO: ALFOMBRA RETRO MUCHO MÁS GRANDE QUE ABARCA TODO EL SUELO */}
+          <div className="flex-1 flex justify-center items-end px-2 z-10 w-full -mb-2 sm:-mb-4">
             <img
               src="/images/alfombra_retro.png"
-              alt="Alfombra Retro Pizza Planet"
-              className="w-64 sm:w-80 md:w-96 lg:w-[460px] xl:w-[540px] 2xl:w-[600px] h-auto object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.75)] transition-transform duration-300 hover:scale-[1.02]"
+              alt="Alfombra Retro Pizza Planet en todo el suelo"
+              className="w-full max-w-[650px] sm:max-w-[800px] md:max-w-[950px] lg:max-w-[1100px] xl:max-w-[1250px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)] transition-transform duration-300 hover:scale-[1.01]"
             />
           </div>
 
-          {/* LADO DERECHO: MÁQUINA DE ARCADE MUCHO MÁS GRANDE, AL LADO DERECHO Y AL RAS DEL INICIO DEL SUELO */}
-          <div className="shrink-0 flex justify-end items-end pr-0 sm:pr-2 md:pr-4 lg:pr-6 pointer-events-auto">
+          {/* LADO DERECHO: MÁQUINA DE ARCADE MUCHO MÁS GRANDE, MÁS A LA DERECHA Y MÁS ARRIBA */}
+          <div className="shrink-0 flex justify-end items-end z-20 -mr-2 sm:-mr-4 md:-mr-6 lg:-mr-10 xl:-mr-14 -mt-16 sm:-mt-24 md:-mt-36 lg:-mt-48 xl:-mt-60 pointer-events-auto">
             <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
               <img
                 src="/images/maquina_aliens.png"
                 alt="Máquina de Marcianitos Pizza Planet a Tamaño Real"
-                className="w-80 sm:w-96 md:w-[480px] lg:w-[580px] xl:w-[660px] 2xl:w-[740px] h-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.9)]"
+                className="w-84 sm:w-[420px] md:w-[520px] lg:w-[640px] xl:w-[740px] 2xl:w-[820px] h-auto object-contain drop-shadow-[0_35px_70px_rgba(0,0,0,0.9)]"
               />
-              {/* Sombra de contacto profunda al ras del suelo de madera */}
+              {/* Sombra de contacto profunda al ras del inicio del suelo */}
               <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-6 bg-black/85 blur-xl rounded-full pointer-events-none"></div>
             </div>
           </div>
