@@ -306,7 +306,7 @@ function getProductosPorCategoria(cat = 'todos') {
 export default function Tienda() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const categoriaActiva = searchParams.get('cat') || 'todos';
+  const categoriaActiva = searchParams.get('cat') || searchParams.get('categoria') || 'todos';
   const busqueda = (searchParams.get('buscar') || searchParams.get('q') || '').toLowerCase().trim();
   const [pagina, setPagina] = useState(1);
   const [filtroTexto, setFiltroTexto] = useState(busqueda);
