@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RoomWrapper from '../components/RoomWrapper';
 import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 import { useNavigate } from 'react-router-dom';
@@ -33,15 +33,173 @@ const RAINING_PIZZAS = [
   { id: 12, left: '94%', size: 'w-8 sm:w-9', duration: '14.5s', delay: '8s', opacity: 0.22 },
 ];
 
+// Premios y Cupones Canjeables en la Vitrina de la Garra
+const PREMIOS_VITRINA = [
+  {
+    id: 'bono10',
+    titulo: 'Bono Cósmico 10% OFF',
+    subtitulo: 'Aplica en toda la tienda para cualquier orden',
+    tickets: 250,
+    cupon: 'PIZZAPLANET10',
+    badge: 'MÁS POPULAR',
+    icono: '🎟️'
+  },
+  {
+    id: 'envio_gratis',
+    titulo: 'Pase de Envío Estelar Gratis',
+    subtitulo: 'Envío 100% discreto y gratuito a todo el país',
+    tickets: 400,
+    cupon: 'ENVIOPLANET',
+    badge: 'AHORRO TOTAL',
+    icono: '🚀'
+  },
+  {
+    id: 'bono20_vip',
+    titulo: 'Bono VIP 20% Vibradores & Lencería',
+    subtitulo: '20% OFF en las dos categorías favoritas del baúl',
+    tickets: 600,
+    cupon: 'GARRASENSORIAL',
+    badge: 'EXCLUSIVO TEST',
+    icono: '✨'
+  },
+  {
+    id: 'mystery_token',
+    titulo: 'Mystery Box Gift Token',
+    subtitulo: 'Regalo íntimo sorpresa asegurado en tu paquete',
+    tickets: 850,
+    cupon: 'MYSTERYGIFT',
+    badge: 'PREMIO MAYOR',
+    icono: '🎁'
+  }
+];
+
+// Frases interactivas de los Marcianitos al hacerles clic
+const FRASES_ALIENS = [
+  '¡Ooooooooh! ¡La Garra nos ha traído a la mejor tienda del universo!',
+  '¡Un extraño desde el exterior! ¡Toca la vitrina y reclama tus premios!',
+  '¡La Garra es nuestro amo! ¡Ella decide quién gana los tickets!',
+  '¡He sido elegido! ¡Toma 150 tickets cósmicos de regalo especial!',
+  '¡La Garra se mueve! ¡Elige tu premio cósmico favorito!'
+];
+
+// Alfombra Retro Arcade de Pizza Planet (Inspirada en las alfombras 90s espaciales)
+const PizzaPlanetRug = () => (
+  <div className="relative w-full rounded-[2.5rem] p-6 sm:p-8 bg-[#0a0c1a] border-4 border-[#ff2a5f]/50 shadow-[0_20px_50px_rgba(0,0,0,0.85),inset_0_0_40px_rgba(255,42,95,0.2)] overflow-hidden select-none">
+    {/* Patrón cósmico retro arcade de fondo */}
+    <div 
+      className="absolute inset-0 opacity-25 pointer-events-none"
+      style={{
+        backgroundImage: `radial-gradient(circle at 20% 20%, #ff0055 2px, transparent 3px),
+                          radial-gradient(circle at 80% 30%, #00f0ff 2px, transparent 3px),
+                          radial-gradient(circle at 40% 70%, #ffea00 2px, transparent 3px),
+                          radial-gradient(circle at 70% 80%, #39ff14 2px, transparent 3px),
+                          linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+                          linear-gradient(-45deg, rgba(255,255,255,0.03) 25%, transparent 25%)`,
+        backgroundSize: '40px 40px, 60px 60px, 50px 50px, 70px 70px, 20px 20px, 20px 20px'
+      }}
+    />
+
+    {/* Planetas y naves arcade flotando en el tejido de la alfombra */}
+    <div className="absolute top-3 left-6 text-amber-300/40 text-3xl font-mono pointer-events-none">🪐</div>
+    <div className="absolute bottom-4 right-8 text-rose-400/40 text-2xl font-mono pointer-events-none">🚀</div>
+    <div className="absolute top-4 right-14 text-yellow-300/40 text-2xl font-mono pointer-events-none">🍕</div>
+    <div className="absolute bottom-4 left-10 text-cyan-300/40 text-xl font-mono pointer-events-none">✨</div>
+
+    {/* Emblema central de la alfombra Pizza Planet */}
+    <div className="relative z-10 flex flex-col items-center justify-center text-center py-2">
+      <div className="flex items-center gap-2 mb-1">
+        <span className="w-8 sm:w-12 h-0.5 bg-gradient-to-r from-transparent to-[#ff2a5f]"></span>
+        <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-[#ff2a5f]">
+          SPACE PORT ARCADE
+        </span>
+        <span className="w-8 sm:w-12 h-0.5 bg-gradient-to-l from-transparent to-[#ff2a5f]"></span>
+      </div>
+      <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-wider drop-shadow-[0_2px_10px_rgba(255,42,95,0.7)] uppercase font-fredoka">
+        PIZZA PLANET
+      </h3>
+      <p className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+        ★ SERVING YOUR STAR CLUSTER • OFICIAL RETRO CARPET ★
+      </p>
+    </div>
+  </div>
+);
+
+// Cajas de Pizza Planet apiladas con perspectiva 3D
+const PizzaBoxStack = () => (
+  <div className="relative flex flex-col items-center group cursor-pointer transition-transform hover:scale-105 duration-300">
+    {/* Caja 3 (Superior) */}
+    <div className="relative z-30 w-36 sm:w-44 h-11 bg-white rounded-md border-2 border-slate-300 shadow-md rotate-[-2deg] overflow-hidden flex flex-col justify-between p-1">
+      <CheckeredStripe />
+      <div className="flex items-center justify-center gap-1.5 px-2">
+        <span className="text-[11px] font-black text-[#E52521] uppercase tracking-wider">PIZZA PLANET</span>
+        <span className="text-[9px] text-amber-500 font-bold">🚀</span>
+      </div>
+      <CheckeredStripe />
+    </div>
+
+    {/* Caja 2 (Media) */}
+    <div className="relative z-20 w-40 sm:w-48 h-12 bg-[#fafafa] rounded-md border-2 border-slate-300 shadow-md rotate-[2deg] -mt-5 overflow-hidden flex flex-col justify-between p-1">
+      <CheckeredStripe />
+      <div className="text-[10px] font-black text-slate-700 text-center uppercase tracking-widest">
+        DELIVERY SHUTTLE
+      </div>
+      <CheckeredStripe />
+    </div>
+
+    {/* Caja 1 (Base) */}
+    <div className="relative z-10 w-44 sm:w-52 h-14 bg-white rounded-md border-2 border-slate-300 shadow-lg -mt-5 overflow-hidden flex flex-col justify-between p-1">
+      <CheckeredStripe />
+      <div className="flex items-center justify-between px-3 text-[9px] font-black text-slate-500 uppercase tracking-wider">
+        <span>HOT & FRESH</span>
+        <span className="text-[#E52521]">SECTOR 42</span>
+      </div>
+      <CheckeredStripe />
+    </div>
+
+    {/* Sombra de contacto de la pila en el suelo */}
+    <div className="w-40 sm:w-48 h-3 bg-black/60 blur-md rounded-full -mt-1 pointer-events-none"></div>
+  </div>
+);
+
 export default function Explora() {
   const navigate = useNavigate();
 
-  // Estados del quizz y del modal
+  // Estados del quizz y del modal de preguntas
   const [modalAbierto, setModalAbierto] = useState(false);
   const [preguntaActual, setPreguntaActual] = useState(0); // 0 a 6 (7 preguntas)
   const [respuestas, setRespuestas] = useState([]);
   const [mostrarResultados, setMostrarResultados] = useState(false);
   const [isPressingBtn, setIsPressingBtn] = useState(false);
+
+  // Estados de la Vitrina de Premios y Tickets
+  const [tickets, setTickets] = useState(() => {
+    try {
+      const stored = localStorage.getItem('toy_planet_tickets');
+      if (stored !== null) return parseInt(stored, 10) || 0;
+    } catch {}
+    return 650; // Saldo inicial generoso para explorar y canjear
+  });
+
+  const [ticketToast, setTicketToast] = useState(null);
+  const [premioCanjeado, setPremioCanjeado] = useState(null);
+  const [codigoCopiado, setCodigoCopiado] = useState(false);
+
+  // Estado de los marcianitos interactivos
+  const [alienFraseIdx, setAlienFraseIdx] = useState(0);
+  const [alienBonusCobrado, setAlienBonusCobrado] = useState(() => {
+    try {
+      return localStorage.getItem('toy_alien_bonus') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  // Guardar tickets en localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('toy_planet_tickets', tickets.toString());
+    } catch {}
+  }, [tickets]);
 
   // Las 7 preguntas de la Trivia inspiradas en la estética Pizza Planet
   const preguntasQuizz = [
@@ -159,7 +317,40 @@ export default function Explora() {
       setPreguntaActual(preguntaActual + 1);
     } else {
       setMostrarResultados(true);
+      // Ganar tickets por completar el test
+      setTickets(prev => prev + 300);
+      setTicketToast('¡+300 TICKETS CÓSMICOS POR COMPLETAR LA TRIVIA!');
+      setTimeout(() => setTicketToast(null), 4000);
     }
+  };
+
+  // Interacción al hacer clic en los marcianitos
+  const handleInteractAlien = () => {
+    setAlienFraseIdx(prev => (prev + 1) % FRASES_ALIENS.length);
+    if (!alienBonusCobrado) {
+      setAlienBonusCobrado(true);
+      try {
+        localStorage.setItem('toy_alien_bonus', 'true');
+      } catch {}
+      setTickets(prev => prev + 150);
+      setTicketToast('¡+150 TICKETS DE REGALO POR SALUDAR A LOS MARCIANITOS!');
+      setTimeout(() => setTicketToast(null), 4000);
+    }
+  };
+
+  // Canjear un premio de la vitrina
+  const handleCanjearPremio = (premio) => {
+    if (tickets < premio.tickets) {
+      setTicketToast(`¡TE FALTAN ${premio.tickets - tickets} TICKETS PARA ESTE PREMIO!`);
+      setTimeout(() => setTicketToast(null), 3000);
+      return;
+    }
+
+    setTickets(prev => prev - premio.tickets);
+    setPremioCanjeado(premio);
+    setCodigoCopiado(false);
+    setTicketToast(`¡CANJE EXITOSO: ${premio.titulo.toUpperCase()}!`);
+    setTimeout(() => setTicketToast(null), 3500);
   };
 
   // Calcular recomendaciones de productos y categorías basados en CATALOGO_REAL
@@ -236,6 +427,7 @@ export default function Explora() {
       theme="aliens"
       wallpaperContent={<AndyCloudsWallpaper />}
       hideFloorToys={true}
+      showFooter={true}
     >
       <style>{`
         @keyframes rainPizzaAnim {
@@ -275,7 +467,32 @@ export default function Explora() {
         .animate-neon-arrow {
           animation: retroNeonFlicker 3s ease-in-out infinite;
         }
+        @keyframes ticketDispense {
+          0% { transform: translateY(-40px) scale(0.85); opacity: 0; }
+          60% { transform: translateY(0px) scale(1.04); opacity: 1; }
+          100% { transform: translateY(0px) scale(1); opacity: 1; }
+        }
+        .animate-ticket-dispense {
+          animation: ticketDispense 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes alienFloatAnim {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-6px); }
+        }
+        .animate-alien-float {
+          animation: alienFloatAnim 3.8s ease-in-out infinite;
+        }
       `}</style>
+
+      {/* =========================================================================
+          NOTIFICACIÓN FLOTANTE DE TICKETS (ARCADE TOAST)
+          ========================================================================= */}
+      {ticketToast && (
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[700] bg-slate-900 text-amber-300 border-2 border-amber-400 px-6 py-2.5 rounded-full shadow-[0_15px_35px_rgba(0,0,0,0.8)] flex items-center gap-3 animate-in slide-in-from-top-4 duration-300 font-fredoka text-xs sm:text-sm font-black tracking-wider uppercase pointer-events-none select-none">
+          <span className="text-xl animate-bounce">🎟️</span>
+          <span>{ticketToast}</span>
+        </div>
+      )}
 
       {/* =========================================================================
           EFECTO ESPECIAL: LLUVIA DE RODAJAS DE PIZZA CAYENDO DESDE EL TECHO
@@ -303,12 +520,9 @@ export default function Explora() {
       </div>
 
       {/* =========================================================================
-          CONTENEDOR PRINCIPAL: VIBRA RETRO-FUTURISTA PIZZA PLANET
-          Cartel colgante, posters sin cinta, flecha neón nítida y botón rojo central.
-          Sin la máquina arcade pesada para mantener la misma proporción del diorama
-          de la página de inicio sin scrolls excesivos ni suelos vacíos.
+          CONTENEDOR PRINCIPAL - PARTE SUPERIOR (PARED): CARTEL, POSTERS & BOTÓN
           ========================================================================= */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 pb-12 font-fredoka select-none flex-1 flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 pb-6 font-fredoka select-none flex-1 flex flex-col items-center">
 
         {/* ZONA SUPERIOR / PARED: POSTERS + CARTEL */}
         <div className="w-full flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 lg:gap-8 xl:gap-12 mt-2 sm:mt-4">
@@ -459,17 +673,213 @@ export default function Explora() {
           </div>
         </div>
 
-        {/* MÁQUINA DE ARCADE (ALIENS) A LA DERECHA APOYADA AL RAS DEL SUELO */}
-        <div className="w-full flex justify-end items-end px-2 sm:px-8 lg:px-14 mt-4 lg:-mt-24 pointer-events-auto">
-          <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
-            <img
-              src="/images/maquina_aliens.png"
-              alt="Máquina de Marcianitos Pizza Planet a Tamaño Real"
-              className="w-72 sm:w-88 md:w-[420px] lg:w-[480px] xl:w-[540px] 2xl:w-[580px] h-auto object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.85)]"
-            />
-            {/* Sombra de contacto profunda al ras del suelo */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-6 bg-black/85 blur-xl rounded-full pointer-events-none"></div>
+      </div>
+
+      {/* =========================================================================
+          ZONA SUELO DE MADERA: ALFOMBRA RETRO PIZZA PLANET, CAJAS DE PIZZA,
+          MARCIANITOS INTERACTIVOS, MÁQUINA ARCADE Y VITRINA DE CANJE DE PREMIOS
+          ========================================================================= */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-6 pb-20 font-fredoka select-none flex flex-col items-center">
+
+        {/* 1. FILA ESCÉNICA: ALFOMBRA + CAJAS + MARCIANITOS (IZQUIERDA) Y MÁQUINA ARCADE (DERECHA) */}
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-end relative mb-12">
+
+          {/* LADO IZQUIERDO Y CENTRAL: ALFOMBRA ARCADE RETRO + CAJAS + MARCIANITOS (7 Columnas) */}
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start w-full relative">
+            
+            {/* ALFOMBRA RETRO PIZZA PLANET EN EL SUELO */}
+            <PizzaPlanetRug />
+
+            {/* ELEMENTOS APOYADOS SOBRE / AL BORDE DE LA ALFOMBRA */}
+            <div className="w-full flex flex-wrap items-end justify-around sm:justify-between gap-6 px-4 mt-4 relative z-10">
+              
+              {/* CAJAS DE PIZZA PLANET APILADAS */}
+              <div className="flex flex-col items-center">
+                <PizzaBoxStack />
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-200/80 mt-1.5 drop-shadow-sm">
+                  PIZZA DELIVERY SHUTTLE
+                </span>
+              </div>
+
+              {/* MARCIANITOS INTERACTIVOS CON BOCADILLO DE DIÁLOGO DINÁMICO */}
+              <div className="flex flex-col items-center">
+                {/* Bocadillo de diálogo de los Aliens */}
+                <div 
+                  onClick={handleInteractAlien}
+                  className="mb-2 max-w-[240px] sm:max-w-[280px] bg-white text-slate-800 rounded-2xl px-3.5 py-2.5 border-2 border-emerald-400 shadow-[0_10px_25px_rgba(16,185,129,0.3)] text-center cursor-pointer transition-all hover:scale-105 active:scale-95 group relative z-20"
+                >
+                  <div className="flex items-center justify-center gap-1.5 mb-0.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">
+                      MARCIANITOS • ¡TÓCANOS!
+                    </span>
+                  </div>
+                  <p className="text-xs font-bold leading-snug text-slate-800">
+                    "{FRASES_ALIENS[alienFraseIdx]}"
+                  </p>
+                  <span className="text-[9px] font-black text-[#E52521] uppercase tracking-wider block mt-1">
+                    {!alienBonusCobrado ? '✨ ¡Toca para recibir +150 tickets gratis!' : '★ Haz clic para escuchar otra frase ★'}
+                  </span>
+
+                  {/* Puntero triangular */}
+                  <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-r-2 border-b-2 border-emerald-400 rotate-45"></div>
+                </div>
+
+                {/* Personaje de los Marcianitos */}
+                <div 
+                  onClick={handleInteractAlien}
+                  className="relative cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95 group select-none animate-alien-float"
+                  title="Haz clic para interactuar con los marcianos"
+                >
+                  <img
+                    src="/images/aliens_friends.png"
+                    alt="Marcianitos de Pizza Planet"
+                    className="w-44 sm:w-52 md:w-56 h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.7)]"
+                  />
+                  {/* Sombra de contacto */}
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-4 bg-black/70 blur-lg rounded-full pointer-events-none"></div>
+                </div>
+              </div>
+
+            </div>
+
           </div>
+
+          {/* LADO DERECHO: MÁQUINA DE ARCADE DE LA GARRA APOYADA AL RAS DEL SUELO (5 Columnas) */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end items-end relative pointer-events-auto">
+            <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
+              <img
+                src="/images/maquina_aliens.png"
+                alt="Máquina de Marcianitos Pizza Planet a Tamaño Real"
+                className="w-72 sm:w-84 md:w-96 lg:w-[440px] xl:w-[500px] 2xl:w-[540px] h-auto object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.85)]"
+              />
+              {/* Sombra de contacto profunda al ras del suelo */}
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-6 bg-black/85 blur-xl rounded-full pointer-events-none"></div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* =========================================================================
+            2. VITRINA DE CANJE DE PREMIOS ARCADE DE PIZZA PLANET (PRIZE COUNTER FUNCIONAL)
+            Con canje de tickets por cupones reales para la tienda y animación especial
+            ========================================================================= */}
+        <div className="w-full max-w-5xl bg-gradient-to-b from-[#1c1f36] via-[#101322] to-[#0a0c18] rounded-3xl border-4 border-slate-700 shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_35px_rgba(229,37,33,0.25)] p-4 sm:p-7 relative overflow-hidden select-none">
+
+          {/* Marquesina superior iluminada */}
+          <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 pb-5 border-b border-slate-700/80 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#E52521] to-rose-400 flex items-center justify-center text-white text-2xl shadow-lg border border-white/20">
+                🎟️
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400">
+                    SISTEMA DE CANJE EN VIVO
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider font-fredoka">
+                  VITRINA DE PREMIOS • PRIZE COUNTER
+                </h3>
+              </div>
+            </div>
+
+            {/* Contador digital de tickets del usuario + botón bonus */}
+            <div className="flex items-center gap-2.5 bg-black/60 border-2 border-amber-400/80 px-4 py-2 rounded-2xl shadow-inner">
+              <span className="text-xl">🎟️</span>
+              <div className="flex flex-col text-left">
+                <span className="text-[9px] font-black uppercase text-amber-300/80 tracking-widest">
+                  TUS TICKETS CÓSMICOS
+                </span>
+                <span className="text-lg sm:text-xl font-mono font-black text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]">
+                  {tickets.toLocaleString('es-CO')} PTS
+                </span>
+              </div>
+
+              <button
+                onClick={() => {
+                  setTickets(prev => prev + 100);
+                  setTicketToast('¡+100 TICKETS CÓSMICOS POR BONO DIARIO!');
+                  setTimeout(() => setTicketToast(null), 3500);
+                }}
+                className="ml-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-black text-[10px] uppercase tracking-wider shadow-md transition active:scale-95 cursor-pointer"
+                title="Reclamar bono diario de tickets"
+              >
+                + Bono +100
+              </button>
+            </div>
+          </div>
+
+          {/* Estante de vidrio iluminado con las 4 tarjetas de premios */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            {PREMIOS_VITRINA.map((premio) => {
+              const tieneSuficiente = tickets >= premio.tickets;
+
+              return (
+                <div
+                  key={premio.id}
+                  className="bg-white/5 hover:bg-white/10 rounded-2xl border-2 border-slate-700/80 hover:border-amber-400/80 transition-all duration-300 p-4 flex flex-col justify-between group shadow-lg relative overflow-hidden"
+                >
+                  {/* Insignia superior */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="px-2.5 py-0.5 rounded-full bg-slate-800 text-amber-300 border border-amber-400/40 text-[9px] font-black uppercase tracking-wider">
+                      {premio.badge}
+                    </span>
+                    <span className="text-2xl group-hover:scale-125 transition-transform">
+                      {premio.icono}
+                    </span>
+                  </div>
+
+                  {/* Detalles del premio */}
+                  <div className="mb-4">
+                    <h4 className="text-sm sm:text-base font-black text-white uppercase leading-snug group-hover:text-amber-300 transition-colors">
+                      {premio.titulo}
+                    </h4>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      {premio.subtitulo}
+                    </p>
+                  </div>
+
+                  {/* Costo en tickets y botón de canjear */}
+                  <div className="pt-3 border-t border-slate-700/60 flex flex-col gap-2">
+                    <div className="flex items-center justify-between text-xs font-black">
+                      <span className="text-slate-400 uppercase text-[10px]">Costo:</span>
+                      <span className="text-amber-300 font-mono text-sm">
+                        🎟️ {premio.tickets} tickets
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => handleCanjearPremio(premio)}
+                      disabled={!tieneSuficiente}
+                      className={`w-full py-2.5 px-3 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer flex items-center justify-center gap-1.5 ${
+                        tieneSuficiente
+                          ? 'bg-gradient-to-r from-red-500 via-[#E52521] to-rose-600 hover:from-red-600 hover:to-rose-700 text-white shadow-[0_0_15px_rgba(229,37,33,0.4)] hover:scale-[1.02] active:scale-95'
+                          : 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed opacity-60'
+                      }`}
+                    >
+                      {tieneSuficiente ? (
+                        <>
+                          <span>CANJEAR TICKET</span>
+                          <span>✨</span>
+                        </>
+                      ) : (
+                        <span>Faltan {premio.tickets - tickets} tickets</span>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Pie de la vitrina con nota arcade */}
+          <div className="mt-6 pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">
+            <span>★ PIZZA PLANET PRIZE SYSTEM • CANJEA TUS TICKETS POR CUPONES REALES ★</span>
+            <span className="text-amber-400/90">¡Juega la trivia para ganar +300 tickets!</span>
+          </div>
+
         </div>
 
       </div>
@@ -553,7 +963,7 @@ export default function Explora() {
               ) : (
                 /* ================= MODO RESULTADOS ================= */
                 <div className="flex flex-col items-center animate-in fade-in zoom-in-95 duration-300">
-                  <div className="text-center mb-6">
+                  <div className="text-center mb-5">
                     <span className="inline-block px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-[#E52521] text-[11px] font-black tracking-widest uppercase mb-2">
                       ¡RESULTADO CÓSMICO DE TU TRIVIA!
                     </span>
@@ -563,6 +973,19 @@ export default function Explora() {
                     <p className="text-xs sm:text-sm text-slate-600 font-medium mt-2 leading-relaxed max-w-lg mx-auto">
                       {recomendacion.descripcion}
                     </p>
+                  </div>
+
+                  {/* Banner de recompensa de tickets arcade */}
+                  <div className="w-full bg-gradient-to-r from-amber-500/15 via-red-500/15 to-amber-500/15 border-2 border-amber-400/80 rounded-2xl p-3 mb-5 text-center flex items-center justify-center gap-3 shadow-xs">
+                    <span className="text-2xl animate-bounce">🎟️</span>
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-black uppercase text-amber-700 tracking-wider">
+                        ¡+300 TICKETS CÓSMICOS AGREGADOS A TU CUENTA!
+                      </h4>
+                      <p className="text-[11px] text-slate-600 font-bold">
+                        Baja a la vitrina de premios en el suelo para canjear tus cupones de descuento y pases de envío.
+                      </p>
+                    </div>
                   </div>
 
                   {/* Secciones sugeridas */}
@@ -636,6 +1059,101 @@ export default function Explora() {
           </div>
         </div>
       )}
+
+      {/* =========================================================================
+          MODAL SUPER TRANSICIÓN: TICKET ARCADE PERFORADO CANJEADO
+          ========================================================================= */}
+      {premioCanjeado && (
+        <div className="fixed inset-0 z-[600] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200 select-none font-fredoka">
+          <div className="relative w-full max-w-md bg-gradient-to-b from-amber-50 via-white to-amber-50/80 rounded-3xl border-4 border-amber-400 shadow-[0_25px_80px_rgba(251,191,36,0.5)] p-6 sm:p-8 flex flex-col items-center text-center animate-ticket-dispense overflow-hidden">
+            
+            {/* Muescas troqueladas laterales de ticket arcade vintage */}
+            <div className="absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400"></div>
+            <div className="absolute top-1/2 -right-4 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400"></div>
+
+            {/* Franja superior a cuadros estilo Pizza Planet */}
+            <div className="w-full -mt-6 sm:-mt-8 mb-5 overflow-hidden">
+              <CheckeredStripe />
+            </div>
+
+            {/* Cabecera del Ticket */}
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-2xl animate-spin" style={{ animationDuration: '4s' }}>⭐</span>
+              <span className="text-xs font-black text-amber-700 uppercase tracking-widest bg-amber-100 px-3.5 py-1 rounded-full border border-amber-300">
+                ¡PREMIO ARCADE CANJEADO!
+              </span>
+              <span className="text-2xl animate-spin" style={{ animationDuration: '4s' }}>⭐</span>
+            </div>
+
+            <h3 className="text-2xl sm:text-3xl font-black text-[#E52521] uppercase tracking-tight mt-1 leading-tight">
+              {premioCanjeado.titulo}
+            </h3>
+            <p className="text-xs text-slate-600 font-medium mt-1 mb-5">
+              {premioCanjeado.subtitulo}
+            </p>
+
+            {/* Código de Cupón con aspecto de ticket impreso */}
+            <div className="w-full bg-slate-900 text-amber-300 rounded-2xl p-4 border-2 border-dashed border-amber-400 mb-5 relative shadow-inner">
+              <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest block mb-1">
+                TU CÓDIGO OFICIAL DE DESCUENTO:
+              </span>
+              <span className="text-2xl sm:text-3xl font-mono font-black tracking-widest select-all text-amber-300 drop-shadow-[0_0_12px_rgba(251,191,36,0.7)] block">
+                {premioCanjeado.cupon}
+              </span>
+              <span className="text-[9px] font-mono text-slate-500 block mt-1 tracking-widest">
+                |||| ||| ||||| || |||||| |||||
+              </span>
+            </div>
+
+            {/* Botones de Acción */}
+            <div className="w-full flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(premioCanjeado.cupon);
+                  setCodigoCopiado(true);
+                  setTimeout(() => setCodigoCopiado(false), 2500);
+                }}
+                className="flex-1 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider transition shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                {codigoCopiado ? (
+                  <span className="text-emerald-400 font-black">✓ ¡CÓDIGO COPIADO!</span>
+                ) : (
+                  <>
+                    <span>COPIAR CÓDIGO</span>
+                    <span>📋</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(premioCanjeado.cupon);
+                  setPremioCanjeado(null);
+                  navigate('/tienda');
+                }}
+                className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-red-500 to-[#E52521] hover:from-red-600 hover:to-red-700 text-white font-black text-xs uppercase tracking-wider transition shadow-md active:scale-95 cursor-pointer"
+              >
+                IR A LA TIENDA
+              </button>
+            </div>
+
+            {/* Botón cerrar */}
+            <button
+              onClick={() => setPremioCanjeado(null)}
+              className="mt-4 text-[11px] font-black text-slate-400 hover:text-slate-600 uppercase tracking-widest cursor-pointer"
+            >
+              Cerrar y seguir explorando
+            </button>
+
+            {/* Franja inferior a cuadros */}
+            <div className="w-full -mb-6 sm:-mb-8 mt-5 overflow-hidden">
+              <CheckeredStripe />
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </RoomWrapper>
   );
 }
