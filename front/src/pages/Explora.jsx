@@ -17,9 +17,9 @@ const CheckeredStripe = () => (
   />
 );
 
-// Elementos 3D del piso de Pizza Planet: Alien a la izquierda, Alfombra en el centro (solo en madera), Arcade a la derecha
+// Elementos 3D del piso de Pizza Planet: Alien a la izquierda, Alfombra en el centro (solo en madera), Arcade a la derecha del todo
 const AlienArcadeFloorElements = () => (
-  <div className="max-w-7xl mx-auto relative w-full h-0 pointer-events-auto">
+  <div className="relative w-full h-0 pointer-events-auto">
     {/* ALIEN A LA IZQUIERDA: AL RAS DEL INICIO DEL SUELO CON ANIMACIÓN SALTANDO */}
     <div className="absolute left-2 sm:left-4 md:left-8 lg:left-14 xl:left-20 bottom-[-10px] z-30 pointer-events-auto flex flex-col items-center">
       <div className="relative flex flex-col items-center">
@@ -42,8 +42,8 @@ const AlienArcadeFloorElements = () => (
       />
     </div>
 
-    {/* ARCADE A LA DERECHA: AL RAS DEL INICIO DEL SUELO, MÁS GRANDE Y CONECTANDO CON EL TAPIZ */}
-    <div className="absolute right-1 sm:right-2 md:right-4 lg:right-8 xl:right-12 bottom-[-16px] z-30 pointer-events-auto">
+    {/* ARCADE A LA DERECHA DEL TODO: BAJADA UN POQUITO Y PEGADA AL BORDE DERECHO */}
+    <div className="absolute right-0 bottom-[-36px] sm:bottom-[-42px] md:bottom-[-46px] z-30 pointer-events-auto">
       <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
         <img
           src="/images/maquina_aliens.png"

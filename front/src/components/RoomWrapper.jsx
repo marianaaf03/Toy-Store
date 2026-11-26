@@ -188,9 +188,7 @@ export default function RoomWrapper({
                {/* 🛑 ELEMENTOS 3D FUSIONADOS ESTÁTICAMENTE AL HORIZONTE DEL PISO 🛑 */}
                {customFloorElements ? (
                   <div className="absolute top-0 left-0 w-full h-0 z-40 pointer-events-none">
-                     <div className="max-w-7xl mx-auto relative w-full h-0">
-                         {customFloorElements}
-                     </div>
+                      {customFloorElements}
                   </div>
                ) : (
                   !location.pathname.startsWith('/admin') && !hideFloorToys && location.pathname !== '/tienda' && (
