@@ -515,12 +515,12 @@ export default function Explora() {
           ========================================================================= */}
       <div className="relative z-10 w-full overflow-visible font-fredoka select-none mt-2 sm:mt-4 pb-10 sm:pb-16 min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[680px]">
 
-        {/* ALFOMBRA RETRO NUEVA (alfombra_retroo.png) EN EL SUELO DE MADERA */}
-        <div className="w-full flex justify-center items-center px-2 sm:px-4 md:px-6 mt-16 sm:mt-24 md:mt-32 lg:mt-40 xl:mt-44">
+        {/* ALFOMBRA RETRO NUEVA (alfombra_retroo.png) EN EL SUELO DE MADERA (MÁS CHICA Y MÁS ABAJO) */}
+        <div className="w-full flex justify-center items-center px-2 sm:px-4 md:px-6 mt-28 sm:mt-36 md:mt-48 lg:mt-56 xl:mt-64">
           <img
             src="/images/alfombra_retroo.png"
             alt="Alfombra Retro Pizza Planet en el suelo"
-            className="w-[95vw] sm:w-[90vw] md:w-[86vw] lg:w-[82vw] xl:w-[78vw] max-w-[1350px] 2xl:max-w-[1550px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.8)] transition-transform duration-300 hover:scale-[1.01]"
+            className="w-[86vw] sm:w-[80vw] md:w-[74vw] lg:w-[68vw] xl:w-[64vw] max-w-[1050px] 2xl:max-w-[1180px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.8)] transition-transform duration-300 hover:scale-[1.01]"
           />
         </div>
 
@@ -537,13 +537,13 @@ export default function Explora() {
           </div>
         </div>
 
-        {/* LADO DERECHO: MÁQUINA DE ARCADE A LA MISMA ALTURA QUE EL ALIEN Y MÁS PEQUEÑA */}
+        {/* LADO DERECHO: MÁQUINA DE ARCADE MÁS GRANDESITA PARA CONECTAR CON LA PARED DEL TAPIZ */}
         <div className="absolute right-2 sm:right-6 md:right-10 lg:right-14 xl:right-20 2xl:right-24 bottom-48 sm:bottom-60 md:bottom-76 lg:bottom-92 xl:bottom-[420px] 2xl:bottom-[460px] z-20 pointer-events-auto">
           <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
             <img
               src="/images/maquina_aliens.png"
               alt="Máquina de Marcianitos Pizza Planet"
-              className="w-40 sm:w-48 md:w-56 lg:w-64 xl:w-72 2xl:w-80 h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)]"
+              className="w-52 sm:w-64 md:w-76 lg:w-88 xl:w-[390px] 2xl:w-[430px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)]"
             />
             {/* Sombra de contacto profunda al ras del suelo a la misma altura */}
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-5 bg-black/80 blur-lg rounded-full pointer-events-none"></div>

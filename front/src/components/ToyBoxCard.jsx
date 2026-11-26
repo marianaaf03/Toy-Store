@@ -85,7 +85,23 @@ function renderToyFigure(producto, index = 0, isModal = false) {
   const imgSizeClass = isModal ? "max-h-[210px] w-auto" : "max-h-[140px] sm:max-h-[150px] w-auto";
   const svgSizeClass = isModal ? "w-44 h-44" : "w-28 h-28 sm:w-32 sm:h-32";
 
-  // 1. PRODUCTOS CON IMÁGENES OFICIALES
+  // 1. REFUERZO DE IMÁGENES PROPIAS DEL CATÁLOGO (PRIORIDAD ABSOLUTA PARA QUE NUNCA SE PIERDAN)
+  if (producto.imagen && producto.imagen.startsWith('/') && !producto.imagen.includes('default')) {
+    return (
+      <img 
+        src={producto.imagen} 
+        alt={producto.nombre} 
+        onError={(e) => { 
+          if (nombre.includes('misteriosa') || cat.includes('kit')) {
+            e.target.src = '/images/cajamisteriosa.png';
+          }
+        }} 
+        className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} 
+      />
+    );
+  }
+
+  // 2. PRODUCTOS ESPECÍFICOS POR NOMBRE
   if (nombre.includes('rabbit') || nombre.includes('buzz') || nombre.includes('conejo')) {
     return <img src="/images/rabbitbuzz.webp" alt={producto.nombre} onError={(e) => { e.target.style.display = 'none'; }} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
   }
@@ -105,12 +121,7 @@ function renderToyFigure(producto, index = 0, isModal = false) {
     return <img src="/images/pluganalconcristal.png" alt={producto.nombre} onError={(e) => { e.target.src = '/images/plug_anal.png'; }} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
   }
   if (nombre.includes('misteriosa') || (cat.includes('kit') && (nombre.includes('toy box') || nombre.includes('sorpresa')))) {
-    return <img src="/images/mystery_box.png" alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
-  }
-
-  // Si tiene imagen asignada válida que no sea el cerdito
-  if (producto.imagen && producto.imagen.startsWith('/') && !producto.imagen.includes('cerdito_travieso') && !producto.imagen.includes('default')) {
-    return <img src={producto.imagen} alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
+    return <img src="/images/cajamisteriosa.png" alt={producto.nombre} className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} />;
   }
 
   // 2. VECTORES DETALLADOS Y GRANDES PARA CADA ARTÍCULO REAL

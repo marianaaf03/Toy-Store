@@ -261,7 +261,7 @@ const CATALOGO_REAL = [
   },
   {
     id: 32,
-    nombre: 'Caja Misteriosa Toy Store Mystery Box',
+    nombre: 'Caja Misteriosa',
     categoria: 'kits',
     precio: 250000,
     imagen: '/images/cajamisteriosa.png',

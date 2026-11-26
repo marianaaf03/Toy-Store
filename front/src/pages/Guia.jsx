@@ -122,17 +122,6 @@ export default function Guia() {
                 key={h.id}
                 className="relative w-full max-w-[560px] sm:max-w-[590px] group flex flex-col items-center transition-all duration-300 hover:-translate-y-1.5"
               >
-                {/* LOTSO ABRAZADOR PARADO ALINEADO AL FINAL DEL RECUADRO Y ABRAZANDO EL MARGEN */}
-                {esPrimeraHuella && (
-                  <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 left-full -ml-7 sm:-ml-8 md:-ml-9 z-30 pointer-events-none select-none transition-transform group-hover:scale-105 duration-300">
-                    <img
-                      src="/images/lotso_abrazador.png"
-                      alt="Lotso Abrazador"
-                      className="w-32 sm:w-38 md:w-44 lg:w-48 h-auto object-contain drop-shadow-2xl"
-                    />
-                  </div>
-                )}
-
                 {/* HUELLITAS DE LOTSO ESTILO CRAYOLA (GRANDES Y DESTACADAS CORONANDO CADA HUELLA) */}
                 <div className="flex justify-center -mb-9 sm:-mb-12 md:-mb-14 relative z-20 pointer-events-none">
                   <img

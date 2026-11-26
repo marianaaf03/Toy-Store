@@ -56,7 +56,7 @@ const productos = [
 
   // 7. KITS & SORPRESAS
   { id: 31, nombre: 'Kit de Iniciación al Placer y BDSM Suave 5 Piezas', categoria: 'kits', precio: 165000, stock: 14, imagen: '/images/kitdeiniciazion.png', descripcion: 'Caja con antifaz, esposas, pluma, fusta suave y dados eróticos.', nivel_juego: 2 },
-  { id: 32, nombre: 'Caja Misteriosa Mystery Box Parejas Romántica', categoria: 'kits', precio: 250000, stock: 12, imagen: '/images/cajamisteriosa.png', descripcion: 'Caja sorpresa con juguete premium, cosmética, lencería y juego de cartas.', nivel_juego: 2 }
+  { id: 32, nombre: 'Caja Misteriosa', categoria: 'kits', precio: 250000, stock: 12, imagen: '/images/cajamisteriosa.png', descripcion: 'Caja sorpresa con juguete premium, cosmética, lencería y juego de cartas.', nivel_juego: 2 }
 ];
 
 async function syncTiDB() {

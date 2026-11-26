@@ -285,7 +285,7 @@ export const CATALOGO_REAL = [
   },
   {
     id: 32,
-    nombre: 'Caja Misteriosa Mystery Box Parejas Romántica',
+    nombre: 'Caja Misteriosa',
     categoria: 'kits',
     precio: 250000,
     stock: 12,

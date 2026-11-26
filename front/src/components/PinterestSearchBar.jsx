@@ -123,7 +123,7 @@ export default function PinterestSearchBar({
     { label: 'Conjunto Lencería Bralette Encaje', img: '/images/lenceriabralette.png', action: () => handleSelectSearchText('Lencería Bralette') },
     { label: 'Plug Anal Metálico Gema Cristal', img: '/images/pluganalconcristal.png', action: () => handleSelectSearchText('Plug Anal Cristal') },
     { label: 'Aceite de Masaje Efecto Calor Fresa', img: '/images/aceitedemasaje.png', action: () => handleSelectSearchText('Aceite de Masaje') },
-    { label: 'Caja Misteriosa Mystery Box Parejas', img: '/images/cajamisteriosa.png', action: () => handleSelectSearchText('Mystery Box') },
+    { label: 'Caja Misteriosa', img: '/images/cajamisteriosa.png', action: () => handleSelectSearchText('Caja Misteriosa') },
     { label: 'Antifaz de Seda Acolchado Pareja', img: '/images/antifazdeseda.png', action: () => handleSelectSearchText('Antifaz de Seda') },
     { label: 'Dildo de Cristal Borosilicato', img: '/images/dildodecristal.png', action: () => handleSelectSearchText('Dildo Cristal') },
     { label: 'Cerdito Travieso Lengua Vibradora', img: '/images/cerdito_travieso.png', action: () => handleSelectSearchText('Cerdito Travieso') },
