@@ -342,14 +342,14 @@ export default function Explora() {
           ========================================================================= */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 pb-6 font-fredoka select-none flex-1 flex flex-col items-center">
 
-        {/* ZONA SUPERIOR / PARED: POSTERS + CARTEL */}
-        <div className="w-full flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 lg:gap-8 xl:gap-12 mt-2 sm:mt-4">
+        {/* ZONA SUPERIOR / PARED: POSTERS A LA IZQUIERDA + CARTEL CENTRADO (SEPARACIÓN AMPLIA Y ORGANIZADA) */}
+        <div className="w-full flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 lg:gap-14 xl:gap-20 2xl:gap-28 mt-2 sm:mt-4">
 
-          {/* COLUMNA IZQUIERDA: 2 POSTERS RETRO (NAVE PIZZA PLANET + ALIEN) CON ESPACIO AMPLIO PROPIO */}
-          <div className="hidden lg:flex flex-col items-center gap-14 xl:gap-20 shrink-0 self-start mt-6 xl:mt-8 w-40 xl:w-48">
+          {/* COLUMNA IZQUIERDA: 2 POSTERS RETRO (NAVE PIZZA PLANET + ALIEN) DERECHOS COMO CUADROS */}
+          <div className="hidden lg:flex flex-col items-center gap-5 xl:gap-6 shrink-0 self-start mt-10 xl:mt-12 w-40 xl:w-48">
             
-            {/* POSTER RETRO 2: NAVE ESPACIAL PIZZA PLANET */}
-            <div className="w-full relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-2">
+            {/* POSTER RETRO 2: NAVE ESPACIAL PIZZA PLANET (DERECHO COMO CUADRO) */}
+            <div className="w-full relative group transition-all duration-300 hover:scale-[1.03] cursor-pointer">
               <img 
                 src="/images/poster_retro2.png" 
                 alt="Poster Retro Pizza Planet 2"
@@ -357,8 +357,8 @@ export default function Explora() {
               />
             </div>
 
-            {/* POSTER RETRO 1: ALIEN "I'VE BEEN CHOSEN" (DEL MISMO TAMAÑO EXACTO QUE EL DE ARRIBA) */}
-            <div className="w-full relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-2">
+            {/* POSTER RETRO 1: ALIEN "I'VE BEEN CHOSEN" (DERECHO COMO CUADRO, MISMO TAMAÑO) */}
+            <div className="w-full relative group transition-all duration-300 hover:scale-[1.03] cursor-pointer">
               <img 
                 src="/images/poster_retro.png" 
                 alt="Poster Retro Pizza Planet Alien"
@@ -490,12 +490,12 @@ export default function Explora() {
 
         </div>
 
-        {/* POSTERS EN PANTALLAS MÓVILES (SOLO 2 POSTERS PARA NO SATURAR) */}
+        {/* POSTERS EN PANTALLAS MÓVILES (DERECHOS COMO CUADROS) */}
         <div className="lg:hidden w-full flex items-center justify-around gap-4 mt-4 px-4 max-w-sm">
-          <div className="relative rotate-2 shrink-0">
+          <div className="relative shrink-0">
             <img src="/images/poster_retro2.png" alt="Poster Retro 2" className="w-24 sm:w-28 h-auto object-contain rounded-md drop-shadow-md" />
           </div>
-          <div className="relative -rotate-2 shrink-0">
+          <div className="relative shrink-0">
             <img src="/images/poster_retro.png" alt="Poster Retro Alien" className="w-24 sm:w-28 h-auto object-contain rounded-md drop-shadow-md" />
           </div>
         </div>

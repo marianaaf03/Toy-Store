@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import RoomWrapper from '../components/RoomWrapper';
 import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 
 export default function Guia() {
-  const [filtroGenero, setFiltroGenero] = useState('todos'); // 'todos' | 'mujeres' | 'hombres' | 'parejas'
-
   const huellas = [
     {
       id: 1,
@@ -113,20 +111,7 @@ export default function Guia() {
       `}</style>
 
       {/* CONTENEDOR PRINCIPAL: Espaciado superior limpio y cómodo bajo las nubes */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 pt-6 sm:pt-10 md:pt-12 pb-24 font-fredoka select-none flex flex-col items-center">
-
-        {/* BANNER SUPERIOR INCLUSIVO */}
-        <div className="text-center mb-8 sm:mb-12 max-w-2xl mx-auto">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-white/90 text-[#db2777] text-xs font-black uppercase tracking-widest border-2 border-rose-200 shadow-xs mb-3">
-            GUÍA DE BIENESTAR ÍNTIMO • INCLUSIVA PARA TODOS LOS GÉNEROS
-          </span>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1e3a8a] uppercase leading-tight drop-shadow-xs">
-            Aprende, Disfruta & Conoce Tu Placer
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-700 font-semibold mt-2 max-w-xl mx-auto leading-relaxed">
-            Consejos diseñados para hombres, mujeres y parejas sin tabúes ni presiones.
-          </p>
-        </div>
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 pt-10 sm:pt-14 md:pt-16 pb-24 font-fredoka select-none flex flex-col items-center">
 
         {/* =========================================================================
             LAS 4 SECCIONES EN FORMA DE HUELLA DE OSITO LOTSO (2 ARRIBA Y 2 ABAJO)
