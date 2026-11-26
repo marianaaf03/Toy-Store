@@ -20,17 +20,13 @@ const CheckeredStripe = () => (
 // Elementos 3D del piso de Pizza Planet: Alien a la izquierda, Alfombra en el centro (solo en madera), Arcade a la derecha del todo
 const AlienArcadeFloorElements = () => (
   <div className="relative w-full h-0 pointer-events-auto">
-    {/* ALIEN A LA IZQUIERDA: AL RAS DEL INICIO DEL SUELO CON ANIMACIÓN SALTANDO */}
+    {/* ALIEN A LA IZQUIERDA: AL RAS DEL INICIO DEL SUELO CON ANIMACIÓN SALTANDO (SIN EFECTO DE SOMBRA) */}
     <div className="absolute left-2 sm:left-4 md:left-8 lg:left-14 xl:left-20 bottom-[-10px] z-30 pointer-events-auto flex flex-col items-center">
-      <div className="relative flex flex-col items-center">
-        <img
-          src="/images/aliencito.png"
-          alt="Aliencito saltando en Pizza Planet"
-          className="w-20 sm:w-28 md:w-36 lg:w-44 xl:w-52 h-auto object-contain animate-alien-jump drop-shadow-[0_18px_22px_rgba(0,0,0,0.65)] select-none"
-        />
-        {/* Sombra de contacto sincronizada con el salto en el suelo */}
-        <div className="w-16 sm:w-22 md:w-30 lg:w-36 h-3 sm:h-4 bg-black/60 blur-md rounded-full -mt-1.5 sm:-mt-2 animate-alien-shadow pointer-events-none"></div>
-      </div>
+      <img
+        src="/images/aliencito.png"
+        alt="Aliencito saltando en Pizza Planet"
+        className="w-20 sm:w-28 md:w-36 lg:w-44 xl:w-52 h-auto object-contain animate-alien-jump select-none"
+      />
     </div>
 
     {/* ALFOMBRA RETRO EN EL CENTRO: ESTRICTAMENTE EN EL SUELO DE MADERA, NUNCA INVADE LA PARED BLANCA */}
@@ -42,16 +38,14 @@ const AlienArcadeFloorElements = () => (
       />
     </div>
 
-    {/* ARCADE A LA DERECHA DEL TODO: BAJADA UN POQUITO Y PEGADA AL BORDE DERECHO */}
-    <div className="absolute right-0 bottom-[-36px] sm:bottom-[-42px] md:bottom-[-46px] z-30 pointer-events-auto">
+    {/* ARCADE A LA DERECHA DEL TODO: BAJADA UN POQUITO MÁS Y SIN EFECTO DE SOMBRA */}
+    <div className="absolute right-0 bottom-[-52px] sm:bottom-[-58px] md:bottom-[-64px] z-30 pointer-events-auto">
       <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
         <img
           src="/images/maquina_aliens.png"
           alt="Máquina de Marcianitos Pizza Planet"
-          className="w-36 sm:w-48 md:w-60 lg:w-72 xl:w-80 2xl:w-[390px] h-auto object-contain drop-shadow-[0_25px_55px_rgba(0,0,0,0.85)]"
+          className="w-36 sm:w-48 md:w-60 lg:w-72 xl:w-80 2xl:w-[390px] h-auto object-contain select-none"
         />
-        {/* Sombra de contacto profunda al ras del inicio del suelo */}
-        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-4 sm:h-5 bg-black/80 blur-lg rounded-full pointer-events-none"></div>
       </div>
     </div>
   </div>
