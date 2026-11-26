@@ -20,7 +20,9 @@ const {
   getPerfilUsuario,
   seguirUsuario,
   getNotificaciones,
-  marcarNotificacionesLeidas
+  marcarNotificacionesLeidas,
+  toggleGuardado,
+  getMisGuardados
 } = require('../controllers/auth.controller');
 
 router.post('/registro', registro);
@@ -36,6 +38,8 @@ router.get('/usuarios', getUsuariosComunidad);
 router.get('/check-username', checkUsernameAvailability);
 router.get('/perfil/:username', getPerfilUsuario);
 router.post('/seguir/:idUsuario', seguirUsuario);
+router.get('/guardados', getMisGuardados);
+router.post('/guardados/:idProducto', toggleGuardado);
 router.get('/notificaciones', getNotificaciones);
 router.put('/notificaciones/leer', marcarNotificacionesLeidas);
 router.post('/logout', logout);

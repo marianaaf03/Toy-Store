@@ -345,8 +345,8 @@ export default function Explora() {
         {/* ZONA SUPERIOR / PARED: POSTERS + CARTEL */}
         <div className="w-full flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 lg:gap-8 xl:gap-12 mt-2 sm:mt-4">
 
-          {/* COLUMNA IZQUIERDA: 2 POSTERS RETRO (NAVE PIZZA PLANET + ALIEN) */}
-          <div className="hidden lg:flex flex-col items-center gap-6 shrink-0 self-start mt-10 xl:mt-12 w-40 xl:w-48">
+          {/* COLUMNA IZQUIERDA: 2 POSTERS RETRO (NAVE PIZZA PLANET + ALIEN) CON ESPACIO AMPLIO PROPIO */}
+          <div className="hidden lg:flex flex-col items-center gap-14 xl:gap-20 shrink-0 self-start mt-6 xl:mt-8 w-40 xl:w-48">
             
             {/* POSTER RETRO 2: NAVE ESPACIAL PIZZA PLANET */}
             <div className="w-full relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-2">

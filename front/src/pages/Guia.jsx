@@ -1,92 +1,98 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RoomWrapper from '../components/RoomWrapper';
 import AndyCloudsWallpaper from '../components/AndyCloudsWallpaper';
 
 export default function Guia() {
+  const [filtroGenero, setFiltroGenero] = useState('todos'); // 'todos' | 'mujeres' | 'hombres' | 'parejas'
+
   const huellas = [
     {
       id: 1,
       badge: 'HUELLA 01 • PRIMEROS PASOS',
-      titulo: '¿Primera Vez? Cero Nervios & a Tu Ritmo',
-      subtitulo: 'Aprende a conocer tu cuerpo con total libertad y curiosidad',
+      titulo: 'Para Hombres & Mujeres: Cero Tabúes & a Tu Propio Ritmo',
+      subtitulo: 'Aprende a conectar con tu propio cuerpo con total libertad, curiosidad y bienestar',
+      categoria: 'general',
       puntos: [
         {
-          titulo: 'Sin expectativas de rendimiento',
-          desc: 'No hay prisa ni una forma obligatoria. Empieza a solas, con luz tenue y música que te relaje; el objetivo es conectar contigo misma y disfrutar el momento.'
+          titulo: 'Sin expectativas de rendimiento ni prisas',
+          desc: 'Para hombres y mujeres, la exploración íntima no es una competencia. Deshazte de la presión del clímax rápido o estereotipos: empieza a solas en un ambiente relajado y con luz tenue para descubrir qué sensaciones te generan placer genuino.'
         },
         {
-          titulo: 'De menos a más',
-          desc: 'Comienza explorando zonas externas y sensibles como el cuello, el abdomen o la parte interna de los muslos antes de acercarte a las áreas íntimas.'
+          titulo: 'Exploración progresiva de zonas erógenas',
+          desc: 'Tanto en cuerpos masculinos como femeninos, el placer va mucho más allá de la zona genital. Recorre con caricias previas el cuello, el pecho, la espalda baja, el abdomen y los muslos para despertar las terminaciones nerviosas con suavidad.'
         },
         {
           titulo: 'Control de intensidad gradual',
-          desc: 'Usa siempre la velocidad más baja al inicio. Deja que tu piel se acostumbre a las nuevas sensaciones rítmicas sin saturarte.'
+          desc: 'Ya sea un masturbador masculino, un estimulador sónico o una varita masajeadora, inicia siempre en la velocidad o succión más baja. Deja que tu piel se acostumbre al estímulo rítmico antes de subir la potencia.'
         }
       ],
-      tip: 'Tip de amiga: Si sientes cosquillas intensas al principio, coloca una prenda de satén fina entre el dispositivo y tu piel.'
+      tip: 'Consejo Toy Store: La autoexploración no tiene género. Conocer tu propia respuesta sensorial mejora la autoestima, reduce el estrés diario y potencia la complicidad en pareja.'
     },
     {
       id: 2,
       badge: 'HUELLA 02 • SALUD & CONFORT',
-      titulo: 'La Regla Sagrada del Lubricante',
-      subtitulo: 'El secreto para una experiencia 100% sedosa y sin molestias',
+      titulo: 'La Regla Sagrada del Lubricante para Toda Anatomía',
+      subtitulo: 'El secreto indispensable para una experiencia 100% sedosa, suave y sin molestias',
+      categoria: 'salud',
       puntos: [
         {
           titulo: 'Siempre a base de agua',
-          desc: 'Los artículos de silicona pura médica SOLO deben usarse con lubricantes a base de agua. Los aceites, cremas corporales o vaselinas dañan el material.'
+          desc: 'Tanto para artículos de silicona femenina como masculina (masturbadores, anillos vibradores, sondas prostáticas o estimuladores), usa exclusivamente lubricante a base de agua. Los aceites corporales y vaselinas degradan la silicona médica.'
         },
         {
-          titulo: 'Silicona médica biocompatible',
-          desc: 'Nuestros artículos están fabricados con silicona hipoalergénica no porosa, ultra suave al tacto y 100% libre de ftalatos o componentes nocivos.'
+          titulo: 'Silicona médica biocompatible y segura',
+          desc: 'Nuestros artículos están fabricados con silicona hipoalergénica de grado quirúrgico, sin porosidades, no tóxica y 100% libre de ftalatos. Es tan amigable con la piel que se adapta a cualquier anatomía sensible.'
         },
         {
-          titulo: 'La cantidad justa multiplica el bienestar',
-          desc: 'Un par de gotas de lubricante reducen cualquier fricción a cero y transforman el contacto en una caricia ultrasuave y deslizante.'
+          titulo: 'Generosidad en la aplicación',
+          desc: 'En masturbación masculina con fundas texturizadas o en juegos íntimos femeninos y de pareja, unas gotas adicionales de lubricante eliminan cualquier fricción incómoda y multiplican la sensibilidad táctil.'
         }
       ],
-      tip: 'Tip de amiga: Aplica unas gotas tanto en tu piel como en el producto para máxima comodidad y suavidad.'
+      tip: 'Consejo Toy Store: Aplica lubricante tanto directamente en la piel como en el interior o superficie del juguete para un deslizamiento sedoso y perfecto.'
     },
     {
       id: 3,
-      badge: 'HUELLA 03 • TIPOS DE SENSACIÓN',
-      titulo: '¿Ondas de Aire o Vibración Clásica?',
-      subtitulo: 'Descubre qué tecnología se adapta mejor a tu sensibilidad',
+      badge: 'HUELLA 03 • GUÍA POR TECNOLOGÍA & GÉNERO',
+      titulo: 'Encuentra Tu Estímulo Ideal: Hombres, Mujeres & Parejas',
+      subtitulo: 'Diferentes tecnologías diseñadas específicamente para cada anatomía y fantasía',
+      categoria: 'estimulo',
       puntos: [
         {
-          titulo: 'Ondas de presión sónicas (Ideal principiantes)',
-          desc: 'Estimulan mediante pulsaciones envolventes de aire sin fricción mecánica directa, evitando adormecimientos o molestias por roce.'
+          titulo: 'Para Mujeres: Ondas de aire sónicas y punto G',
+          desc: 'Las ondas de presión pulsan aire envolvente sin fricción directa, evitando saturación en el clítoris. Los modelos con curvatura anatómica ofrecen estimulación profunda en el punto G con vibraciones continuas.'
         },
         {
-          titulo: 'Vibración continua y profunda',
-          desc: 'Brinda un masaje rítmico perfecto para relajación general, zonas de tensión corporal o estimulación sensorial localizada.'
+          titulo: 'Para Hombres: Masturbadores, anillos y placer prostático',
+          desc: 'Las fundas y masturbadores ergonómicos simulan texturas ultra realistas. Los anillos vibradores aumentan la firmeza y brindan estimulación dual en pareja, mientras que las sondas anatómicas desbloquean el placer prostático y perineal.'
         },
         {
-          titulo: 'Modelos duales sincronizados',
-          desc: 'Combinan ambos estímulos a la vez para sensaciones completas y simultáneas una vez que ya conozcas tus gustos favoritos.'
+          titulo: 'Para Parejas & Juegos Compartidos',
+          desc: 'Dispositivos con control inalámbrico a distancia de largo alcance, dados de retos sensuales, lencería sedosa para ambos y aceites térmicos comestibles para masajes corporales inolvidables.'
         }
       ],
-      tip: 'Tip de amiga: Para una primera experiencia, un estimulador por ondas de aire suele ser la opción más amable y sorprendente.'
+      tip: 'Consejo Toy Store: No existen límites ni normas predefinidas. Experimenta con diferentes intensidades y ritmos hasta descubrir tu combinación favorita.'
     },
     {
       id: 4,
       badge: 'HUELLA 04 • HIGIENE & DISCRECIÓN',
-      titulo: 'Limpieza en 1 Minuto & Privacidad',
-      subtitulo: 'Cuidados sencillos para que tu aliado íntimo dure muchos años',
+      titulo: 'Limpieza en 60 Segundos & Empaque 100% Discreto',
+      subtitulo: 'Cuidados rápidos para que tus artículos duren años con la máxima tranquilidad',
+      categoria: 'higiene',
       puntos: [
         {
-          titulo: 'Lavado fácil en 60 segundos',
-          desc: 'Lava con agua tibia y jabón neutro sin alcohol antes y después de cada uso. Enjuaga con abundante agua y sécalo con toalla limpia.'
+          titulo: 'Lavado fácil y rápido con agua tibia',
+          desc: 'Usa agua tibia y jabón neutro sin alcohol o espuma higienizante antibacteriana antes y después de cada uso. Enjuaga abundantemente y seca con una toalla suave que no deje pelusa.'
         },
         {
-          titulo: 'Resistentes al agua (Certificación IPX7)',
-          desc: 'Puedes usarlos con total tranquilidad bajo la ducha o en la tina. Solo recuerda secar el puerto magnético antes de recargarlo.'
+          titulo: 'Resistentes al agua para la ducha o tina (IPX7)',
+          desc: 'La gran mayoría de nuestros modelos son sumergibles. Puedes disfrutarlos con total calma bajo el agua tibia. Solo asegúrate de secar bien los pines de carga magnética antes de conectarlos.'
         },
         {
-          titulo: 'Empaque 100% discreto',
-          desc: 'Todos los pedidos se entregan en cajas lisas sin logotipos delatadores ni descripciones exteriores: tu privacidad está 100% protegida.'
+          titulo: 'Garantía de empaque 100% ciego y discreto',
+          desc: 'Cuidamos tu privacidad al máximo. Todos los pedidos se envían en cajas lisas sin ningún logotipo, texto ni indicio del contenido. Ni el repartidor ni terceros sabrán qué hay adentro.'
         }
       ],
-      tip: 'Tip de amiga: Guárdalo siempre en su saquito de tela transpirable en un lugar fresco y protegido del sol directo.'
+      tip: 'Consejo Toy Store: Guarda siempre tus juguetes limpios y secos dentro de su bolsita de tela transpirable en un espacio reservado, fresco y fuera de la luz solar directa.'
     }
   ];
 
@@ -107,7 +113,20 @@ export default function Guia() {
       `}</style>
 
       {/* CONTENEDOR PRINCIPAL: Espaciado superior limpio y cómodo bajo las nubes */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 pt-10 sm:pt-14 md:pt-16 pb-24 font-fredoka select-none flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 pt-6 sm:pt-10 md:pt-12 pb-24 font-fredoka select-none flex flex-col items-center">
+
+        {/* BANNER SUPERIOR INCLUSIVO */}
+        <div className="text-center mb-8 sm:mb-12 max-w-2xl mx-auto">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-white/90 text-[#db2777] text-xs font-black uppercase tracking-widest border-2 border-rose-200 shadow-xs mb-3">
+            GUÍA DE BIENESTAR ÍNTIMO • INCLUSIVA PARA TODOS LOS GÉNEROS
+          </span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1e3a8a] uppercase leading-tight drop-shadow-xs">
+            Aprende, Disfruta & Conoce Tu Placer
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-700 font-semibold mt-2 max-w-xl mx-auto leading-relaxed">
+            Consejos diseñados para hombres, mujeres y parejas sin tabúes ni presiones.
+          </p>
+        </div>
 
         {/* =========================================================================
             LAS 4 SECCIONES EN FORMA DE HUELLA DE OSITO LOTSO (2 ARRIBA Y 2 ABAJO)

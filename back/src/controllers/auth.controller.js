@@ -347,7 +347,27 @@ const getMe = async (req, res) => {
       [decoded.id]
     );
     if (rows.length === 0) return res.json({ usuario: null });
-    res.json({ usuario: formatUsuario(rows[0]) });
+
+    // Conteo real de seguidores y siguiendo
+    const [[seguidoresRow]] = await db.query(
+      'SELECT COUNT(*) as total FROM seguidores WHERE id_seguido = ?',
+      [decoded.id]
+    );
+    const [[siguiendoRow]] = await db.query(
+      'SELECT COUNT(*) as total FROM seguidores WHERE id_seguidor = ?',
+      [decoded.id]
+    );
+    const [[guardadosRow]] = await db.query(
+      'SELECT COUNT(*) as total FROM guardados WHERE id_usuario = ?',
+      [decoded.id]
+    );
+
+    const userObj = formatUsuario(rows[0]);
+    userObj.seguidores = seguidoresRow?.total || 0;
+    userObj.siguiendo = siguiendoRow?.total || 0;
+    userObj.total_guardados = guardadosRow?.total || 0;
+
+    res.json({ usuario: userObj });
   } catch (e) { res.json({ usuario: null }); }
 };
 
@@ -609,6 +629,21 @@ const getPerfilUsuario = async (req, res) => {
       [targetUser.id_usuario]
     );
 
+    // Obtener los productos guardados de este usuario (lista de deseos real)
+    let guardados = [];
+    try {
+      const [gRows] = await db.query(`
+        SELECT p.id, p.nombre, p.categoria, p.precio, p.stock, p.imagen, p.descripcion, p.nivel_juego, g.created_at as guardado_el
+        FROM guardados g
+        JOIN productos p ON g.id_producto = p.id
+        WHERE g.id_usuario = ?
+        ORDER BY g.created_at DESC
+      `, [targetUser.id_usuario]);
+      guardados = gRows || [];
+    } catch (e) {
+      console.error('Error al cargar guardados del perfil:', e.message);
+    }
+
     let siguiendoActual = false;
     let esMismoUsuario = false;
     const token = req.cookies.token;
@@ -638,12 +673,67 @@ const getPerfilUsuario = async (req, res) => {
         seguidores: seguidoresRow?.total || 0,
         siguiendo: siguiendoRow?.total || 0,
         siguiendoActual,
-        esMismoUsuario
+        esMismoUsuario,
+        guardados
       }
     });
   } catch (error) {
     console.error('Error al obtener perfil:', error);
     res.status(500).json({ error: 'Error al cargar perfil' });
+  }
+};
+
+// ─── GUARDADOS / LISTA DE DESEOS EN BD ─────────────────
+const toggleGuardado = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.status(401).json({ error: 'Debes iniciar sesión para guardar productos en tus deseos' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { idProducto } = req.params;
+    const prodId = parseInt(idProducto, 10);
+
+    if (isNaN(prodId)) return res.status(400).json({ error: 'Producto no válido' });
+
+    const [pRows] = await db.query('SELECT id, nombre FROM productos WHERE id = ?', [prodId]);
+    const prodNombre = pRows[0]?.nombre || 'Producto';
+
+    const [existe] = await db.query(
+      'SELECT id_guardado FROM guardados WHERE id_usuario = ? AND id_producto = ?',
+      [decoded.id, prodId]
+    );
+
+    if (existe.length > 0) {
+      await db.query('DELETE FROM guardados WHERE id_usuario = ? AND id_producto = ?', [decoded.id, prodId]);
+      return res.json({ guardado: false, mensaje: `"${prodNombre}" quitado de tu lista de deseos` });
+    } else {
+      await db.query('INSERT INTO guardados (id_usuario, id_producto) VALUES (?, ?)', [decoded.id, prodId]);
+      return res.json({ guardado: true, mensaje: `"${prodNombre}" guardado en tu lista de deseos` });
+    }
+  } catch (error) {
+    console.error('Error en toggleGuardado:', error);
+    res.status(500).json({ error: 'Error al guardar producto' });
+  }
+};
+
+const getMisGuardados = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.json({ guardados: [], ids: [] });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const [rows] = await db.query(`
+      SELECT p.id, p.nombre, p.categoria, p.precio, p.stock, p.imagen, p.descripcion, p.nivel_juego
+      FROM guardados g
+      JOIN productos p ON g.id_producto = p.id
+      WHERE g.id_usuario = ?
+      ORDER BY g.created_at DESC
+    `, [decoded.id]);
+
+    res.json({ guardados: rows || [], ids: (rows || []).map(r => r.id) });
+  } catch (error) {
+    console.error('Error en getMisGuardados:', error);
+    res.json({ guardados: [], ids: [] });
   }
 };
 
@@ -702,24 +792,35 @@ const getNotificaciones = async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const [rows] = await db.query(`
+    const esAdmin = decoded.rol === 1 || decoded.id_rol === 1;
+
+    let query = `
       SELECT n.id_notificacion, n.id_usuario, n.id_remitente, n.tipo, n.texto, n.leido, n.created_at,
              u.nombre as remitente_nombre, u.nombre_usuario as remitente_username, u.foto_perfil as remitente_foto, u.avatar_hat as remitente_hat
       FROM notificaciones n
       LEFT JOIN usuarios u ON n.id_remitente = u.id_usuario
       WHERE n.id_usuario = ?
-      ORDER BY n.created_at DESC
-      LIMIT 30
-    `, [decoded.id]);
+    `;
+    const params = [decoded.id];
+
+    // Para usuarios que no son admin, no mostrar registros ni logins de otros
+    if (!esAdmin) {
+      query += " AND n.tipo NOT IN ('registro', 'login', 'sistema_historial')";
+    }
+
+    query += ' ORDER BY n.created_at DESC LIMIT 30';
+
+    const [rows] = await db.query(query, params);
 
     const [[noLeidasRow]] = await db.query(
-      'SELECT COUNT(*) as unread FROM notificaciones WHERE id_usuario = ? AND leido = 0',
+      'SELECT COUNT(*) as unread FROM notificaciones WHERE id_usuario = ? AND leido = 0' + (esAdmin ? '' : " AND tipo NOT IN ('registro', 'login', 'sistema_historial')"),
       [decoded.id]
     );
 
     res.json({
       notificaciones: rows,
-      unreadCount: noLeidasRow?.unread || 0
+      unreadCount: noLeidasRow?.unread || 0,
+      esAdmin
     });
   } catch (error) {
     console.error('Error al obtener notificaciones:', error);
@@ -743,11 +844,13 @@ const marcarNotificacionesLeidas = async (req, res) => {
 const getUsuariosComunidad = async (req, res) => {
   try {
     let currentUserId = null;
+    let esAdmin = false;
     const token = req.cookies.token;
     if (token) {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         currentUserId = decoded.id;
+        esAdmin = (decoded.rol === 1 || decoded.id_rol === 1);
       } catch (e) {}
     }
 
@@ -765,7 +868,7 @@ const getUsuariosComunidad = async (req, res) => {
     query += ' ORDER BY u.id_usuario ASC LIMIT 30';
 
     const [rows] = await db.query(query, params);
-    res.json({ usuarios: rows });
+    res.json({ usuarios: rows, esAdmin });
   } catch (error) {
     console.error('Error al obtener usuarios de la comunidad:', error);
     res.status(500).json({ error: 'Error al obtener usuarios' });
@@ -788,6 +891,14 @@ module.exports = {
   actualizarAvatarHat,
   actualizarFotoPerfil,
   getUsuariosComunidad,
+  checkUsernameAvailability,
+  getPerfilUsuario,
+  seguirUsuario,
+  getNotificaciones,
+  marcarNotificacionesLeidas,
+  toggleGuardado,
+  getMisGuardados
+};
   checkUsernameAvailability,
   getPerfilUsuario,
   seguirUsuario,

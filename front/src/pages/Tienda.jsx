@@ -331,6 +331,49 @@ export default function Tienda() {
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [cantidadModal, setCantidadModal] = useState(1);
   const [toastNotificacion, setToastNotificacion] = useState('');
+  const [guardadosIds, setGuardadosIds] = useState(new Set());
+
+  // Cargar lista de productos guardados en deseos del usuario
+  useEffect(() => {
+    fetch('/auth/guardados', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        if (data?.ids && Array.isArray(data.ids)) {
+          setGuardadosIds(new Set(data.ids));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleToggleGuardado = async (prod) => {
+    if (!prod) return;
+    try {
+      const res = await fetch(`/auth/guardados/${prod.id}`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setGuardadosIds(prev => {
+          const next = new Set(prev);
+          if (data.guardado) {
+            next.add(prod.id);
+          } else {
+            next.delete(prod.id);
+          }
+          return next;
+        });
+        setToastNotificacion(data.mensaje);
+        setTimeout(() => setToastNotificacion(''), 3000);
+      } else {
+        setToastNotificacion(data.error || 'Inicia sesión para guardar productos');
+        setTimeout(() => setToastNotificacion(''), 3000);
+      }
+    } catch {
+      setToastNotificacion('Error de conexión al guardar producto');
+      setTimeout(() => setToastNotificacion(''), 3000);
+    }
+  };
 
   // 5 productos por fila horizontalmente x 3 estantes = 15 productos por página
   const ITEMS_POR_PAGINA = 15;
@@ -798,6 +841,27 @@ export default function Tienda() {
                     className="flex-1 py-3.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs sm:text-sm uppercase tracking-wider shadow-sm transition active:scale-95 border-2 border-white cursor-pointer"
                   >
                     Añadir al Carrito
+                  </button>
+
+                  {/* Botón para guardar en lista de deseos / secretos del perfil */}
+                  <button
+                    type="button"
+                    onClick={() => handleToggleGuardado(productoSeleccionado)}
+                    className={`p-3.5 rounded-2xl flex items-center justify-center transition-all cursor-pointer border-2 active:scale-95 shadow-sm ${
+                      guardadosIds.has(productoSeleccionado.id)
+                        ? 'bg-rose-50 text-rose-600 border-rose-300 hover:bg-rose-100'
+                        : 'bg-slate-50 text-slate-500 border-slate-200 hover:text-rose-500 hover:border-rose-200 hover:bg-rose-50/50'
+                    }`}
+                    title={guardadosIds.has(productoSeleccionado.id) ? "Quitar de mi lista de deseos" : "Guardar en mi lista de deseos"}
+                  >
+                    <svg 
+                      className="w-6 h-6 stroke-current" 
+                      fill={guardadosIds.has(productoSeleccionado.id) ? "currentColor" : "none"} 
+                      strokeWidth="2.2" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
                   </button>
                 </div>
               </div>

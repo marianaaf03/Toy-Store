@@ -991,97 +991,99 @@ export default function Configuracion() {
           {/* Contenido con scroll */}
           <div className="flex-1 overflow-y-auto no-scrollbar">
             
-            {/* SECCIÓN 1: ACTIVIDAD (SEGUIR Y BUSCAR USUARIOS MUTUAMENTE) */}
-            <div className="px-5 pt-4 pb-2">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-base font-bold text-[#1e3a8a]">
-                  Actividad
-                </h3>
-                <span className="text-xs text-[#717171] font-normal">
-                  {Object.values(followingUsers).filter(Boolean).length} Siguiendo
-                </span>
-              </div>
+            {/* SECCIÓN 1: ACTIVIDAD EXCLUSIVA DE GESTIÓN PARA EL ADMIN (SOLO VISIBLE PARA TI) */}
+            {esAdmin && (
+              <div className="px-5 pt-4 pb-3 border-b border-gray-100">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base font-bold text-[#1e3a8a]">
+                    Comunidad Registrada
+                  </h3>
+                  <span className="text-xs text-[#717171] font-normal">
+                    {communityUsers.length} Usuarios
+                  </span>
+                </div>
 
-              {/* Buscador de usuarios reales para interactuar y tomar ideas mutuamente */}
-              <div className="relative mb-3">
-                <input
-                  type="text"
-                  value={notificationSearch}
-                  onChange={(e) => setNotificationSearch(e.target.value)}
-                  placeholder="Buscar usuarios para seguir..."
-                  className="w-full text-xs py-2.5 pl-8 pr-3 rounded-full bg-gray-100 hover:bg-gray-200/70 focus:bg-white focus:ring-2 focus:ring-[#a6d4f2] outline-none text-[#111111] transition-all"
-                />
-                <svg className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-              </div>
+                {/* Buscador de usuarios exclusivo de admin */}
+                <div className="relative mb-3">
+                  <input
+                    type="text"
+                    value={notificationSearch}
+                    onChange={(e) => setNotificationSearch(e.target.value)}
+                    placeholder="Buscar usuarios registrados..."
+                    className="w-full text-xs py-2.5 pl-8 pr-3 rounded-full bg-gray-100 hover:bg-gray-200/70 focus:bg-white focus:ring-2 focus:ring-[#a6d4f2] outline-none text-[#111111] transition-all"
+                  />
+                  <svg className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                  </svg>
+                </div>
 
-              {/* Usuarios reales registrados en el sistema */}
-              <div className="space-y-3">
-                {communityUsers
-                  .filter(u => {
-                    if (!notificationSearch.trim()) return true;
-                    const s = notificationSearch.toLowerCase();
-                    return (
-                      (u.nombre && u.nombre.toLowerCase().includes(s)) ||
-                      (u.nombre_usuario && u.nombre_usuario.toLowerCase().includes(s))
-                    );
-                  })
-                  .map(u => {
-                    const isFollowing = !!followingUsers[u.id];
-                    return (
-                      <div key={u.id} className="flex items-center justify-between gap-3 p-2 rounded-2xl hover:bg-gray-50 transition-colors">
-                        <div 
-                          onClick={() => {
-                            setShowNotificationsDrawer(false);
-                            navigate(`/perfil/${u.nombre_usuario}`);
-                          }}
-                          className="flex items-center gap-3 min-w-0 flex-1 cursor-pointer group"
-                        >
-                          <div className="relative w-11 h-11 flex-shrink-0">
-                            {u.avatar_hat && u.avatar_hat !== 'none' && (
-                              <AvatarHat type={u.avatar_hat} size="navbar" />
-                            )}
-                            {u.img ? (
-                              <img src={u.img} alt={u.nombre} className="w-11 h-11 rounded-full object-cover shadow-xs" />
-                            ) : (
-                              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#a6d4f2] to-[#8ec2e4] text-[#1e3a8a] font-bold text-base flex items-center justify-center shadow-xs">
-                                {u.nombre.charAt(0).toUpperCase()}
-                              </div>
-                            )}
+                {/* Usuarios reales registrados en el sistema */}
+                <div className="space-y-3 max-h-60 overflow-y-auto no-scrollbar">
+                  {communityUsers
+                    .filter(u => {
+                      if (!notificationSearch.trim()) return true;
+                      const s = notificationSearch.toLowerCase();
+                      return (
+                        (u.nombre && u.nombre.toLowerCase().includes(s)) ||
+                        (u.nombre_usuario && u.nombre_usuario.toLowerCase().includes(s))
+                      );
+                    })
+                    .map(u => {
+                      const isFollowing = !!followingUsers[u.id];
+                      return (
+                        <div key={u.id} className="flex items-center justify-between gap-3 p-2 rounded-2xl hover:bg-gray-50 transition-colors">
+                          <div 
+                            onClick={() => {
+                              setShowNotificationsDrawer(false);
+                              navigate(`/perfil/${u.nombre_usuario}`);
+                            }}
+                            className="flex items-center gap-3 min-w-0 flex-1 cursor-pointer group"
+                          >
+                            <div className="relative w-11 h-11 flex-shrink-0">
+                              {u.avatar_hat && u.avatar_hat !== 'none' && (
+                                <AvatarHat type={u.avatar_hat} size="navbar" />
+                              )}
+                              {u.img ? (
+                                <img src={u.img} alt={u.nombre} className="w-11 h-11 rounded-full object-cover shadow-xs" />
+                              ) : (
+                                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#a6d4f2] to-[#8ec2e4] text-[#1e3a8a] font-bold text-base flex items-center justify-center shadow-xs">
+                                  {u.nombre.charAt(0).toUpperCase()}
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs text-[#111111] group-hover:text-[#1e3a8a] leading-snug font-semibold truncate transition-colors">
+                                {u.nombre}
+                              </p>
+                              <span className="text-[11px] text-[#717171] truncate block">
+                                @{u.nombre_usuario}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs text-[#111111] group-hover:text-[#1e3a8a] leading-snug font-semibold truncate transition-colors">
-                              {u.nombre}
-                            </p>
-                            <span className="text-[11px] text-[#717171] truncate block">
-                              @{u.nombre_usuario}
-                            </span>
-                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => toggleFollowUser(u.id, u.nombre, u.nombre_usuario)}
+                            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex-shrink-0 active:scale-95 ${
+                              isFollowing
+                                ? 'bg-gray-200 text-[#111111] hover:bg-gray-300'
+                                : 'bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] shadow-xs'
+                            }`}
+                          >
+                            {isFollowing ? 'Siguiendo' : 'Seguir'}
+                          </button>
                         </div>
+                      );
+                    })}
 
-                        <button
-                          type="button"
-                          onClick={() => toggleFollowUser(u.id, u.nombre, u.nombre_usuario)}
-                          className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex-shrink-0 active:scale-95 ${
-                            isFollowing
-                              ? 'bg-gray-200 text-[#111111] hover:bg-gray-300'
-                              : 'bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] shadow-xs'
-                          }`}
-                        >
-                          {isFollowing ? 'Siguiendo' : 'Seguir'}
-                        </button>
-                      </div>
-                    );
-                  })}
-
-                {communityUsers.length === 0 && (
-                  <div className="py-4 text-center text-xs text-[#717171]">
-                    No hay otros usuarios registrados aún.
-                  </div>
-                )}
+                  {communityUsers.length === 0 && (
+                    <div className="py-4 text-center text-xs text-[#717171]">
+                      No hay otros usuarios registrados aún.
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* SECCIÓN 2: ACTUALIZACIONES (NOTIFICACIONES REALES Y SUGERENCIAS DEL SISTEMA) */}
             <div className="px-5 pt-4 pb-8 border-t border-gray-100 mt-2">
@@ -1737,7 +1739,9 @@ export default function Configuracion() {
 
                 <div>
                   <span className="font-medium text-base text-[#111111]">{usuario?.nombre || 'Mariana Alvarez'}</span>
-                  <p className="text-xs text-[#717171] font-normal">Siguiendo a 0</p>
+                  <p className="text-xs text-[#717171] font-normal">
+                    Siguiendo a <b className="font-semibold text-[#111111]">{usuario?.siguiendo ?? Object.values(followingUsers).filter(Boolean).length}</b>
+                  </p>
                 </div>
 
                 {/* Botón Compartir perfil y su Popover (Con color azul activo) */}

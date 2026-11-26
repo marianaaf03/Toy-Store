@@ -786,107 +786,73 @@ export default function PerfilPublico() {
             </div>
 
             {/* ============================================================ */}
-            {/* CONTENIDO DE PESTAÑAS (COLECCIONES DISCRETAS Y REALES)        */}
+            {/* CONTENIDO DE PESTAÑAS (LISTA DE DESEOS Y SECRETOS REALES)     */}
             {/* ============================================================ */}
             {activeTab === 'guardados' ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 w-full animate-in fade-in duration-200">
-                
-                {/* Tablero 1 */}
-                <div className="rounded-3xl border border-gray-100 p-4 bg-gray-50/60 hover:bg-sky-50/50 hover:shadow-md transition-all cursor-pointer group">
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-pink-100 to-sky-100 p-4 flex items-center justify-center mb-3">
-                    <img src="/images/vibrador_cowgirl.png" alt="Favoritos íntimos" className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-sm font-bold text-[#1e3a8a]">Favoritos Íntimos</h3>
-                      <p className="text-xs text-[#717171] font-normal">5 secretos guardados</p>
+              perfil.guardados && perfil.guardados.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 w-full animate-in fade-in duration-200">
+                  {perfil.guardados.map(prod => (
+                    <div 
+                      key={prod.id} 
+                      onClick={() => navigate('/tienda')}
+                      className="rounded-3xl border border-gray-100 p-4 bg-gray-50/70 hover:bg-sky-50/60 hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
+                    >
+                      <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-white p-3 flex items-center justify-center mb-3 shadow-2xs">
+                        <img 
+                          src={prod.imagen} 
+                          alt={prod.nombre} 
+                          className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform" 
+                        />
+                      </div>
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <span className="text-[10px] font-black uppercase text-[#0284c7] tracking-wider block mb-0.5">
+                            {prod.categoria}
+                          </span>
+                          <h3 className="text-xs sm:text-sm font-bold text-[#1e3a8a] line-clamp-2 leading-tight">
+                            {prod.nombre}
+                          </h3>
+                        </div>
+                        <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-100">
+                          <span className="text-xs font-black text-slate-800">
+                            ${Number(prod.precio).toLocaleString('es-CO')}
+                          </span>
+                          <span className="w-7 h-7 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center shadow-2xs text-xs font-bold" title="En lista de deseos">
+                            ♥
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-2xs" title="Colección discreta">
-                      <svg className="w-3.5 h-3.5 stroke-current fill-none" strokeWidth="2.2" viewBox="0 0 24 24">
-                        <rect x="5" y="11" width="14" height="10" rx="2" />
-                        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                  ))}
+                </div>
+              ) : (
+                <div className="py-16 text-center animate-in fade-in duration-200">
+                  <div className="max-w-md mx-auto p-8 rounded-3xl bg-gray-50/70 border border-gray-100">
+                    <div className="w-14 h-14 rounded-2xl bg-[#a6d4f2]/30 text-[#1e3a8a] flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-7 h-7 stroke-current" fill="none" strokeWidth="2.2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                       </svg>
-                    </span>
+                    </div>
+                    <h3 className="text-base font-bold text-[#1e3a8a] mb-1">
+                      {perfil.esMismoUsuario ? 'Tu lista de deseos está vacía' : `Sin productos guardados aún`}
+                    </h3>
+                    <p className="text-xs text-[#717171] leading-relaxed mb-5">
+                      {perfil.esMismoUsuario 
+                        ? 'Cuando explores la tienda, haz clic en el corazón de cualquier juguete para guardarlo aquí y compartir tus gustos favoritos.' 
+                        : `${perfil.nombre} aún no tiene productos públicos en su lista de deseos.`}
+                    </p>
+                    {perfil.esMismoUsuario && (
+                      <button
+                        type="button"
+                        onClick={() => navigate('/tienda')}
+                        className="px-6 py-2.5 rounded-full bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-bold text-xs transition-all shadow-xs active:scale-95 cursor-pointer"
+                      >
+                        Explorar la Tienda
+                      </button>
+                    )}
                   </div>
                 </div>
-
-                {/* Tablero 2 */}
-                <div className="rounded-3xl border border-gray-100 p-4 bg-gray-50/60 hover:bg-sky-50/50 hover:shadow-md transition-all cursor-pointer group">
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100 p-4 flex items-center justify-center mb-3">
-                    <img src="/images/lenceria_andy.png" alt="Lencería & Juegos" className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-sm font-bold text-[#1e3a8a]">Lencería & Pasión</h3>
-                      <p className="text-xs text-[#717171] font-normal">3 secretos guardados</p>
-                    </div>
-                    <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-2xs" title="Colección discreta">
-                      <svg className="w-3.5 h-3.5 stroke-current fill-none" strokeWidth="2.2" viewBox="0 0 24 24">
-                        <rect x="5" y="11" width="14" height="10" rx="2" />
-                        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-
-                {/* Tablero 3 */}
-                <div className="rounded-3xl border border-gray-100 p-4 bg-gray-50/60 hover:bg-sky-50/50 hover:shadow-md transition-all cursor-pointer group">
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-blue-100 to-emerald-100 p-4 flex items-center justify-center mb-3">
-                    <img src="/images/plug_anal.png" alt="Sensaciones Secretas" className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-sm font-bold text-[#1e3a8a]">Sensaciones Secretas</h3>
-                      <p className="text-xs text-[#717171] font-normal">2 secretos guardados</p>
-                    </div>
-                    <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-2xs" title="Colección discreta">
-                      <svg className="w-3.5 h-3.5 stroke-current fill-none" strokeWidth="2.2" viewBox="0 0 24 24">
-                        <rect x="5" y="11" width="14" height="10" rx="2" />
-                        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-
-                {/* Tablero 4 */}
-                <div className="rounded-3xl border border-gray-100 p-4 bg-gray-50/60 hover:bg-sky-50/50 hover:shadow-md transition-all cursor-pointer group">
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100 p-4 flex items-center justify-center mb-3">
-                    <img src="/images/mystery_box.png" alt="Cajas Sorpresa & Kits" className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-sm font-bold text-[#1e3a8a]">Cajas Sorpresa & Kits</h3>
-                      <p className="text-xs text-[#717171] font-normal">6 secretos guardados</p>
-                    </div>
-                    <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-2xs" title="Colección discreta">
-                      <svg className="w-3.5 h-3.5 stroke-current fill-none" strokeWidth="2.2" viewBox="0 0 24 24">
-                        <rect x="5" y="11" width="14" height="10" rx="2" />
-                        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-
-                {/* Tablero 5 */}
-                <div className="rounded-3xl border border-gray-100 p-4 bg-gray-50/60 hover:bg-sky-50/50 hover:shadow-md transition-all cursor-pointer group">
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-rose-100 to-indigo-100 p-4 flex items-center justify-center mb-3">
-                    <img src="/images/vibrador_cowgirl.png" alt="Aceites & Sensaciones" className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-sm font-bold text-[#1e3a8a]">Aceites & Sensaciones</h3>
-                      <p className="text-xs text-[#717171] font-normal">4 secretos guardados</p>
-                    </div>
-                    <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-2xs" title="Colección discreta">
-                      <svg className="w-3.5 h-3.5 stroke-current fill-none" strokeWidth="2.2" viewBox="0 0 24 24">
-                        <rect x="5" y="11" width="14" height="10" rx="2" />
-                        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-
-              </div>
+              )
             ) : (
               <div className="py-16 text-center animate-in fade-in duration-200">
                 <div className="max-w-md mx-auto p-8 rounded-3xl bg-gray-50/70 border border-gray-100">
