@@ -34,6 +34,14 @@
       "destination": "https://toystore-backend-5v90.onrender.com/confesiones"
     },
     {
+      "source": "/api-contacto/(.*)",
+      "destination": "https://toystore-backend-5v90.onrender.com/contacto/$1"
+    },
+    {
+      "source": "/api-contacto",
+      "destination": "https://toystore-backend-5v90.onrender.com/contacto"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
