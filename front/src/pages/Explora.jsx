@@ -342,34 +342,34 @@ export default function Explora() {
           ========================================================================= */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 pb-6 font-fredoka select-none flex-1 flex flex-col items-center">
 
-        {/* ZONA SUPERIOR / PARED: POSTERS A LA IZQUIERDA + CARTEL CENTRADO + ESPACIO LIBRE PARA LA ARCADE */}
-        <div className="w-full flex items-center lg:items-start justify-center gap-6 lg:gap-8 xl:gap-12 mt-2 sm:mt-4">
+        {/* ZONA SUPERIOR / PARED: POSTERS + CARTEL */}
+        <div className="w-full flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 lg:gap-8 xl:gap-12 mt-2 sm:mt-4">
 
           {/* COLUMNA IZQUIERDA: 2 POSTERS RETRO (NAVE PIZZA PLANET + ALIEN) */}
-          <div className="hidden lg:flex flex-col items-center gap-6 w-36 xl:w-44 shrink-0 self-start mt-10 xl:mt-12">
+          <div className="hidden lg:flex flex-col items-center gap-6 shrink-0 self-start mt-10 xl:mt-12 w-40 xl:w-48">
             
             {/* POSTER RETRO 2: NAVE ESPACIAL PIZZA PLANET */}
-            <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-2">
+            <div className="w-full relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-2">
               <img 
                 src="/images/poster_retro2.png" 
                 alt="Poster Retro Pizza Planet 2"
-                className="w-36 xl:w-44 h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)]"
+                className="w-full h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)] select-none"
               />
             </div>
 
-            {/* POSTER RETRO 1: ALIEN "I'VE BEEN CHOSEN" (Con ancho idéntico w-36 xl:w-44 para no deformar) */}
-            <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-2">
+            {/* POSTER RETRO 1: ALIEN "I'VE BEEN CHOSEN" (DEL MISMO TAMAÑO EXACTO QUE EL DE ARRIBA) */}
+            <div className="w-full relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-2">
               <img 
                 src="/images/poster_retro.png" 
                 alt="Poster Retro Pizza Planet Alien"
-                className="w-36 xl:w-44 h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)]"
+                className="w-full h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)] select-none"
               />
             </div>
 
           </div>
 
           {/* COLUMNA CENTRAL: CARTEL HANGING SIGN + FLECHA NEÓN VERDE + BOTÓN */}
-          <div className="flex flex-col items-center w-full max-w-[560px] sm:max-w-[620px] md:max-w-[680px] lg:max-w-[700px] shrink-0">
+          <div className="flex flex-col items-center w-full max-w-[560px] sm:max-w-[620px] md:max-w-[680px] lg:max-w-[720px]">
             
             {/* CARTEL PRINCIPAL HANGING SIGN */}
             <div className="relative flex flex-col items-center w-full">
@@ -485,8 +485,8 @@ export default function Explora() {
 
           </div>
 
-          {/* COLUMNA DERECHA: ESPACIO VACÍO CON EL MISMO ANCHO EXACTO (w-36 xl:w-44) PARA QUE EL CENTRO SEA 100% PERFECTO Y LA ARCADE TENGA AIRE */}
-          <div className="hidden lg:block w-36 xl:w-44 shrink-0 pointer-events-none"></div>
+          {/* COLUMNA DERECHA: ESPACIO VACÍO CON EL MISMO ANCHO EXACTO (w-40 xl:w-48) PARA QUE EL CARTEL QUEDE 100% CENTRADO COMO ANTES */}
+          <div className="hidden lg:block w-40 xl:w-48 shrink-0 pointer-events-none" aria-hidden="true" />
 
         </div>
 
