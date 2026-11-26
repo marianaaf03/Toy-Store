@@ -515,37 +515,37 @@ export default function Explora() {
           ========================================================================= */}
       <div className="relative z-10 w-full overflow-visible font-fredoka select-none mt-2 sm:mt-4 pb-10 sm:pb-16 min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[680px]">
 
-        {/* ALFOMBRA RETRO NUEVA (alfombra_retroo.png) EN EL SUELO DE MADERA (MÁS CHICA Y MÁS ABAJO) */}
-        <div className="w-full flex justify-center items-center px-2 sm:px-4 md:px-6 mt-28 sm:mt-36 md:mt-48 lg:mt-56 xl:mt-64">
+        {/* ALFOMBRA RETRO NUEVA (alfombra_retroo.png) EN EL SUELO DE MADERA (BAJADA PARA VER LA LÍNEA PARED/SUELO) */}
+        <div className="w-full flex justify-center items-center px-2 sm:px-4 md:px-6 mt-44 sm:mt-56 md:mt-72 lg:mt-96 xl:mt-[440px] pointer-events-none">
           <img
             src="/images/alfombra_retroo.png"
             alt="Alfombra Retro Pizza Planet en el suelo"
-            className="w-[86vw] sm:w-[80vw] md:w-[74vw] lg:w-[68vw] xl:w-[64vw] max-w-[1050px] 2xl:max-w-[1180px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.8)] transition-transform duration-300 hover:scale-[1.01]"
+            className="w-[84vw] sm:w-[78vw] md:w-[72vw] lg:w-[66vw] xl:w-[60vw] max-w-[920px] 2xl:max-w-[1050px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.75)] transition-transform duration-300 select-none"
           />
         </div>
 
         {/* LADO IZQUIERDO: ALIENCITO EN EL SUELO CON ANIMACIÓN SALTANDO */}
-        <div className="absolute left-3 sm:left-6 md:left-12 lg:left-20 xl:left-28 bottom-48 sm:bottom-60 md:bottom-76 lg:bottom-92 xl:bottom-[420px] 2xl:bottom-[460px] z-20 pointer-events-none flex flex-col items-center">
+        <div className="absolute left-2 sm:left-4 md:left-8 lg:left-14 xl:left-20 bottom-36 sm:bottom-44 md:bottom-56 lg:bottom-68 xl:bottom-80 z-20 pointer-events-none flex flex-col items-center">
           <div className="relative flex flex-col items-center">
             <img
               src="/images/aliencito.png"
               alt="Aliencito saltando en el suelo de Pizza Planet"
-              className="w-36 sm:w-44 md:w-52 lg:w-60 xl:w-68 h-auto object-contain animate-alien-jump drop-shadow-[0_20px_25px_rgba(0,0,0,0.65)] select-none"
+              className="w-28 sm:w-36 md:w-48 lg:w-56 xl:w-64 h-auto object-contain animate-alien-jump drop-shadow-[0_20px_25px_rgba(0,0,0,0.65)] select-none"
             />
             {/* Sombra de contacto sincronizada con el salto en el suelo */}
-            <div className="w-28 sm:w-36 md:w-40 h-4 bg-black/60 blur-md rounded-full -mt-2 animate-alien-shadow pointer-events-none"></div>
+            <div className="w-24 sm:w-32 md:w-40 h-4 bg-black/60 blur-md rounded-full -mt-2 animate-alien-shadow pointer-events-none"></div>
           </div>
         </div>
 
-        {/* LADO DERECHO: MÁQUINA DE ARCADE MÁS GRANDESITA PARA CONECTAR CON LA PARED DEL TAPIZ */}
-        <div className="absolute right-2 sm:right-6 md:right-10 lg:right-14 xl:right-20 2xl:right-24 bottom-48 sm:bottom-60 md:bottom-76 lg:bottom-92 xl:bottom-[420px] 2xl:bottom-[460px] z-20 pointer-events-auto">
+        {/* LADO DERECHO: MÁQUINA DE ARCADE EN EL SUELO (bottom-0) MÁS GRANDE CONECTANDO CON EL TAPIZ */}
+        <div className="absolute right-0 sm:right-2 md:right-4 lg:right-6 xl:right-8 bottom-0 z-20 pointer-events-auto">
           <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
             <img
               src="/images/maquina_aliens.png"
               alt="Máquina de Marcianitos Pizza Planet"
-              className="w-52 sm:w-64 md:w-76 lg:w-88 xl:w-[390px] 2xl:w-[430px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)]"
+              className="w-48 sm:w-64 md:w-80 lg:w-[440px] xl:w-[520px] 2xl:w-[580px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)]"
             />
-            {/* Sombra de contacto profunda al ras del suelo a la misma altura */}
+            {/* Sombra de contacto profunda al ras del suelo */}
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-5 bg-black/80 blur-lg rounded-full pointer-events-none"></div>
           </div>
         </div>
