@@ -268,18 +268,20 @@ export default function Explora() {
         .animate-red-button-glow {
           animation: pulseRedButton 2.4s ease-in-out infinite;
         }
-        @keyframes retroNeonFlicker {
-          0%, 18.999%, 21%, 59.999%, 61%, 67%, 100% {
-            opacity: 1;
-            filter: drop-shadow(0 0 8px #FF0055) drop-shadow(0 0 22px #FF0044) drop-shadow(0 0 45px #FF0033);
+        @keyframes greenNeonChevronGlow {
+          0%, 100% {
+            filter: drop-shadow(0 0 6px #00FF66) drop-shadow(0 0 16px #22C55E) drop-shadow(0 0 35px #15803D);
+            opacity: 0.95;
+            transform: translateY(0);
           }
-          19%, 20.999%, 60%, 60.999%, 66%, 66.999% {
-            opacity: 0.35;
-            filter: drop-shadow(0 0 3px #FF0055);
+          50% {
+            filter: drop-shadow(0 0 12px #39FF14) drop-shadow(0 0 28px #00FF66) drop-shadow(0 0 55px #22C55E);
+            opacity: 1;
+            transform: translateY(4px);
           }
         }
-        .animate-neon-arrow {
-          animation: retroNeonFlicker 3s ease-in-out infinite;
+        .animate-green-neon-arrow {
+          animation: greenNeonChevronGlow 2s ease-in-out infinite;
         }
         @keyframes alienJump {
           0%, 100% {
@@ -343,11 +345,10 @@ export default function Explora() {
         {/* ZONA SUPERIOR / PARED: POSTERS + CARTEL */}
         <div className="w-full flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 lg:gap-8 xl:gap-12 mt-2 sm:mt-4">
 
-          {/* COLUMNA IZQUIERDA: 2 POSTERS (POSTER RETRO 2 ARRIBA + POSTER PIZZA ABAJO)
-              Bajados respetando el margen de la navbar clouds, sin cinta adhesiva */}
+          {/* COLUMNA IZQUIERDA: 2 POSTERS RETRO (NAVE PIZZA PLANET + ALIEN) */}
           <div className="hidden lg:flex flex-col items-center gap-6 shrink-0 self-start mt-10 xl:mt-12">
             
-            {/* POSTER RETRO 2 (Sin recuadro blanco ni cinta) */}
+            {/* POSTER RETRO 2: NAVE ESPACIAL PIZZA PLANET */}
             <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer rotate-2">
               <img 
                 src="/images/poster_retro2.png" 
@@ -356,19 +357,18 @@ export default function Explora() {
               />
             </div>
 
-            {/* POSTER RETRO 3: PIZZA (Debajo del otro poster en la izquierda) */}
+            {/* POSTER RETRO 1: ALIEN "I'VE BEEN CHOSEN" (Puesto aquí para despejar la arcade) */}
             <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-2">
               <img 
-                src="/images/poster_retro3.jpg" 
-                onError={(e) => { e.target.src = '/images/poster_retro3.png'; }}
-                alt="Poster Retro Say Hi To Pizza"
-                className="w-36 xl:w-44 h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)]"
+                src="/images/poster_retro.png" 
+                alt="Poster Retro Pizza Planet Alien"
+                className="w-38 xl:w-46 h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)]"
               />
             </div>
 
           </div>
 
-          {/* COLUMNA CENTRAL: CARTEL HANGING SIGN + FLECHA NEÓN + BOTÓN */}
+          {/* COLUMNA CENTRAL: CARTEL HANGING SIGN + FLECHA NEÓN VERDE + BOTÓN */}
           <div className="flex flex-col items-center w-full max-w-[560px] sm:max-w-[620px] md:max-w-[680px] lg:max-w-[720px]">
             
             {/* CARTEL PRINCIPAL HANGING SIGN */}
@@ -396,35 +396,57 @@ export default function Explora() {
               </div>
             </div>
 
-            {/* FLECHA NEÓN RETRO ROJA: GRANDE Y CON ESPACIO RACIONAL EQUILIBRADO */}
-            <div className="flex flex-col items-center my-3 sm:my-4 select-none pointer-events-none">
-              <div className="animate-neon-arrow flex flex-col items-center">
+            {/* FLECHA NEÓN RETRO VERDE CHEVRON: ESTILO PIZZA PLANET ARCADE */}
+            <div className="flex flex-col items-center my-2 sm:my-3 select-none pointer-events-none">
+              <div className="animate-green-neon-arrow flex flex-col items-center">
                 <svg 
-                  className="w-20 h-28 sm:w-24 sm:h-34 md:w-28 md:h-38 lg:w-30 lg:h-40" 
-                  viewBox="0 0 100 130" 
+                  className="w-16 h-24 sm:w-20 sm:h-28 md:w-24 md:h-32" 
+                  viewBox="0 0 100 120" 
                   fill="none"
                 >
-                  {/* Tubo de soporte oscuro de fondo */}
+                  {/* Chevron 1 (Superior) */}
                   <path 
-                    d="M 22 14 L 50 36 L 78 14 L 66 34 L 66 70 L 92 70 L 50 120 L 8 70 L 34 70 L 34 34 Z" 
-                    stroke="#38000A" 
-                    strokeWidth="12" 
+                    d="M 18 16 L 50 42 L 82 16" 
+                    stroke="#00FF66" 
+                    strokeWidth="9" 
                     strokeLinecap="round" 
                     strokeLinejoin="round" 
                   />
-                  {/* Tubo exterior de neón rojo resplandeciente */}
                   <path 
-                    d="M 22 14 L 50 36 L 78 14 L 66 34 L 66 70 L 92 70 L 50 120 L 8 70 L 34 70 L 34 34 Z" 
-                    stroke="#FF0044" 
-                    strokeWidth="8" 
+                    d="M 18 16 L 50 42 L 82 16" 
+                    stroke="#E6FFFA" 
+                    strokeWidth="3.2" 
                     strokeLinecap="round" 
                     strokeLinejoin="round" 
-                    strokeOpacity="0.9" 
                   />
-                  {/* Núcleo interior de gas blanco/rosado incandescente */}
+
+                  {/* Chevron 2 (Medio) */}
                   <path 
-                    d="M 22 14 L 50 36 L 78 14 L 66 34 L 66 70 L 92 70 L 50 120 L 8 70 L 34 70 L 34 34 Z" 
-                    stroke="#FFF0F5" 
+                    d="M 18 48 L 50 74 L 82 48" 
+                    stroke="#00FF66" 
+                    strokeWidth="9" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                  />
+                  <path 
+                    d="M 18 48 L 50 74 L 82 48" 
+                    stroke="#E6FFFA" 
+                    strokeWidth="3.2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                  />
+
+                  {/* Chevron 3 (Inferior, apuntando al botón) */}
+                  <path 
+                    d="M 18 80 L 50 106 L 82 80" 
+                    stroke="#00FF66" 
+                    strokeWidth="9" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                  />
+                  <path 
+                    d="M 18 80 L 50 106 L 82 80" 
+                    stroke="#E6FFFA" 
                     strokeWidth="3.2" 
                     strokeLinecap="round" 
                     strokeLinejoin="round" 
@@ -463,29 +485,15 @@ export default function Explora() {
 
           </div>
 
-          {/* COLUMNA DERECHA: POSTER RETRO 1 (Bajado sin cinta adhesiva) */}
-          <div className="hidden lg:flex flex-col items-center shrink-0 self-start mt-10 xl:mt-12">
-            <div className="relative group transition-all duration-300 hover:rotate-0 hover:scale-105 cursor-pointer -rotate-2">
-              <img 
-                src="/images/poster_retro.png" 
-                alt="Poster Retro Pizza Planet 1"
-                className="w-40 xl:w-48 h-auto object-contain rounded-md drop-shadow-[0_15px_30px_rgba(0,0,0,0.75)]"
-              />
-            </div>
-          </div>
-
         </div>
 
-        {/* POSTERS EN PANTALLAS MÓVILES (SIN CINTA ADHESIVA, BAJADOS Y PROPORCIONADOS) */}
-        <div className="lg:hidden w-full flex items-center justify-around gap-2 mt-4 px-2 max-w-lg">
+        {/* POSTERS EN PANTALLAS MÓVILES (SOLO 2 POSTERS PARA NO SATURAR) */}
+        <div className="lg:hidden w-full flex items-center justify-around gap-4 mt-4 px-4 max-w-sm">
           <div className="relative rotate-2 shrink-0">
-            <img src="/images/poster_retro2.png" alt="Poster Retro 2" className="w-20 sm:w-26 md:w-30 h-auto object-contain rounded-md drop-shadow-md" />
+            <img src="/images/poster_retro2.png" alt="Poster Retro 2" className="w-24 sm:w-28 h-auto object-contain rounded-md drop-shadow-md" />
           </div>
           <div className="relative -rotate-2 shrink-0">
-            <img src="/images/poster_retro3.jpg" onError={(e) => { e.target.src = '/images/poster_retro3.png'; }} alt="Poster Pizza" className="w-20 sm:w-24 md:w-28 h-auto object-contain rounded-md drop-shadow-md" />
-          </div>
-          <div className="relative rotate-1 shrink-0">
-            <img src="/images/poster_retro.png" alt="Poster Retro 1" className="w-20 sm:w-26 md:w-30 h-auto object-contain rounded-md drop-shadow-md" />
+            <img src="/images/poster_retro.png" alt="Poster Retro Alien" className="w-24 sm:w-28 h-auto object-contain rounded-md drop-shadow-md" />
           </div>
         </div>
 
