@@ -511,42 +511,43 @@ export default function Explora() {
       </div>
 
       {/* =========================================================================
-          ZONA SUELO DE MADERA: ALFOMBRA GIGANTE EN TODO EL SUELO, ALIEN ELEVADO Y ARCADE A LA DERECHA Y ARRIBA
+          ZONA SUELO DE MADERA: ALFOMBRA COMPACTA Y PROPORCIONADA, ALIEN EN EL SUELO Y ARCADE SIN CORTAR
+          Totalmente responsivo para móvil y desktop
           ========================================================================= */}
-      <div className="relative z-10 w-full overflow-visible font-fredoka select-none mt-2 sm:mt-4 pb-10 sm:pb-16 min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[680px]">
+      <div className="relative z-10 w-full overflow-visible font-fredoka select-none mt-4 sm:mt-6 pb-8 sm:pb-12 min-h-[260px] sm:min-h-[340px] md:min-h-[440px] lg:min-h-[520px]">
 
-        {/* ALFOMBRA RETRO NUEVA (alfombra_retroo.png) EN EL SUELO DE MADERA (PEQUEÑA Y BIEN PROPORCIONADA) */}
-        <div className="w-full flex justify-center items-center px-2 sm:px-4 md:px-6 mt-16 sm:mt-20 md:mt-28 lg:mt-32 xl:mt-36 pointer-events-none">
+        {/* ALFOMBRA RETRO NUEVA (alfombra_retroo.png) EN EL SUELO DE MADERA (PROPORCIONADA Y REPOSANDO EN EL PISO) */}
+        <div className="w-full flex justify-center items-center px-4 sm:px-6 mt-8 sm:mt-12 md:mt-16 lg:mt-20 pointer-events-none">
           <img
             src="/images/alfombra_retroo.png"
             alt="Alfombra Retro Pizza Planet en el suelo"
-            className="w-[76vw] sm:w-[68vw] md:w-[60vw] lg:w-[54vw] xl:w-[48vw] max-w-[760px] 2xl:max-w-[860px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.75)] transition-transform duration-300 select-none"
+            className="w-[70vw] sm:w-[60vw] md:w-[52vw] lg:w-[44vw] xl:w-[40vw] max-w-[280px] sm:max-w-[440px] md:max-w-[540px] lg:max-w-[620px] xl:max-w-[680px] h-auto object-contain drop-shadow-[0_15px_35px_rgba(0,0,0,0.65)] transition-transform duration-300 select-none"
           />
         </div>
 
-        {/* LADO IZQUIERDO: ALIENCITO EN EL SUELO CON ANIMACIÓN SALTANDO (COMO ANTES) */}
-        <div className="absolute left-3 sm:left-6 md:left-12 lg:left-20 xl:left-28 bottom-48 sm:bottom-60 md:bottom-76 lg:bottom-92 xl:bottom-[420px] 2xl:bottom-[460px] z-20 pointer-events-none flex flex-col items-center">
+        {/* LADO IZQUIERDO: ALIENCITO EN EL SUELO CON ANIMACIÓN SALTANDO (RESPONSIVO) */}
+        <div className="absolute left-2 sm:left-4 md:left-8 lg:left-14 xl:left-20 bottom-4 sm:bottom-6 md:bottom-10 lg:bottom-14 z-20 pointer-events-none flex flex-col items-center">
           <div className="relative flex flex-col items-center">
             <img
               src="/images/aliencito.png"
               alt="Aliencito saltando en el suelo de Pizza Planet"
-              className="w-36 sm:w-44 md:w-52 lg:w-60 xl:w-68 h-auto object-contain animate-alien-jump drop-shadow-[0_20px_25px_rgba(0,0,0,0.65)] select-none"
+              className="w-20 sm:w-28 md:w-36 lg:w-44 xl:w-52 h-auto object-contain animate-alien-jump drop-shadow-[0_15px_20px_rgba(0,0,0,0.6)] select-none"
             />
             {/* Sombra de contacto sincronizada con el salto en el suelo */}
-            <div className="w-28 sm:w-36 md:w-40 h-4 bg-black/60 blur-md rounded-full -mt-2 animate-alien-shadow pointer-events-none"></div>
+            <div className="w-16 sm:w-24 md:w-32 lg:w-36 h-3 sm:h-4 bg-black/60 blur-md rounded-full -mt-1.5 sm:-mt-2 animate-alien-shadow pointer-events-none"></div>
           </div>
         </div>
 
-        {/* LADO DERECHO: MÁQUINA DE ARCADE (EXACTAMENTE COMO ESTABA ANTES) */}
-        <div className="absolute right-0 bottom-0 transform -translate-y-6 sm:-translate-y-10 md:-translate-y-14 lg:-translate-y-18 xl:-translate-y-24 z-20 pointer-events-auto">
+        {/* LADO DERECHO: MÁQUINA DE ARCADE EN EL SUELO (bottom-0), COMPLETA Y SIN CORTES */}
+        <div className="absolute right-0 sm:right-2 md:right-4 lg:right-6 xl:right-10 bottom-1 sm:bottom-2 md:bottom-4 lg:bottom-6 z-20 pointer-events-auto">
           <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
             <img
               src="/images/maquina_aliens.png"
               alt="Máquina de Marcianitos Pizza Planet"
-              className="w-56 sm:w-72 md:w-84 lg:w-[440px] xl:w-[500px] 2xl:w-[540px] h-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.9)]"
+              className="w-32 sm:w-44 md:w-56 lg:w-72 xl:w-[380px] 2xl:w-[420px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)]"
             />
             {/* Sombra de contacto profunda al ras del inicio del suelo */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-6 bg-black/85 blur-xl rounded-full pointer-events-none"></div>
+            <div className="absolute -bottom-1.5 sm:-bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-4 sm:h-5 bg-black/80 blur-lg rounded-full pointer-events-none"></div>
           </div>
         </div>
 
