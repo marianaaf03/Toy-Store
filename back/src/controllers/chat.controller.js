@@ -68,9 +68,9 @@ const procesarMensaje = async (req, res) => {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (decoded && (
-          decoded.rol === 1 || 
-          decoded.id_rol === 1 || 
-          decoded.email === 'alvarezfrancomariana@gmail.com' || 
+          decoded.rol === 1 ||
+          decoded.id_rol === 1 ||
+          decoded.email === 'alvarezfrancomariana@gmail.com' ||
           decoded.email === 'saraguevara192@gmail.com'
         )) {
           esAdmin = true;
@@ -84,10 +84,10 @@ const procesarMensaje = async (req, res) => {
     // 2. Validar objeto de usuario enviado por el frontend
     if (!esAdmin && usuario) {
       if (
-        usuario.id_rol === 1 || 
-        usuario.rol === 1 || 
-        usuario.rol === 'admin' || 
-        usuario.email === 'alvarezfrancomariana@gmail.com' || 
+        usuario.id_rol === 1 ||
+        usuario.rol === 1 ||
+        usuario.rol === 'admin' ||
+        usuario.email === 'alvarezfrancomariana@gmail.com' ||
         usuario.email === 'saraguevara192@gmail.com'
       ) {
         esAdmin = true;
@@ -151,8 +151,8 @@ const procesarMensaje = async (req, res) => {
 
       // B. Stock específico de un producto (ej: "stock de Cerdito Travieso", "cuanto stock hay de vibrador", "unidades de lenceria")
       else if (
-        cleanText.includes("stock de") || 
-        cleanText.includes("unidades de") || 
+        cleanText.includes("stock de") ||
+        cleanText.includes("unidades de") ||
         cleanText.includes("stock del") ||
         cleanText.includes("unidades del") ||
         cleanText.includes("stock hay de") ||
@@ -166,7 +166,7 @@ const procesarMensaje = async (req, res) => {
           .replace(/.*(?:stock (?:hay )?de|unidades (?:hay )?de|stock del|unidades del|cuanto stock (?:hay )?de|cuantas unidades (?:hay )?de|queda de)\s*/i, '')
           .replace(/[?¿!¡]/g, '')
           .trim();
-        
+
         const [found] = term ? await db.query(
           "SELECT * FROM productos WHERE LOWER(nombre) LIKE ? OR LOWER(categoria) LIKE ? LIMIT 4",
           [`%${term}%`, `%${term}%`]

@@ -15,7 +15,7 @@ export default function ChatbotWidget() {
   const [showTooltip, setShowTooltip] = useState(() => localStorage.getItem('toy_saludo_activo') !== 'false');
   const [loading, setLoading] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
-  
+
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
@@ -23,14 +23,14 @@ export default function ChatbotWidget() {
   const esAdmin = Boolean(
     esAdminAuth ||
     (usuario && (
-      usuario.rol === 1 || 
-      usuario.id_rol === 1 || 
-      usuario.rol === 'admin' || 
-      usuario.email === 'alvarezfrancomariana@gmail.com' || 
+      usuario.rol === 1 ||
+      usuario.id_rol === 1 ||
+      usuario.rol === 'admin' ||
+      usuario.email === 'alvarezfrancomariana@gmail.com' ||
       usuario.email === 'saraguevara192@gmail.com'
     )) ||
     (isLoggedInHint && userNameHint && (
-      userNameHint.toLowerCase().includes('mariana') || 
+      userNameHint.toLowerCase().includes('mariana') ||
       userNameHint.toLowerCase().includes('sara')
     )) ||
     localStorage.getItem('toy_is_admin') === 'true' ||
@@ -173,11 +173,11 @@ export default function ChatbotWidget() {
         credentials: 'include',
         body: JSON.stringify({
           mensaje: textToSend,
-          usuario: usuario ? { 
-            nombre: usuario.nombre, 
-            id_rol: usuario.id_rol || usuario.rol || (esAdmin ? 1 : 2), 
+          usuario: usuario ? {
+            nombre: usuario.nombre,
+            id_rol: usuario.id_rol || usuario.rol || (esAdmin ? 1 : 2),
             rol: usuario.rol || usuario.id_rol || (esAdmin ? 1 : 2),
-            email: usuario.email 
+            email: usuario.email
           } : (esAdmin ? { nombre: userNameHint || 'Mariana', rol: 1, id_rol: 1, email: 'alvarezfrancomariana@gmail.com' } : null)
         })
       });
@@ -228,11 +228,11 @@ export default function ChatbotWidget() {
 
   return (
     <div className="fixed bottom-5 right-5 z-[2500] pointer-events-none">
-      
+
       {/* --- VENTANA DEL CHATBOT ABIERTA --- */}
       {isOpen ? (
         <div className="pointer-events-auto w-[92vw] sm:w-[390px] h-[580px] max-h-[85vh] bg-white rounded-[2.5rem] shadow-[0_25px_60px_rgba(0,0,0,0.3)] border-4 border-sky-300 flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
-          
+
           {/* ENCABEZADO DEL CHAT (#87CEEB) */}
           <div className="bg-[#87CEEB] px-5 py-3.5 flex items-center justify-between shadow-sm border-b border-sky-200">
             <div className="flex items-center gap-3">
@@ -259,16 +259,16 @@ export default function ChatbotWidget() {
           </div>
 
           {/* CUERPO DEL CHAT (MENSAJES) */}
-          <div 
+          <div
             ref={chatContainerRef}
             className="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-sky-50/40 via-white to-white space-y-4 text-sm custom-scrollbar"
           >
-            
+
             {/* ILUSTRACIÓN DE CUERPO COMPLETO DE TOYITO AL INICIO */}
             <div className="flex flex-col items-center justify-center pt-2 pb-4 border-b border-sky-100 mb-2 text-center bg-gradient-to-b from-sky-50 to-transparent rounded-2xl p-3">
               <MascotAvatar variant="full" className="w-32 h-36 mb-2" expression="happy" />
               <p className="text-xs text-gray-500 max-w-xs mt-1 leading-relaxed">
-                {esAdmin 
+                {esAdmin
                   ? 'Estoy aquí para acompañarte durante todo tu recorrido en la tienda y ayudarte con todo lo que necesites de administración. ¡Cuenta conmigo!'
                   : 'Estoy aquí para acompañarte durante todo tu recorrido en la tienda. ¡Cuenta conmigo para cualquier recomendación o duda!'}
               </p>
@@ -281,17 +281,16 @@ export default function ChatbotWidget() {
 
               return (
                 <div key={msg.id} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
-                  
+
                   <div className={`flex gap-2 max-w-[88%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                     {msg.sender === 'bot' && (
                       <MascotAvatar variant="head" className="w-8 h-8 flex-shrink-0 mt-1" expression={loading ? 'thinking' : 'happy'} />
                     )}
 
-                    <div className={`p-3.5 rounded-2xl shadow-sm leading-relaxed whitespace-pre-line ${
-                      msg.sender === 'user'
-                        ? 'bg-[#0047AB] text-white rounded-tr-none font-medium'
-                        : 'bg-gray-50 border border-sky-100 text-gray-800 rounded-tl-none font-normal'
-                    }`}>
+                    <div className={`p-3.5 rounded-2xl shadow-sm leading-relaxed whitespace-pre-line ${msg.sender === 'user'
+                      ? 'bg-[#0047AB] text-white rounded-tr-none font-medium'
+                      : 'bg-gray-50 border border-sky-100 text-gray-800 rounded-tl-none font-normal'
+                      }`}>
                       {msg.text ? msg.text.replace(/\*\*/g, '') : ''}
                     </div>
                   </div>
@@ -323,13 +322,13 @@ export default function ChatbotWidget() {
                   {msg.productos && msg.productos.length > 0 && (
                     <div className="mt-3 w-full grid grid-cols-1 gap-2.5 pl-9">
                       {msg.productos.map((prod) => (
-                        <div 
-                          key={prod.id} 
+                        <div
+                          key={prod.id}
                           className="bg-white border-2 border-sky-200 rounded-xl p-2.5 flex items-center gap-3 shadow-sm hover:shadow-md transition-all hover:border-[#a6d4f2] group"
                         >
-                          <img 
-                            src={getProductImage(prod)} 
-                            alt={prod.nombre} 
+                          <img
+                            src={getProductImage(prod)}
+                            alt={prod.nombre}
                             className="w-14 h-14 object-contain rounded-lg bg-gray-50 p-1 border border-gray-100 flex-shrink-0"
                           />
                           <div className="flex-1 min-w-0">
@@ -338,13 +337,12 @@ export default function ChatbotWidget() {
                                 {prod.categoria}
                               </span>
                               {esAdmin && prod.stock !== undefined && (
-                                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded ${
-                                  prod.stock <= 5 
-                                    ? 'bg-red-100 text-red-700' 
-                                    : prod.stock <= 10 
-                                    ? 'bg-amber-100 text-amber-800' 
+                                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded ${prod.stock <= 5
+                                  ? 'bg-red-100 text-red-700'
+                                  : prod.stock <= 10
+                                    ? 'bg-amber-100 text-amber-800'
                                     : 'bg-emerald-100 text-emerald-800'
-                                }`}>
+                                  }`}>
                                   Stock: {prod.stock} uds.
                                 </span>
                               )}
@@ -463,19 +461,19 @@ export default function ChatbotWidget() {
       ) : (
         /* --- ESTADO CERRADO: NUBE DE DIÁLOGO AL LADO DE TOYITO EN PERFECTA SINCRONÍA --- */
         <div className="flex flex-row items-center gap-2.5 animate-float-bounce pointer-events-none select-none">
-          
+
           {/* NUBE DE DIÁLOGO AL LADITO DE TOYITO */}
           {showTooltip && (
             <div className="pointer-events-auto relative flex items-center bg-white border-2 border-sky-300 px-4 py-2.5 rounded-2xl shadow-xl max-w-[260px] sm:max-w-[280px] transition-all">
-              
+
               <span className="text-[12.5px] leading-snug font-black text-[#0047AB] select-none">
-                {esAdmin 
-                  ? '¡Hola, querida admin! Aquí estoy para ayudarte.' 
+                {esAdmin
+                  ? '¡Hola, querida admin! Aquí estoy para ayudarte.'
                   : '¡Hola! Soy Toyito, tu compañía en la tienda.'}
               </span>
 
-              <button 
-                onClick={() => setShowTooltip(false)} 
+              <button
+                onClick={() => setShowTooltip(false)}
                 className="ml-2.5 -mr-1 w-5 h-5 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-sky-50 font-black text-sm transition-all flex-shrink-0"
                 title="Cerrar"
               >

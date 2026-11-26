@@ -23,15 +23,15 @@ function renderToyFigure(producto, index = 0, isModal = false) {
   // 1. REFUERZO DE IMÁGENES PROPIAS DEL CATÁLOGO (PRIORIDAD ABSOLUTA PARA QUE NUNCA SE PIERDAN)
   if (producto.imagen && producto.imagen.startsWith('/') && !producto.imagen.includes('default')) {
     return (
-      <img 
-        src={producto.imagen} 
-        alt={producto.nombre} 
-        onError={(e) => { 
+      <img
+        src={producto.imagen}
+        alt={producto.nombre}
+        onError={(e) => {
           if (nombre.includes('misteriosa') || cat.includes('kit')) {
             e.target.src = '/images/cajamisteriosa.png';
           }
-        }} 
-        className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} 
+        }}
+        className={`${imgSizeClass} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`}
       />
     );
   }
@@ -268,8 +268,8 @@ export default function ToyBoxCard({ producto, index = 0, onClick, isModalView =
     <div
       onClick={onClick}
       className={`group cursor-pointer flex flex-col items-center transition-all duration-300 select-none ${isModalView
-          ? 'w-[260px] sm:w-[290px]'
-          : 'w-full max-w-[170px] sm:max-w-[190px] md:max-w-[210px] hover:-translate-y-2.5 active:scale-95'
+        ? 'w-[260px] sm:w-[290px]'
+        : 'w-full max-w-[170px] sm:max-w-[190px] md:max-w-[210px] hover:-translate-y-2.5 active:scale-95'
         }`}
     >
       {/* 1. PESTAÑA COLGANTE TIPO BLÍSTER DE JUGUETE */}

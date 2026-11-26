@@ -28,8 +28,8 @@ export default function Login() {
         const res = await fetch("/auth/google-login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            credential: tokenResponse.access_token, 
+          body: JSON.stringify({
+            credential: tokenResponse.access_token,
             isAccessToken: true,
             userInfo: userInfo,
             manualPassword: form.contrasena // <--- PASAMOS LA CONTRASEÑA ESCRITA
@@ -60,7 +60,7 @@ export default function Login() {
       const res = await fetch("/auth/google-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           credential: credentialResponse.credential,
           manualPassword: form.contrasena // <--- SINCRONIZAR AQUÍ TAMBIÉN
         }),
@@ -97,7 +97,7 @@ export default function Login() {
       if (form.contrasena !== savedPasswords[form.email]) {
         setForm(prev => ({ ...prev, contrasena: savedPasswords[form.email] }));
       }
-      
+
       // Simular clic "y lo mande de una vez a la pagina de inicio" para ambos casos
       setTimeout(() => {
         document.getElementById('btn-login-submit')?.click();
@@ -143,7 +143,7 @@ export default function Login() {
 
         // --- SISTEMA MOCK DE AUTOGUARDADO DE CONTRASEÑAS ---
         const savedPasswords = JSON.parse(localStorage.getItem("mock_saved_passwords") || "{}");
-        
+
         // Si no tenemos esta contraseña guardada, le preguntamos al usuario si quiere guardarla
         if (savedPasswords[form.email] !== form.contrasena) {
           localStorage.setItem("pending_save_email", form.email);
@@ -249,9 +249,9 @@ export default function Login() {
                        py-3 rounded-xl transition text-sm flex items-center justify-center gap-3 shadow-md
                        active:translate-y-1 active:shadow-sm"
           >
-            <img 
-              src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
-              alt="Google" 
+            <img
+              src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png"
+              alt="Google"
               className="w-5 h-5"
             />
             Continuar con Google
@@ -269,4 +269,4 @@ export default function Login() {
       </div>
     </FondoToyStory>
   );
-}
+}
