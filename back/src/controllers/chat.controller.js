@@ -97,6 +97,7 @@ const procesarMensaje = async (req, res) => {
 
     let respuestaTexto = "";
     let productosRecomendados = [];
+    let accionDirecta = null;
     let sugerencias = esAdmin ? [
       "Estado general del inventario",
       "Productos con stock crítico",
@@ -243,8 +244,41 @@ const procesarMensaje = async (req, res) => {
       });
     }
 
-    // ─── 1. Saludos e Identidad ────────────────────────────────────
-    if (!cleanText || cleanText.includes("hola") || cleanText.includes("buenas") || cleanText.includes("saludo") || cleanText.includes("quien eres") || cleanText.includes("como te llamas") || cleanText.includes("que haces")) {
+    // ─── 1. Carrito, Compras, Pagos y Facturación ─────────────────
+    if (cleanText.includes("carrito") || cleanText.includes("comprar") || cleanText.includes("donde pago") || cleanText.includes("pagar") || cleanText.includes("factura") || cleanText.includes("checkout") || cleanText.includes("orden") || cleanText.includes("pedido")) {
+      respuestaTexto = `¡Tu carrito y proceso de compra están siempre listos!\n\nPuedes entrar haciendo clic en el icono del baúl/carrito en la barra lateral izquierda, o tocando directamente el botón de abajo. Allí podrás revisar tus artículos, cambiar cantidades y simular tu factura con total privacidad.`;
+      accionDirecta = { texto: "Ver mi Carrito", url: "/carrito" };
+      sugerencias = [
+        "¿Cómo garantizan la discreción de mi entrega?",
+        "¿Qué garantías y reembolsos ofrecen?",
+        "Los secretos más deseados de la tienda"
+      ];
+    }
+
+    // ─── 2. Garantías, Devoluciones y Reembolsos ──────────────────
+    else if (cleanText.includes("garanti") || cleanText.includes("devoluc") || cleanText.includes("reembols") || cleanText.includes("cambio") || cleanText.includes("falla") || cleanText.includes("roto") || cleanText.includes("defecto")) {
+      respuestaTexto = `Nuestra Política de Garantías y Reembolsos es transparente y confiable:\n\n• 6 meses de garantía técnica: cubre baterías recargables y motores magnéticos por defectos de fábrica.\n• Bioseguridad e higiene íntima: por normas sanitarias, los artículos con empaque abierto no admiten devolución una vez usados.\n• Si tu paquete llega con algún daño de transporte o defecto de fábrica, te realizamos el cambio inmediato o reembolso sin costo.`;
+      accionDirecta = { texto: "Preguntas y Contacto", url: "/contacto" };
+      sugerencias = [
+        "¿Cómo garantizan la discreción de mi entrega?",
+        "¿Dónde está mi carrito?",
+        "¿Qué sorpresas me recomiendas hoy?"
+      ];
+    }
+
+    // ─── 3. Envíos y Privacidad (Empaque Ciego) ────────────────────
+    else if (cleanText.includes("envio") || cleanText.includes("discre") || cleanText.includes("privacidad") || cleanText.includes("paquete") || cleanText.includes("caja") || cleanText.includes("entrega") || cleanText.includes("anonimo") || cleanText.includes("seguro") || cleanText.includes("delatador") || cleanText.includes("politica")) {
+      respuestaTexto = `¡Tu privacidad es nuestra prioridad absoluta!\n\n1. Empaque 100% Ciego: Despachamos en cajas lisas de cartón sin ningún logotipo ni mención a Toy Store ni a artículos para adultos.\n2. Extracto Bancario Neutro: El cobro aparece como servicios de comercio electrónico general.\n3. Entregas discretas y seguras a todo el país.`;
+      accionDirecta = { texto: "Más sobre Privacidad", url: "/contacto" };
+      sugerencias = [
+        "¿Qué garantías y reembolsos ofrecen?",
+        "¿Dónde está mi carrito?",
+        "¿Qué sorpresas me recomiendas hoy?"
+      ];
+    }
+
+    // ─── 4. Saludos e Identidad ────────────────────────────────────
+    else if (!cleanText || cleanText.includes("hola") || cleanText.includes("buenas") || cleanText.includes("saludo") || cleanText.includes("quien eres") || cleanText.includes("como te llamas") || cleanText.includes("que haces")) {
       if (esAdmin) {
         respuestaTexto = `¡Hola, querida admin!\n\nQué alegría tenerte por aquí. Estoy listo para ayudarte a revisar el stock, el inventario o cualquier métrica que quieras consultar de la tienda.\n\n¿En qué te puedo colaborar hoy?`;
         sugerencias = [
@@ -257,28 +291,55 @@ const procesarMensaje = async (req, res) => {
         const nombreUsuario = usuario?.nombre ? `, ${usuario.nombre}` : '';
         respuestaTexto = `¡Hola${nombreUsuario}! Soy Toyito, tu compañía y asesor personal en Toy Store.\n\nEstoy aquí para acompañarte en tu experiencia, recomendarte los mejores productos y resolver todas tus dudas de forma 100% privada y segura.\n\n¿En qué puedo ayudarte hoy?`;
         sugerencias = [
-          "¿Qué sorpresas me recomiendas hoy?",
+          "¿Dónde está mi carrito?",
           "¿Cómo garantizan la discreción de mi entrega?",
-          "Ideas para encender la chispa en pareja",
-          "Sensaciones intensas para disfrutar a solas",
-          "Los secretos más deseados de la tienda"
+          "¿Qué garantías y reembolsos ofrecen?",
+          "¿Qué sorpresas me recomiendas hoy?",
+          "Ideas para encender la chispa en pareja"
         ];
       }
     }
 
-    // ─── 2. Envíos y Privacidad ────────────────────────────────────
-    else if (cleanText.includes("envio") || cleanText.includes("discre") || cleanText.includes("privacidad") || cleanText.includes("paquete") || cleanText.includes("caja") || cleanText.includes("entrega") || cleanText.includes("anonimo") || cleanText.includes("seguro") || cleanText.includes("garanti")) {
-      respuestaTexto = `¡Tu tranquilidad y privacidad son nuestra prioridad absoluta!\n\n- Todos nuestros envíos se despachan en cajas o sobres totalmente neutros, sin logos ni menciones a 'Toy Store'.\n- En el comprobante o extracto bancario la descripción es 100% discreta.\n- Nadie sabrá qué hay dentro de tu paquete excepto tú.`;
-      sugerencias = esAdmin ? [
-        "Estado general del inventario",
-        "Productos con stock crítico",
-        "Resumen por categorías",
-        "Métricas de usuarios registrados"
-      ] : [
+    // ─── 5. Guía de Bienestar Íntimo ──────────────────────────────
+    else if (cleanText.includes("guia") || cleanText.includes("consejo") || cleanText.includes("primera vez") || cleanText.includes("aprender") || cleanText.includes("como usar") || cleanText.includes("lubricante") || cleanText.includes("tabu")) {
+      respuestaTexto = `Nuestra Guía de Bienestar Íntimo está pensada para hombres, mujeres y parejas con consejos sobre lubricación, ritmos y comunicación sin tabúes ni presiones.`;
+      accionDirecta = { texto: "Ver Guía de Bienestar", url: "/guia" };
+      sugerencias = [
         "¿Qué sorpresas me recomiendas hoy?",
         "Ideas para encender la chispa en pareja",
+        "¿Cómo garantizan la discreción de mi entrega?"
+      ];
+    }
+
+    // ─── 6. Cuenta, Registro e Inicio de Sesión ───────────────────
+    else if (cleanText.includes("registro") || cleanText.includes("iniciar sesion") || cleanText.includes("login") || cleanText.includes("cuenta") || cleanText.includes("crear cuenta") || cleanText.includes("contrasena") || cleanText.includes("clave")) {
+      respuestaTexto = `Tener tu cuenta en Toy Store te permite:\n\n• Guardar productos en tu lista de deseos privada.\n• Personalizar tu avatar con gorritos coleccionables.\n• Seguir a otros miembros de la comunidad con total discreción.`;
+      accionDirecta = { texto: "Iniciar Sesión o Registrarse", url: "/login" };
+      sugerencias = [
+        "¿Dónde está mi carrito?",
+        "¿Cómo garantizan la discreción de mi entrega?",
+        "¿Qué sorpresas me recomiendas hoy?"
+      ];
+    }
+
+    // ─── 7. Muro de Confesiones ───────────────────────────────────
+    else if (cleanText.includes("confesion") || cleanText.includes("rincon") || cleanText.includes("muro")) {
+      respuestaTexto = `El Rincón de Confesiones es nuestro espacio seguro y anónimo donde la comunidad comparte vivencias, deseos y anécdotas íntimas. ¡Puedes leer o publicar la tuya desde el icono de chat en la barra lateral izquierda!`;
+      sugerencias = [
+        "Ideas para encender la chispa en pareja",
         "Sensaciones intensas para disfrutar a solas",
-        "Los secretos más deseados de la tienda"
+        "¿Dónde está mi carrito?"
+      ];
+    }
+
+    // ─── 8. Contacto y Fundadoras ─────────────────────────────────
+    else if (cleanText.includes("contacto") || cleanText.includes("valeria") || cleanText.includes("mariana") || cleanText.includes("creadora") || cleanText.includes("fundadora") || cleanText.includes("quien hizo") || cleanText.includes("instagram")) {
+      respuestaTexto = `Toy Store nació de la complicidad de Valeria y Mariana. En nuestra consola de Contacto puedes conocer su manifiesto, ver su foto y escanear sus códigos QR de Instagram.`;
+      accionDirecta = { texto: "Ir a Contacto", url: "/contacto" };
+      sugerencias = [
+        "¿Cómo garantizan la discreción de mi entrega?",
+        "¿Dónde está mi carrito?",
+        "¿Qué sorpresas me recomiendas hoy?"
       ];
     }
 
@@ -411,7 +472,8 @@ const procesarMensaje = async (req, res) => {
     res.json({
       respuesta: respuestaTexto,
       productos: productosRecomendados,
-      sugerencias: sugerencias
+      sugerencias: sugerencias,
+      accion: accionDirecta
     });
 
   } catch (error) {

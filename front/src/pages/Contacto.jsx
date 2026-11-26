@@ -54,39 +54,75 @@ export default function Contacto() {
       theme="buzz" 
       wallpaperContent={<AndyCloudsWallpaper />}
     >
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 pt-6 sm:pt-10 pb-20 font-fredoka select-none">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-3 sm:px-6 md:px-8 pt-6 sm:pt-10 pb-20 font-fredoka select-none">
         
         {/* =========================================================================
-            TERMINAL PRINCIPAL DE COMUNICACIÓN (COMANDO ESTELAR / BUZZ LIGHTYEAR)
-            Diseño de consola aeroespacial con esquinas suaves, bisel lila y fondo glass
+            CHASIS PRINCIPAL DE LA CONSOLA ESPACIAL (GRIS CLARO CON REMACHES Y BOTONES)
             ========================================================================= */}
-        <div className="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-[0_25px_70px_rgba(139,92,246,0.18)] border-2 border-purple-200/80 p-5 sm:p-8 md:p-12 animate-in fade-in zoom-in-95 duration-300">
+        <div className="bg-[#f1f5f9] rounded-[2.5rem] shadow-[0_25px_60px_rgba(30,58,138,0.2)] border-4 border-slate-300 p-5 sm:p-8 md:p-12 relative animate-in fade-in zoom-in-95 duration-300">
+          
+          {/* Remaches decorativos en las 4 esquinas del chasis */}
+          <div className="absolute top-4 left-4 w-4 h-4 rounded-full bg-slate-300 border border-slate-400 shadow-inner flex items-center justify-center">
+            <div className="w-2.5 h-[1.5px] bg-slate-500 rotate-45"></div>
+          </div>
+          <div className="absolute top-4 right-4 w-4 h-4 rounded-full bg-slate-300 border border-slate-400 shadow-inner flex items-center justify-center">
+            <div className="w-2.5 h-[1.5px] bg-slate-500 -rotate-45"></div>
+          </div>
+          <div className="absolute bottom-4 left-4 w-4 h-4 rounded-full bg-slate-300 border border-slate-400 shadow-inner flex items-center justify-center">
+            <div className="w-2.5 h-[1.5px] bg-slate-500 -rotate-45"></div>
+          </div>
+          <div className="absolute bottom-4 right-4 w-4 h-4 rounded-full bg-slate-300 border border-slate-400 shadow-inner flex items-center justify-center">
+            <div className="w-2.5 h-[1.5px] bg-slate-500 rotate-45"></div>
+          </div>
+
+          {/* BARRA SUPERIOR DE LA CONSOLA (LEDS INDICADORES Y DIAL DE CONTROL) */}
+          <div className="bg-slate-200/90 rounded-2xl p-3 sm:p-4 border-2 border-slate-300 mb-8 sm:mb-12 flex flex-wrap items-center justify-between gap-3 shadow-inner">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 border border-slate-300 shadow-2xs">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-700">COMANDO ONLINE</span>
+              </div>
+              <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 border border-slate-300 shadow-2xs">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#00AEEF]"></span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-700">ENLACE CIFRADO</span>
+              </div>
+              <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 border border-slate-300 shadow-2xs">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-700">DISCRECIÓN 100%</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-slate-500 text-xs font-black uppercase tracking-widest">
+              <span>CONSOLA DE MANDO INTERGALÁCTICO • TOY STORE</span>
+            </div>
+          </div>
           
           {/* CABECERA HERO: COMANDO ESTELAR */}
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs font-black tracking-widest uppercase mb-4 shadow-2xs">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border-2 border-[#a6d4f2] text-[#1e3a8a] text-xs font-black tracking-widest uppercase mb-4 shadow-sm">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-              <span>COMANDO ESTELAR • CANAL DE ENLACE DIRECTO</span>
+              <span>TERMINAL DE COMUNICACIÓN ABIERTA</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1e3a8a] tracking-tight uppercase leading-tight mb-3">
               Estamos aquí para acompañarte
             </h1>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto font-medium">
               Al infinito y más allá de los tabúes. Resuelve tus dudas sobre juguetes íntimos, entregas 100% ciegas y garantías con total confidencialidad y empatía.
             </p>
           </div>
 
           {/* =========================================================================
-              3 CANALES RÁPIDOS DE ENLACE DIRECTO (TARJETAS AEROESPACIALES)
+              3 MÓDULOS DE ENLACE RÁPIDO (ESTILO BOTONES FÍSICOS DE CONSOLA)
               ========================================================================= */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
             
             {/* Canal 1: WhatsApp Inmediato */}
-            <div className="bg-gradient-to-b from-purple-50/60 via-white to-purple-50/30 p-6 rounded-3xl border-2 border-purple-100 hover:border-purple-300 shadow-sm transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
+            <div className="bg-white p-6 rounded-3xl border-3 border-slate-200 hover:border-[#a6d4f2] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#a6d4f2]"></div>
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mb-4 border border-purple-200 shadow-inner group-hover:scale-105 transition-transform">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <div className="w-12 h-12 rounded-2xl bg-sky-50 text-[#1e3a8a] flex items-center justify-center mb-4 border-2 border-[#a6d4f2] shadow-inner group-hover:scale-105 transition-transform">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
                 </div>
@@ -103,22 +139,23 @@ export default function Contacto() {
                 href="https://wa.me/573000000000" 
                 target="_blank" 
                 rel="noreferrer"
-                className="w-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-black py-3 px-4 rounded-2xl text-center text-xs uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 block cursor-pointer"
+                className="w-full bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-black py-3 px-4 rounded-2xl text-center text-xs uppercase tracking-wider transition-all duration-200 shadow-sm hover:shadow active:scale-95 block cursor-pointer"
               >
                 Chatear con Especialista
               </a>
             </div>
 
             {/* Canal 2: Empaque 100% Ciego & Discreción */}
-            <div className="bg-gradient-to-b from-sky-50/60 via-white to-sky-50/30 p-6 rounded-3xl border-2 border-sky-100 hover:border-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
+            <div className="bg-white p-6 rounded-3xl border-3 border-slate-200 hover:border-[#a6d4f2] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-emerald-400"></div>
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-sky-100 text-[#1e3a8a] flex items-center justify-center mb-4 border border-sky-200 shadow-inner group-hover:scale-105 transition-transform">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-4 border-2 border-emerald-300 shadow-inner group-hover:scale-105 transition-transform">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
                 </div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">Certificado</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Certificado</span>
                   <span className="text-[11px] font-black text-slate-400 uppercase tracking-wide">Nadie sabrá qué es</span>
                 </div>
                 <h3 className="font-black text-[#1e3a8a] text-lg uppercase tracking-wide mb-2">Empaque 100% Ciego</h3>
@@ -126,21 +163,22 @@ export default function Contacto() {
                   Cajas de cartón lisas sin rótulos exteriores delatadores. Privacidad blindada desde el despacho hasta la puerta de tu casa.
                 </p>
               </div>
-              <div className="w-full py-3 px-4 rounded-2xl bg-sky-100 text-[#1e3a8a] text-center font-black text-xs uppercase tracking-wider border border-sky-200 shadow-2xs">
+              <div className="w-full py-3 px-4 rounded-2xl bg-emerald-100 text-emerald-800 text-center font-black text-xs uppercase tracking-wider border border-emerald-200 shadow-2xs">
                 Discreción Garantizada
               </div>
             </div>
 
             {/* Canal 3: Mesa de Mando Oficial (Email) */}
-            <div className="bg-gradient-to-b from-emerald-50/60 via-white to-emerald-50/30 p-6 rounded-3xl border-2 border-emerald-100 hover:border-emerald-300 shadow-sm transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
+            <div className="bg-white p-6 rounded-3xl border-3 border-slate-200 hover:border-[#a6d4f2] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#1e3a8a]"></div>
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4 border border-emerald-200 shadow-inner group-hover:scale-105 transition-transform">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-[#1e3a8a] flex items-center justify-center mb-4 border-2 border-slate-300 shadow-inner group-hover:scale-105 transition-transform">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Oficial</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 text-[#1e3a8a]">Oficial</span>
                   <span className="text-[11px] font-black text-slate-400 uppercase tracking-wide">Garantías & Órdenes</span>
                 </div>
                 <h3 className="font-black text-[#1e3a8a] text-lg uppercase tracking-wide mb-2">Mesa de Ayuda</h3>
@@ -150,7 +188,7 @@ export default function Contacto() {
               </div>
               <a 
                 href="mailto:toystorexoxo@gmail.com"
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 px-4 rounded-2xl text-center text-xs uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 block truncate cursor-pointer"
+                className="w-full bg-[#1e3a8a] hover:bg-blue-900 text-white font-black py-3 px-4 rounded-2xl text-center text-xs uppercase tracking-wider transition-all duration-200 shadow-sm hover:shadow active:scale-95 block truncate cursor-pointer"
               >
                 toystorexoxo@gmail.com
               </a>
@@ -298,11 +336,11 @@ export default function Contacto() {
           {/* =========================================================================
               FORMULARIO CONFIDENCIAL: CONSOLA DE TRANSMISIÓN DE MENSAJES
               ========================================================================= */}
-          <div className="bg-slate-50/90 rounded-3xl p-6 sm:p-8 md:p-10 border-2 border-slate-200/80 mb-12 shadow-sm">
+          <div className="bg-slate-200/70 rounded-3xl p-6 sm:p-8 md:p-10 border-3 border-slate-300 mb-12 shadow-inner">
             
             <div className="max-w-xl mb-6">
-              <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-purple-100 text-purple-700 border border-purple-200 inline-block mb-2">
-                MENSAJERÍA PRIVADA
+              <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-white text-[#1e3a8a] border-2 border-[#a6d4f2] inline-block mb-2 shadow-2xs">
+                CONSOLA DE TRANSMISIÓN SEGURA
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-[#1e3a8a] uppercase tracking-tight mb-2">
                 Envíanos un mensaje confidencial
@@ -313,7 +351,7 @@ export default function Contacto() {
             </div>
 
             {enviado ? (
-              <div className="bg-emerald-50 border-2 border-emerald-300 rounded-3xl p-8 text-center animate-in zoom-in duration-300">
+              <div className="bg-emerald-50 border-3 border-emerald-300 rounded-3xl p-8 text-center animate-in zoom-in duration-300 shadow-sm">
                 <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-emerald-600 shadow-inner">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
                 </div>
@@ -323,7 +361,7 @@ export default function Contacto() {
                 </p>
                 <button 
                   onClick={() => setEnviado(false)}
-                  className="bg-[#1e3a8a] hover:bg-blue-900 text-white font-black py-3 px-6 rounded-2xl text-xs uppercase tracking-wider transition cursor-pointer shadow-md"
+                  className="bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-black py-3 px-6 rounded-2xl text-xs uppercase tracking-wider transition cursor-pointer shadow-sm active:scale-95"
                 >
                   Enviar otro mensaje
                 </button>
@@ -331,10 +369,10 @@ export default function Contacto() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 
-                {/* Selector de motivo en pastillas táctiles interactivas */}
+                {/* Selector de motivo en botones táctiles de consola */}
                 <div>
                   <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2.5">
-                    Motivo de tu consulta:
+                    Canal o motivo de tu consulta:
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {motivos.map((m) => (
@@ -344,14 +382,14 @@ export default function Contacto() {
                         onClick={() => setMotivo(m.id)}
                         className={`p-3.5 rounded-2xl text-left transition-all border-2 flex flex-col justify-center cursor-pointer ${
                           motivo === m.id
-                            ? 'bg-purple-600 text-white border-purple-700 shadow-md scale-[1.01]'
-                            : 'bg-white text-slate-800 border-slate-200 hover:border-purple-300 hover:bg-purple-50/30'
+                            ? 'bg-[#a6d4f2] text-[#1e3a8a] border-[#7dd3fc] shadow-sm scale-[1.01]'
+                            : 'bg-white text-slate-800 border-slate-300 hover:border-[#a6d4f2] hover:bg-sky-50/40'
                         }`}
                       >
                         <span className="font-black text-xs uppercase tracking-wider">
                           {m.label}
                         </span>
-                        <span className={`text-[11px] mt-0.5 ${motivo === m.id ? 'text-purple-100' : 'text-slate-500'}`}>
+                        <span className={`text-[11px] mt-0.5 ${motivo === m.id ? 'text-[#1e3a8a]/80 font-bold' : 'text-slate-500 font-medium'}`}>
                           {m.desc}
                         </span>
                       </button>
@@ -369,7 +407,7 @@ export default function Contacto() {
                       placeholder="Puedes usar tu nombre o un alias"
                       value={formData.alias}
                       onChange={(e) => setFormData({ ...formData, alias: e.target.value })}
-                      className="w-full bg-white border-2 border-slate-200 rounded-2xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:border-purple-600 transition"
+                      className="w-full bg-white border-2 border-slate-300 rounded-2xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:border-[#a6d4f2] transition shadow-inner font-medium"
                     />
                   </div>
 
@@ -383,7 +421,7 @@ export default function Contacto() {
                       placeholder="tucorreo@ejemplo.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-white border-2 border-slate-200 rounded-2xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:border-purple-600 transition"
+                      className="w-full bg-white border-2 border-slate-300 rounded-2xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:border-[#a6d4f2] transition shadow-inner font-medium"
                     />
                   </div>
                 </div>
@@ -397,7 +435,7 @@ export default function Contacto() {
                     placeholder="Solo si prefieres que te contactemos por WhatsApp"
                     value={formData.telefono}
                     onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                    className="w-full bg-white border-2 border-slate-200 rounded-2xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:border-purple-600 transition"
+                    className="w-full bg-white border-2 border-slate-300 rounded-2xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:border-[#a6d4f2] transition shadow-inner font-medium"
                   />
                 </div>
 
@@ -411,17 +449,17 @@ export default function Contacto() {
                     placeholder="Escribe tu consulta con tranquilidad, todo lo que nos compartas es 100% privado y confidencial..."
                     value={formData.mensaje}
                     onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
-                    className="w-full bg-white border-2 border-slate-200 rounded-2xl p-4 text-xs sm:text-sm focus:outline-none focus:border-purple-600 transition resize-none"
+                    className="w-full bg-white border-2 border-slate-300 rounded-2xl p-4 text-xs sm:text-sm focus:outline-none focus:border-[#a6d4f2] transition resize-none shadow-inner font-medium"
                   ></textarea>
                 </div>
 
-                <div className="flex items-start gap-2.5 bg-white p-3.5 rounded-2xl border border-slate-200">
+                <div className="flex items-start gap-2.5 bg-white p-3.5 rounded-2xl border-2 border-slate-300 shadow-2xs">
                   <input 
                     type="checkbox" 
                     id="confidencialidad"
                     checked={formData.confidencial}
                     onChange={(e) => setFormData({ ...formData, confidencial: e.target.checked })}
-                    className="w-4 h-4 mt-0.5 rounded text-purple-600 focus:ring-purple-300 cursor-pointer"
+                    className="w-4 h-4 mt-0.5 rounded text-[#1e3a8a] focus:ring-[#a6d4f2] cursor-pointer"
                   />
                   <label htmlFor="confidencialidad" className="text-xs text-slate-600 font-medium cursor-pointer leading-snug">
                     Acepto que mis datos sean tratados bajo estricta confidencialidad exclusivamente para responder esta consulta íntima.
@@ -430,7 +468,7 @@ export default function Contacto() {
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-black px-10 py-4 rounded-2xl text-xs uppercase tracking-widest transition-all shadow-md hover:shadow-xl active:scale-95 cursor-pointer block"
+                  className="w-full sm:w-auto bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-black px-10 py-4 rounded-2xl text-xs uppercase tracking-widest transition-all shadow-md hover:shadow-lg active:scale-95 cursor-pointer block"
                 >
                   Transmitir Mensaje al Comando
                 </button>
@@ -439,11 +477,11 @@ export default function Contacto() {
           </div>
 
           {/* =========================================================================
-              ACORDEÓN DE PREGUNTAS FRECUENTES (SEGURIDAD, PAGOS Y DISCRECIÓN)
+              BANCO DE PREGUNTAS FRECUENTES (SEGURIDAD, PAGOS Y DISCRECIÓN)
               ========================================================================= */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#1e3a8a]"></span>
               <h3 className="text-xl sm:text-2xl font-black text-[#1e3a8a] uppercase tracking-tight">
                 Preguntas Frecuentes sobre Privacidad & Envíos
               </h3>
@@ -451,18 +489,18 @@ export default function Contacto() {
 
             <div className="space-y-3">
               {faqs.map((faq, index) => (
-                <div key={index} className="border-2 border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs">
+                <div key={index} className="border-2 border-slate-300 rounded-2xl overflow-hidden bg-white shadow-2xs">
                   <button
                     onClick={() => setFaqActiva(faqActiva === index ? null : index)}
-                    className="w-full text-left px-5 py-4 flex items-center justify-between font-black text-slate-800 text-xs sm:text-sm uppercase tracking-wide hover:bg-purple-50/40 transition cursor-pointer"
+                    className="w-full text-left px-5 py-4 flex items-center justify-between font-black text-slate-800 text-xs sm:text-sm uppercase tracking-wide hover:bg-sky-50/40 transition cursor-pointer"
                   >
                     <span>{faq.pregunta}</span>
-                    <span className="text-purple-600 text-xl font-black ml-4 shrink-0">
+                    <span className="text-[#1e3a8a] text-xl font-black ml-4 shrink-0">
                       {faqActiva === index ? '−' : '+'}
                     </span>
                   </button>
                   {faqActiva === index && (
-                    <div className="px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3.5 bg-slate-50/50">
+                    <div className="px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200 pt-3.5 bg-slate-50/50 font-medium">
                       {faq.respuesta}
                     </div>
                   )}

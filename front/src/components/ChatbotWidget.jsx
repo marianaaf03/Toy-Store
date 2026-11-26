@@ -38,11 +38,11 @@ export default function ChatbotWidget() {
   );
 
   const userSuggestions = [
-    "¿Qué sorpresas me recomiendas hoy?",
+    "¿Dónde está mi carrito?",
     "¿Cómo garantizan la discreción de mi entrega?",
-    "Ideas para encender la chispa en pareja",
-    "Sensaciones intensas para disfrutar a solas",
-    "Los secretos más deseados de la tienda"
+    "¿Qué garantías y reembolsos ofrecen?",
+    "¿Qué sorpresas me recomiendas hoy?",
+    "Ideas para encender la chispa en pareja"
   ];
 
   const adminSuggestions = [
@@ -189,6 +189,7 @@ export default function ChatbotWidget() {
         sender: 'bot',
         text: data.respuesta || "Aquí estoy para acompañarte en tu aventura.",
         productos: data.productos || [],
+        accion: data.accion || null,
         sugerencias: data.sugerencias || (esAdmin ? adminSuggestions : userSuggestions),
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
@@ -299,13 +300,32 @@ export default function ChatbotWidget() {
                     {msg.timestamp}
                   </span>
 
+                  {/* BOTÓN DE ACCIÓN RÁPIDA (EJ: IR AL CARRITO, CONTACTO, GUÍA) */}
+                  {msg.accion && (
+                    <div className="mt-2.5 pl-9 w-full">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleCloseChat();
+                          navigate(msg.accion.url);
+                        }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e3a8a] hover:bg-blue-900 text-white text-xs font-black uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer"
+                      >
+                        <span>{msg.accion.texto}</span>
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                      </button>
+                    </div>
+                  )}
+
                   {/* TARJETAS DE PRODUCTOS RECOMENDADOS */}
                   {msg.productos && msg.productos.length > 0 && (
                     <div className="mt-3 w-full grid grid-cols-1 gap-2.5 pl-9">
                       {msg.productos.map((prod) => (
                         <div 
                           key={prod.id} 
-                          className="bg-white border-2 border-sky-200 rounded-xl p-2.5 flex items-center gap-3 shadow-sm hover:shadow-md transition-all hover:border-yellow-400 group"
+                          className="bg-white border-2 border-sky-200 rounded-xl p-2.5 flex items-center gap-3 shadow-sm hover:shadow-md transition-all hover:border-[#a6d4f2] group"
                         >
                           <img 
                             src={getProductImage(prod)} 
@@ -341,7 +361,7 @@ export default function ChatbotWidget() {
                               handleCloseChat();
                               navigate(`/tienda?cat=${prod.categoria || 'todos'}`);
                             }}
-                            className="px-2.5 py-1.5 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold text-xs rounded-lg transition-all shadow-sm flex-shrink-0"
+                            className="px-3 py-1.5 bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-black text-xs rounded-lg transition-all shadow-xs flex-shrink-0 cursor-pointer"
                           >
                             Ver
                           </button>

@@ -1,81 +1,16 @@
 import React from 'react';
 
-// 10 temas de color pastel vibrantes para que las cajas NUNCA repitan colores contiguos
-const BOX_PALETTE = [
-  {
-    headerBg: 'bg-[#ffb6c1]',      // 1. Rosa Fresa Pastel
-    borderColor: 'border-[#ff8da1]',
-    textColor: 'text-[#e11d48]',
-    ribbonColor: '#f43f5e',
-    windowBg: 'from-pink-50 via-rose-50/50 to-white'
-  },
-  {
-    headerBg: 'bg-[#e9d5ff]',      // 2. Lavanda Ensueño
-    borderColor: 'border-[#c084fc]',
-    textColor: 'text-[#7e22ce]',
-    ribbonColor: '#a855f7',
-    windowBg: 'from-purple-50 via-fuchsia-50/50 to-white'
-  },
-  {
-    headerBg: 'bg-[#bae6fd]',      // 3. Azul Cielo Pastel
-    borderColor: 'border-[#38bdf8]',
-    textColor: 'text-[#0369a1]',
-    ribbonColor: '#0284c7',
-    windowBg: 'from-sky-50 via-blue-50/50 to-white'
-  },
-  {
-    headerBg: 'bg-[#bbf7d0]',      // 4. Menta Juguetero
-    borderColor: 'border-[#4ade80]',
-    textColor: 'text-[#15803d]',
-    ribbonColor: '#22c55e',
-    windowBg: 'from-emerald-50 via-teal-50/50 to-white'
-  },
-  {
-    headerBg: 'bg-[#fef08a]',      // 5. Amarillo Sol Pastel
-    borderColor: 'border-[#facc15]',
-    textColor: 'text-[#b45309]',
-    ribbonColor: '#eab308',
-    windowBg: 'from-amber-50 via-yellow-50/50 to-white'
-  },
-  {
-    headerBg: 'bg-[#fed7aa]',      // 6. Melocotón Suave
-    borderColor: 'border-[#fb923c]',
-    textColor: 'text-[#c2410c]',
-    ribbonColor: '#f97316',
-    windowBg: 'from-orange-50 via-amber-50/50 to-white'
-  },
-  {
-    headerBg: 'bg-[#fbcfe8]',      // 7. Algodón de Azúcar Fucsia
-    borderColor: 'border-[#f472b6]',
-    textColor: 'text-[#be185d]',
-    ribbonColor: '#db2777',
-    windowBg: 'from-pink-50 via-rose-50/40 to-white'
-  },
-  {
-    headerBg: 'bg-[#99f6e4]',      // 8. Turquesa Océano
-    borderColor: 'border-[#2dd4bf]',
-    textColor: 'text-[#0f766e]',
-    ribbonColor: '#0d9488',
-    windowBg: 'from-teal-50 via-cyan-50/50 to-white'
-  },
-  {
-    headerBg: 'bg-[#ddd6fe]',      // 9. Lila Dulce
-    borderColor: 'border-[#a78bfa]',
-    textColor: 'text-[#6d28d9]',
-    ribbonColor: '#7c3aed',
-    windowBg: 'from-indigo-50 via-violet-50/50 to-white'
-  },
-  {
-    headerBg: 'bg-[#ffedd5]',      // 10. Albaricoque Cálido
-    borderColor: 'border-[#fdba74]',
-    textColor: 'text-[#9a3412]',
-    ribbonColor: '#ea580c',
-    windowBg: 'from-amber-50 via-orange-50/50 to-white'
-  }
-];
+// Paleta uniforme y elegante Toy Store: cajas con acabado celeste cielo y blanco impecable
+const UNIFORM_BOX_THEME = {
+  headerBg: 'bg-[#bae6fd]',      // Azul Cielo Pastel Toy Store
+  borderColor: 'border-[#7dd3fc]',
+  textColor: 'text-[#0369a1]',
+  ribbonColor: '#0284c7',
+  windowBg: 'from-sky-50/70 via-white to-sky-50/40'
+};
 
-function getBoxTheme(index = 0) {
-  return BOX_PALETTE[Math.abs(index) % BOX_PALETTE.length];
+function getBoxTheme() {
+  return UNIFORM_BOX_THEME;
 }
 
 // Renderizador del juguete dentro de la ventana del paquete sorpresa con figuras GRANDES y VISIBLES

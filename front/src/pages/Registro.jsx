@@ -283,8 +283,8 @@ export default function Registro() {
           <button
             type="submit"
             disabled={cargando}
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-800
-                       font-bold py-3 rounded-xl transition text-lg shadow-md disabled:opacity-50"
+            className="w-full bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a]
+                       font-black py-3 rounded-xl transition text-lg shadow-sm disabled:opacity-50 active:scale-95 cursor-pointer"
           >
             {cargando ? "Creando cuenta..." : "Crear cuenta"}
           </button>

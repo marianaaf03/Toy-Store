@@ -234,8 +234,8 @@ export default function Login() {
             id="btn-login-submit"
             type="submit"
             disabled={cargando}
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-800
-                       font-bold py-3 rounded-xl transition text-lg mb-4 shadow-md"
+            className="w-full bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a]
+                       font-black py-3 rounded-xl transition text-lg mb-4 shadow-sm active:scale-95 cursor-pointer"
           >
             {cargando ? "Entrando..." : "Entrar"}
           </button>
