@@ -132,7 +132,7 @@ export default function Guia() {
                 </div>
 
                 {/* ALMOHADILLA PRINCIPAL (CUERPO ANCHO DE LA HUELLA CON MARGEN EXTRA GRUESO TIPO PELAJE) */}
-                <div className="w-full bg-white/95 backdrop-blur-md rounded-[3.2rem] border-[12px] sm:border-[14px] border-[#db2777] shadow-[0_24px_50px_rgba(225,29,72,0.2)] ring-4 ring-[#be185d]/20 p-7 sm:p-9 pt-10 sm:pt-12 relative z-10 flex flex-col justify-between transition-all duration-300 group-hover:shadow-[0_28px_60px_rgba(225,29,72,0.3)] group-hover:border-[#be185d]">
+                <div className="w-full bg-white/95 backdrop-blur-md rounded-[2.4rem] sm:rounded-[3.2rem] border-[8px] sm:border-[14px] border-[#db2777] shadow-[0_24px_50px_rgba(225,29,72,0.2)] ring-2 sm:ring-4 ring-[#be185d]/20 p-5 sm:p-9 pt-8 sm:pt-12 relative z-10 flex flex-col justify-between transition-all duration-300 group-hover:shadow-[0_28px_60px_rgba(225,29,72,0.3)] group-hover:border-[#be185d]">
 
                   {/* Cabecera de la Huella */}
                   <div className="border-b border-rose-100 pb-4 mb-4 text-center">

@@ -479,11 +479,11 @@ export default function Inicio() {
         <div className={`flex flex-col flex-1 transition-all duration-1000 ${(!ageVerifiedGlobal && !usuario && !isLoggedInHint) ? 'blur-2xl pointer-events-none scale-110 grayscale' : 'blur-0 opacity-100 scale-100 grayscale-0'}`}>
 
           {/* --- HABITACIÓN DE ANDY --- */}
-          <main className="flex-1 flex flex-col items-center justify-start py-10 px-6 relative">
-            <div className="w-full max-w-2xl mt-44 z-30 relative group px-6 mx-auto">
-              <div className="relative bg-[#fdfaf6] border-[8px] border-white rounded-t-[100px] rounded-b-xl shadow-[15px_15px_40px_rgba(0,0,0,0.08),inset_0_0_15px_rgba(0,0,0,0.03)] overflow-hidden min-h-[500px] flex flex-col border-b-[12px]">
-                <div className="h-24 w-full flex items-center justify-center bg-white/50 border-b-2 border-white">
-                  <div className="px-6 py-1 border-2 border-blue-900/10 rounded-full">
+          <main className="flex-1 flex flex-col items-center justify-start py-8 sm:py-10 px-3 sm:px-6 relative">
+            <div className="w-full max-w-2xl mt-32 sm:mt-36 md:mt-44 z-30 relative group px-2 sm:px-6 mx-auto">
+              <div className="relative bg-[#fdfaf6] border-[6px] sm:border-[8px] border-white rounded-t-[80px] sm:rounded-t-[100px] rounded-b-xl shadow-[15px_15px_40px_rgba(0,0,0,0.08),inset_0_0_15px_rgba(0,0,0,0.03)] overflow-hidden min-h-[460px] sm:min-h-[500px] flex flex-col border-b-[10px] sm:border-b-[12px]">
+                <div className="h-20 sm:h-24 w-full flex items-center justify-center bg-white/50 border-b-2 border-white">
+                  <div className="px-4 sm:px-6 py-1 border-2 border-blue-900/10 rounded-full">
                     <span className="text-[10px] font-black text-blue-900 tracking-[5px] uppercase opacity-40">COLECCIÓN PENSADA EN TI</span>
                   </div>
                 </div>
@@ -491,16 +491,16 @@ export default function Inicio() {
                   { items: [{ name: "Vibradores", icon: "🍆", img: "/images/vibrador_cowgirl.png", cat: "vibradores", color: "hover:drop-shadow-[0_0_15px_rgba(147,51,234,0.3)]" }, { name: "Lencerias", icon: "👙", img: "/images/lenceria_andy.png", cat: "lencerias", color: "hover:drop-shadow-[0_0_15px_rgba(236,72,153,0.3)]" }] },
                   { items: [{ name: "Anales", icon: "🍑", img: "/images/plug_anal.png", cat: "anales", color: "hover:drop-shadow-[0_0_15px_rgba(249,115,22,0.3)]" }, { name: "Kits", icon: "📦", img: "/images/mystery_box.png", cat: "kits", color: "hover:drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]" }] }
                 ].map((shelf, sIdx) => (
-                  <div key={sIdx} className="relative w-full h-[280px] md:h-[320px] flex flex-col justify-end pb-8 group/shelf border-b border-white last:border-b-0">
+                  <div key={sIdx} className="relative w-full h-[260px] sm:h-[280px] md:h-[320px] flex flex-col justify-end pb-8 group/shelf border-b border-white last:border-b-0">
                     <div className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-black/5 to-transparent pointer-events-none"></div>
-                    <div className="flex justify-around items-end px-10 relative z-10 mb-2">
+                    <div className="flex justify-around items-end px-4 sm:px-10 relative z-10 mb-2">
                       {shelf.items.map((item, iIdx) => (
                         <div key={iIdx} className="flex flex-col items-center group/toy cursor-pointer transition-all duration-500 hover:scale-105" onClick={() => !usuario ? setShowLoginPrompt(true) : navigate(`/tienda?cat=${item.cat}`)}>
-                          <div className={`relative transition-all duration-700 ${item.color} flex flex-col items-center justify-end h-40 md:h-52`}>
+                          <div className={`relative transition-all duration-700 ${item.color} flex flex-col items-center justify-end h-36 sm:h-40 md:h-52`}>
                             {item.img ? (
-                              <img src={item.img} alt={item.name} className="w-32 md:w-56 h-full object-contain drop-shadow-xl sticker-bounce" />
+                              <img src={item.img} alt={item.name} className="w-28 sm:w-36 md:w-56 h-full object-contain drop-shadow-xl sticker-bounce" />
                             ) : (
-                              <span className="text-7xl md:text-[10rem] leading-none drop-shadow-lg sticker-bounce block">{item.icon}</span>
+                              <span className="text-6xl sm:text-7xl md:text-[10rem] leading-none drop-shadow-lg sticker-bounce block">{item.icon}</span>
                             )}
                             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-black/10 blur-md rounded-full opacity-40"></div>
                           </div>

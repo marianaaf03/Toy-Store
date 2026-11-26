@@ -17,21 +17,45 @@ const CheckeredStripe = () => (
   />
 );
 
-// Lluvia de rodajas de pizza flotando y cayendo desde el cielo con transparencia sutil
-const RAINING_PIZZAS = [
-  { id: 1, left: '5%', size: 'w-10 sm:w-12', duration: '9s', delay: '0s', opacity: 0.32 },
-  { id: 2, left: '14%', size: 'w-8 sm:w-9', duration: '12s', delay: '3s', opacity: 0.25 },
-  { id: 3, left: '23%', size: 'w-11 sm:w-13', duration: '10s', delay: '1s', opacity: 0.30 },
-  { id: 4, left: '35%', size: 'w-9 sm:w-10', duration: '14s', delay: '5s', opacity: 0.24 },
-  { id: 5, left: '46%', size: 'w-12 sm:w-14', duration: '11s', delay: '2s', opacity: 0.28 },
-  { id: 6, left: '57%', size: 'w-8 sm:w-10', duration: '13s', delay: '6s', opacity: 0.22 },
-  { id: 7, left: '68%', size: 'w-11 sm:w-13', duration: '9.5s', delay: '0.5s', opacity: 0.33 },
-  { id: 8, left: '79%', size: 'w-9 sm:w-11', duration: '15s', delay: '4s', opacity: 0.26 },
-  { id: 9, left: '89%', size: 'w-10 sm:w-12', duration: '11.5s', delay: '2.5s', opacity: 0.29 },
-  { id: 10, left: '10%', size: 'w-11 sm:w-13', duration: '13.5s', delay: '7s', opacity: 0.25 },
-  { id: 11, left: '62%', size: 'w-10 sm:w-12', duration: '10.5s', delay: '4.5s', opacity: 0.30 },
-  { id: 12, left: '94%', size: 'w-8 sm:w-9', duration: '14.5s', delay: '8s', opacity: 0.22 },
-];
+// Elementos 3D del piso de Pizza Planet: Alien a la izquierda, Alfombra en el centro (solo en madera), Arcade a la derecha
+const AlienArcadeFloorElements = () => (
+  <div className="max-w-7xl mx-auto relative w-full h-0 pointer-events-auto">
+    {/* ALIEN A LA IZQUIERDA: AL RAS DEL INICIO DEL SUELO CON ANIMACIÓN SALTANDO */}
+    <div className="absolute left-2 sm:left-4 md:left-8 lg:left-14 xl:left-20 bottom-[-10px] z-30 pointer-events-auto flex flex-col items-center">
+      <div className="relative flex flex-col items-center">
+        <img
+          src="/images/aliencito.png"
+          alt="Aliencito saltando en Pizza Planet"
+          className="w-20 sm:w-28 md:w-36 lg:w-44 xl:w-52 h-auto object-contain animate-alien-jump drop-shadow-[0_18px_22px_rgba(0,0,0,0.65)] select-none"
+        />
+        {/* Sombra de contacto sincronizada con el salto en el suelo */}
+        <div className="w-16 sm:w-22 md:w-30 lg:w-36 h-3 sm:h-4 bg-black/60 blur-md rounded-full -mt-1.5 sm:-mt-2 animate-alien-shadow pointer-events-none"></div>
+      </div>
+    </div>
+
+    {/* ALFOMBRA RETRO EN EL CENTRO: ESTRICTAMENTE EN EL SUELO DE MADERA, NUNCA INVADE LA PARED BLANCA */}
+    <div className="absolute left-1/2 -translate-x-1/2 top-4 sm:top-6 md:top-8 z-10 pointer-events-none flex justify-center items-center">
+      <img
+        src="/images/alfombra_retroo.png"
+        alt="Alfombra Retro Pizza Planet en el suelo"
+        className="w-[84vw] sm:w-[76vw] md:w-[70vw] lg:w-[64vw] xl:w-[58vw] max-w-[300px] sm:max-w-[460px] md:max-w-[620px] lg:max-w-[760px] xl:max-w-[880px] h-auto object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.65)] select-none"
+      />
+    </div>
+
+    {/* ARCADE A LA DERECHA: AL RAS DEL INICIO DEL SUELO, MÁS GRANDE Y CONECTANDO CON EL TAPIZ */}
+    <div className="absolute right-1 sm:right-2 md:right-4 lg:right-8 xl:right-12 bottom-[-16px] z-30 pointer-events-auto">
+      <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
+        <img
+          src="/images/maquina_aliens.png"
+          alt="Máquina de Marcianitos Pizza Planet"
+          className="w-36 sm:w-48 md:w-60 lg:w-72 xl:w-80 2xl:w-[390px] h-auto object-contain drop-shadow-[0_25px_55px_rgba(0,0,0,0.85)]"
+        />
+        {/* Sombra de contacto profunda al ras del inicio del suelo */}
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-4 sm:h-5 bg-black/80 blur-lg rounded-full pointer-events-none"></div>
+      </div>
+    </div>
+  </div>
+);
 
 export default function Explora() {
   const navigate = useNavigate();
@@ -236,21 +260,9 @@ export default function Explora() {
       theme="aliens"
       wallpaperContent={<AndyCloudsWallpaper />}
       hideFloorToys={true}
+      customFloorElements={<AlienArcadeFloorElements />}
     >
       <style>{`
-        @keyframes rainPizzaAnim {
-          0% {
-            transform: translateY(-90px) rotate(0deg);
-          }
-          100% {
-            transform: translateY(115vh) rotate(360deg);
-          }
-        }
-        .animate-pizza-fall {
-          animation-name: rainPizzaAnim;
-          animation-timing-function: linear;
-          animation-iteration-count: infinite;
-        }
         @keyframes pulseRedButton {
           0%, 100% {
             box-shadow: 0 0 20px rgba(229, 37, 33, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.35);
@@ -328,31 +340,6 @@ export default function Explora() {
           animation: alienShadowScale 1.7s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
         }
       `}</style>
-
-      {/* =========================================================================
-          EFECTO ESPECIAL: LLUVIA DE RODAJAS DE PIZZA CAYENDO DESDE EL TECHO
-          Con transparencia sutil para ambientar sin saturar la lectura
-          ========================================================================= */}
-      <div className="fixed inset-0 pointer-events-none z-[5] overflow-hidden">
-        {RAINING_PIZZAS.map((p) => (
-          <div
-            key={p.id}
-            className={`absolute top-0 animate-pizza-fall select-none ${p.size}`}
-            style={{
-              left: p.left,
-              animationDuration: p.duration,
-              animationDelay: p.delay,
-              opacity: p.opacity
-            }}
-          >
-            <img
-              src="/images/rodaja_pizza.png"
-              alt="Rodaja de Pizza Planet"
-              className="w-full h-auto object-contain filter drop-shadow-xs"
-            />
-          </div>
-        ))}
-      </div>
 
       {/* =========================================================================
           CONTENEDOR PRINCIPAL: PARED, CARTEL, POSTERS, FLECHA Y BOTÓN
@@ -496,62 +483,22 @@ export default function Explora() {
         </div>
 
         {/* POSTERS EN PANTALLAS MÓVILES (SIN CINTA ADHESIVA, BAJADOS Y PROPORCIONADOS) */}
-        <div className="lg:hidden w-full flex items-center justify-around gap-3 mt-4 px-2 max-w-lg">
+        <div className="lg:hidden w-full flex items-center justify-around gap-2 mt-4 px-2 max-w-lg">
           <div className="relative rotate-2 shrink-0">
-            <img src="/images/poster_retro2.png" alt="Poster Retro 2" className="w-24 sm:w-32 h-auto object-contain rounded-md drop-shadow-md" />
+            <img src="/images/poster_retro2.png" alt="Poster Retro 2" className="w-20 sm:w-26 md:w-30 h-auto object-contain rounded-md drop-shadow-md" />
           </div>
           <div className="relative -rotate-2 shrink-0">
-            <img src="/images/poster_retro3.jpg" onError={(e) => { e.target.src = '/images/poster_retro3.png'; }} alt="Poster Pizza" className="w-24 sm:w-30 h-auto object-contain rounded-md drop-shadow-md" />
+            <img src="/images/poster_retro3.jpg" onError={(e) => { e.target.src = '/images/poster_retro3.png'; }} alt="Poster Pizza" className="w-20 sm:w-24 md:w-28 h-auto object-contain rounded-md drop-shadow-md" />
           </div>
           <div className="relative rotate-1 shrink-0">
-            <img src="/images/poster_retro.png" alt="Poster Retro 1" className="w-24 sm:w-32 h-auto object-contain rounded-md drop-shadow-md" />
+            <img src="/images/poster_retro.png" alt="Poster Retro 1" className="w-20 sm:w-26 md:w-30 h-auto object-contain rounded-md drop-shadow-md" />
           </div>
         </div>
 
       </div>
 
-      {/* =========================================================================
-          ZONA SUELO DE MADERA: ALFOMBRA EXTENDIDA EN EL SUELO, ALIEN Y ARCADE MÁS ARRIBA
-          Totalmente responsivo y adaptado para móvil, tablet y pantallas grandes
-          ========================================================================= */}
-      <div className="relative z-10 w-full overflow-visible font-fredoka select-none mt-4 sm:mt-6 pb-12 sm:pb-16 min-h-[320px] sm:min-h-[400px] md:min-h-[480px] lg:min-h-[560px]">
-
-        {/* ALFOMBRA RETRO NUEVA (alfombra_retroo.png) EXTENDIDA EN TODO EL SUELO SIN INVASIÓN DE PARED BLANCA */}
-        <div className="w-full flex justify-center items-center px-4 sm:px-6 md:px-8 mt-10 sm:mt-14 md:mt-18 lg:mt-22 xl:mt-24 pointer-events-none">
-          <img
-            src="/images/alfombra_retroo.png"
-            alt="Alfombra Retro Pizza Planet en el suelo"
-            className="w-[88vw] sm:w-[82vw] md:w-[76vw] lg:w-[72vw] xl:w-[68vw] max-w-[340px] sm:max-w-[560px] md:max-w-[760px] lg:max-w-[960px] xl:max-w-[1150px] 2xl:max-w-[1280px] h-auto object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.7)] transition-transform duration-300 select-none"
-          />
-        </div>
-
-        {/* LADO IZQUIERDO: ALIENCITO EN EL SUELO CON ANIMACIÓN SALTANDO (MÁS ARRIBA) */}
-        <div className="absolute left-2 sm:left-4 md:left-8 lg:left-14 xl:left-20 bottom-16 sm:bottom-22 md:bottom-30 lg:bottom-38 xl:bottom-44 z-20 pointer-events-none flex flex-col items-center">
-          <div className="relative flex flex-col items-center">
-            <img
-              src="/images/aliencito.png"
-              alt="Aliencito saltando en el suelo de Pizza Planet"
-              className="w-24 sm:w-32 md:w-40 lg:w-48 xl:w-56 h-auto object-contain animate-alien-jump drop-shadow-[0_18px_22px_rgba(0,0,0,0.65)] select-none"
-            />
-            {/* Sombra de contacto sincronizada con el salto en el suelo */}
-            <div className="w-20 sm:w-26 md:w-34 lg:w-40 h-3 sm:h-4 bg-black/60 blur-md rounded-full -mt-1.5 sm:-mt-2 animate-alien-shadow pointer-events-none"></div>
-          </div>
-        </div>
-
-        {/* LADO DERECHO: MÁQUINA DE ARCADE EN EL SUELO (MÁS ARRIBA Y COMPLETA) */}
-        <div className="absolute right-0 sm:right-2 md:right-4 lg:right-6 xl:right-10 bottom-8 sm:bottom-12 md:bottom-18 lg:bottom-24 xl:bottom-28 z-20 pointer-events-auto">
-          <div className="relative group transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
-            <img
-              src="/images/maquina_aliens.png"
-              alt="Máquina de Marcianitos Pizza Planet"
-              className="w-36 sm:w-48 md:w-64 lg:w-80 xl:w-[420px] 2xl:w-[460px] h-auto object-contain drop-shadow-[0_25px_55px_rgba(0,0,0,0.85)]"
-            />
-            {/* Sombra de contacto profunda al ras del inicio del suelo */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-4 sm:h-5 bg-black/80 blur-lg rounded-full pointer-events-none"></div>
-          </div>
-        </div>
-
-      </div>
+      {/* Espaciador transparente para respirar el diorama del suelo */}
+      <div className="w-full h-[360px] sm:h-[420px] md:h-[480px] pointer-events-none"></div>
 
       {/* =========================================================================
           VENTANA EMERGENTE CENTRAL: QUIZZ INSPIRADO EN CAJA DE PIZZA PLANET

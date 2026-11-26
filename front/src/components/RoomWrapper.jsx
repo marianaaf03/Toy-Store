@@ -28,7 +28,8 @@ export default function RoomWrapper({
   onStarClick,
   isMinimal = false,
   hideNavbar = false,
-  hideFloorToys = false
+  hideFloorToys = false,
+  customFloorElements = null
 }) {
   const { usuario } = useContext(AuthContext);
   const location = useLocation();
@@ -136,7 +137,7 @@ export default function RoomWrapper({
   const activeBlur = isBlurred || showFilterSidebar || showPurposeSidebar;
 
   return (
-    <div className="min-h-screen relative flex flex-col overflow-hidden">
+    <div className="min-h-screen relative flex flex-col overflow-x-hidden">
       
       {/* 
       ========================================================================
@@ -185,14 +186,22 @@ export default function RoomWrapper({
                <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent"></div>
 
                {/* 🛑 ELEMENTOS 3D FUSIONADOS ESTÁTICAMENTE AL HORIZONTE DEL PISO 🛑 */}
-               {!location.pathname.startsWith('/admin') && !hideFloorToys && location.pathname !== '/tienda' && (
-                  <div className="absolute top-0 left-0 w-full h-0 z-40">
-                     <div className="max-w-7xl mx-auto relative w-full h-0 pointer-events-auto">
-                         <PixarBall />
-                         <ToyBlocks />
+               {customFloorElements ? (
+                  <div className="absolute top-0 left-0 w-full h-0 z-40 pointer-events-none">
+                     <div className="max-w-7xl mx-auto relative w-full h-0">
+                         {customFloorElements}
                      </div>
                   </div>
-                )}
+               ) : (
+                  !location.pathname.startsWith('/admin') && !hideFloorToys && location.pathname !== '/tienda' && (
+                    <div className="absolute top-0 left-0 w-full h-0 z-40">
+                       <div className="max-w-7xl mx-auto relative w-full h-0 pointer-events-auto">
+                           <PixarBall />
+                           <ToyBlocks />
+                       </div>
+                    </div>
+                  )
+               )}
             </div>
           </div>
         )}
