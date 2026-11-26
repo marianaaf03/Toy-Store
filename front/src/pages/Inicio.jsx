@@ -531,16 +531,16 @@ export default function Inicio() {
           {/* --- MODAL LOGIN REQUIRED --- */}
           {showLoginPrompt && (
             <div className="fixed inset-0 z-[998] flex items-center justify-center p-4 bg-white/20 backdrop-blur-[6px] animate-in fade-in duration-300">
-              <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full relative animate-in zoom-in-95 duration-300 border-4 border-yellow-400 z-[999]">
-                <button onClick={() => setShowLoginPrompt(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-bold">×</button>
+              <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full relative animate-in zoom-in-95 duration-300 border-4 border-[#a6d4f2] z-[999]">
+                <button onClick={() => setShowLoginPrompt(false)} className="absolute top-4 right-4 text-gray-400 hover:text-[#1e3a8a] text-2xl font-bold transition">×</button>
                 <div className="text-center mb-6">
                   <ToyStoreLogo scale={0.7} variant="new" />
-                  <h3 className="text-2xl font-black text-blue-900 uppercase -mt-4">¡Únete a la Diversión!</h3>
-                  <p className="text-gray-500 text-sm mt-2">Para ver el catálogo completo necesitas una cuenta.</p>
+                  <h3 className="text-2xl font-black text-[#1e3a8a] uppercase -mt-4">¡Únete a la Diversión!</h3>
+                  <p className="text-gray-500 text-sm mt-2 font-medium">Para ver el catálogo completo necesitas una cuenta.</p>
                 </div>
-                <div className="flex flex-col gap-3">
-                  <button onClick={() => navigate('/login')} className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-3 rounded-xl transition shadow-md">INICIAR SESIÓN</button>
-                  <button onClick={() => navigate('/registro')} className="w-full bg-sky-100 hover:bg-sky-200 text-sky-700 font-bold py-3 rounded-xl transition">REGISTRARSE</button>
+                <div className="flex flex-col gap-3 font-fredoka">
+                  <button onClick={() => navigate('/login')} className="w-full bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-bold py-3 rounded-xl transition shadow-xs active:scale-95">INICIAR SESIÓN</button>
+                  <button onClick={() => navigate('/registro')} className="w-full bg-white hover:bg-sky-50 text-[#1e3a8a] border-2 border-[#a6d4f2] font-bold py-3 rounded-xl transition shadow-xs active:scale-95">REGISTRARSE</button>
                 </div>
               </div>
             </div>

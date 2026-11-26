@@ -108,6 +108,21 @@ const registro = async (req, res) => {
     const [newUsers] = await db.query('SELECT * FROM usuarios WHERE id_usuario = ?', [insertResult.insertId]);
     const nuevoUsuario = newUsers[0];
 
+    // Notificar a administradores sobre el nuevo registro
+    try {
+      const [admins] = await db.query('SELECT id_usuario FROM usuarios WHERE id_rol = 1');
+      for (const admin of admins) {
+        if (admin.id_usuario !== insertResult.insertId) {
+          await db.query(
+            'INSERT INTO notificaciones (id_usuario, id_remitente, tipo, texto, leido) VALUES (?, ?, ?, ?, 0)',
+            [admin.id_usuario, insertResult.insertId, 'registro', `${nombre} (@${usernameFinal}) se ha registrado en Toy Store`, 0]
+          );
+        }
+      }
+    } catch (notifErr) {
+      console.error('Aviso: No se pudo generar notificación de registro para admin:', notifErr.message);
+    }
+
     // Iniciar sesión automáticamente tras el registro
     const token = jwt.sign(
       { id: nuevoUsuario.id_usuario, email: nuevoUsuario.email, rol: nuevoUsuario.id_rol },
@@ -898,10 +913,4 @@ module.exports = {
   marcarNotificacionesLeidas,
   toggleGuardado,
   getMisGuardados
-};
-  checkUsernameAvailability,
-  getPerfilUsuario,
-  seguirUsuario,
-  getNotificaciones,
-  marcarNotificacionesLeidas
 };

@@ -26,6 +26,13 @@ export default function PerfilPublico() {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showConfesionesDrawer, setShowConfesionesDrawer] = useState(false);
   const [showConfigSoporteDrawer, setShowConfigSoporteDrawer] = useState(false);
+  const [hasUnreadNotif, setHasUnreadNotif] = useState(() => {
+    try {
+      return localStorage.getItem('toy_notif_unread') !== 'false';
+    } catch {
+      return false;
+    }
+  });
 
   const shareModalRef = useRef(null);
   const userDropdownRef = useRef(null);
@@ -64,13 +71,26 @@ export default function PerfilPublico() {
       });
   }, [username]);
 
-  // Cargar usuarios de la comunidad para la lista de compartir
+  // Cargar usuarios de la comunidad para la lista de compartir y verificar notificaciones
   useEffect(() => {
     fetch('/auth/usuarios', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         if (data?.usuarios && Array.isArray(data.usuarios)) {
           setCommunityUsers(data.usuarios);
+        }
+      })
+      .catch(() => {});
+
+    fetch('/auth/notificaciones', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        if (typeof data?.unreadCount === 'number') {
+          const unread = data.unreadCount > 0;
+          setHasUnreadNotif(unread);
+          try {
+            localStorage.setItem('toy_notif_unread', unread ? 'true' : 'false');
+          } catch {}
         }
       })
       .catch(() => {});
@@ -245,13 +265,18 @@ export default function PerfilPublico() {
           {/* ICONO 5: NOTIFICACIONES */}
           <button 
             onClick={() => navigate('/configuracion')}
-            className="w-12 h-12 rounded-full hover:bg-[#a6d4f2]/30 flex items-center justify-center text-[#1e3a8a] transition-all cursor-pointer"
+            className="w-12 h-12 rounded-full hover:bg-[#a6d4f2]/30 flex items-center justify-center text-[#1e3a8a] transition-all cursor-pointer relative"
             title="Notificaciones"
           >
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-            </svg>
+            <div className="relative">
+              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              {hasUnreadNotif && (
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#E52521] ring-2 ring-white"></span>
+              )}
+            </div>
           </button>
 
           {/* ICONO 6: MENSAJES -> RINCÓN DE CONFESIONES */}
@@ -740,14 +765,17 @@ export default function PerfilPublico() {
 
                 {/* Contenido visual de la tarjeta de portada / showcase */}
                 <div className="relative flex flex-col items-center justify-center text-center p-6 w-full">
-                  <div className="relative max-w-[280px] max-h-[200px] flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                    <img 
-                      src="/images/vibrador_cowgirl.png" 
-                      alt="Showcase Toy Store" 
-                      className="max-h-[180px] object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.18)]"
-                    />
+                  <div className="relative py-6 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                    <div className="w-20 h-20 rounded-3xl bg-white/95 border-2 border-[#a6d4f2] shadow-[0_10px_25px_rgba(30,58,138,0.12)] flex items-center justify-center text-[#1e3a8a]">
+                      <svg className="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="3" ry="3" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        <circle cx="12" cy="16" r="1.5" fill="currentColor" stroke="none" />
+                        <path d="M12 17.5v2" strokeWidth="2" />
+                      </svg>
+                    </div>
                   </div>
-                  <div className="mt-5 px-5 py-2 rounded-full bg-white/85 backdrop-blur-xs text-xs font-semibold text-[#1e3a8a] shadow-xs">
+                  <div className="mt-2 px-5 py-2 rounded-full bg-white/85 backdrop-blur-xs text-xs font-semibold text-[#1e3a8a] shadow-xs">
                     Colección privada · Secretos y deseos de {perfil.nombre}
                   </div>
                 </div>

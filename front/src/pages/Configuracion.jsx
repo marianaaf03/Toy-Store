@@ -98,6 +98,13 @@ export default function Configuracion() {
         if (data?.notificaciones && Array.isArray(data.notificaciones)) {
           setRealNotifications(data.notificaciones);
         }
+        if (typeof data?.unreadCount === 'number') {
+          const hasUnread = data.unreadCount > 0;
+          setHasUnreadNotifications(hasUnread);
+          try {
+            localStorage.setItem('toy_notif_unread', hasUnread ? 'true' : 'false');
+          } catch (e) {}
+        }
       })
       .catch(() => {});
   };

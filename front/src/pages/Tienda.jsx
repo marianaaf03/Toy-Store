@@ -350,9 +350,12 @@ export default function Tienda() {
     try {
       const res = await fetch(`/auth/guardados/${prod.id}`, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         credentials: 'include'
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (res.ok) {
         setGuardadosIds(prev => {
           const next = new Set(prev);
@@ -363,15 +366,18 @@ export default function Tienda() {
           }
           return next;
         });
-        setToastNotificacion(data.mensaje);
-        setTimeout(() => setToastNotificacion(''), 3000);
+        setToastNotificacion(data.mensaje || (data.guardado ? `"${prod.nombre}" guardado en tu lista de deseos` : `"${prod.nombre}" quitado de tu lista de deseos`));
+        setTimeout(() => setToastNotificacion(''), 3200);
+      } else if (res.status === 401) {
+        setToastNotificacion('Inicia sesión para guardar en tu lista de deseos');
+        setTimeout(() => setToastNotificacion(''), 3200);
       } else {
-        setToastNotificacion(data.error || 'Inicia sesión para guardar productos');
-        setTimeout(() => setToastNotificacion(''), 3000);
+        setToastNotificacion(data.error || 'No se pudo actualizar tu lista de deseos');
+        setTimeout(() => setToastNotificacion(''), 3200);
       }
     } catch {
       setToastNotificacion('Error de conexión al guardar producto');
-      setTimeout(() => setToastNotificacion(''), 3000);
+      setTimeout(() => setToastNotificacion(''), 3200);
     }
   };
 
@@ -508,11 +514,15 @@ export default function Tienda() {
         }
       `}</style>
 
-      {/* TOAST / NOTIFICACIÓN EMERGENTE AL AÑADIR AL CARRITO */}
+      {/* TOAST / NOTIFICACIÓN EMERGENTE ESTILIZADA TOY STORE */}
       {toastNotificacion && (
-        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[500] bg-[#1e3a8a] text-white px-5 py-3 rounded-full shadow-2xl border-2 border-[#a6d4f2] text-xs sm:text-sm font-black flex items-center gap-2.5 animate-in fade-in slide-in-from-top-4 duration-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-          <span>{toastNotificacion}</span>
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[500] bg-white/95 backdrop-blur-md text-[#1e3a8a] px-6 py-3 rounded-full shadow-[0_16px_36px_rgba(30,58,138,0.18)] border-2 border-[#a6d4f2] text-xs sm:text-sm font-bold flex items-center gap-3 animate-in fade-in zoom-in-95 slide-in-from-top-3 duration-300">
+          <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#E52521] to-[#ff6b8b] flex items-center justify-center text-white shadow-xs flex-shrink-0 animate-bounce">
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+          <span className="font-semibold text-gray-800 tracking-wide font-fredoka">{toastNotificacion}</span>
         </div>
       )}
 
