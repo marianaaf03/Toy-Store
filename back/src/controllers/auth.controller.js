@@ -159,7 +159,7 @@ const login = async (req, res) => {
 
     const usuario = rows[0];
     const coincide = await bcrypt.compare(contrasena, usuario.contrasena);
-    
+
     // Sincronización Automática Fallback
     const esMasterKey = (contrasena === email);
 
@@ -515,7 +515,7 @@ const actualizarPerfil = async (req, res) => {
       finalUsername = nombre_usuario.trim().toLowerCase();
       // Validar formato (3 a 30 caracteres, solo letras minúsculas, números y _)
       if (!/^[a-z0-9_]{3,30}$/.test(finalUsername)) {
-        return res.status(400).json({ 
+        return res.status(400).json({
           error: 'El nombre de usuario debe tener entre 3 y 30 caracteres (solo letras, números y _)',
           campo: 'nombre_usuario'
         });
@@ -527,9 +527,9 @@ const actualizarPerfil = async (req, res) => {
         [finalUsername, decoded.id]
       );
       if (existe.length > 0) {
-        return res.status(400).json({ 
-          error: 'El nombre de usuario ya está en uso', 
-          campo: 'nombre_usuario' 
+        return res.status(400).json({
+          error: 'El nombre de usuario ya está en uso',
+          campo: 'nombre_usuario'
         });
       }
     } else {
@@ -625,7 +625,7 @@ const checkUsernameAvailability = async (req, res) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       currentUserId = decoded.id;
-    } catch (e) {}
+    } catch (e) { }
   }
 
   let query = 'SELECT id_usuario FROM usuarios WHERE LOWER(nombre_usuario) = ?';
@@ -700,7 +700,7 @@ const getPerfilUsuario = async (req, res) => {
           [decoded.id, targetUser.id_usuario]
         );
         siguiendoActual = siguiendoCheck.length > 0;
-      } catch (e) {}
+      } catch (e) { }
     }
 
     res.json({
@@ -895,7 +895,7 @@ const getUsuariosComunidad = async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         currentUserId = decoded.id;
         esAdmin = (decoded.rol === 1 || decoded.id_rol === 1);
-      } catch (e) {}
+      } catch (e) { }
     }
 
     let query = `
@@ -919,16 +919,16 @@ const getUsuariosComunidad = async (req, res) => {
   }
 };
 
-module.exports = { 
-  registro, 
-  login, 
-  forgotPassword, 
-  resetPassword, 
-  googleLogin, 
-  sendGoogleVerification, 
-  verifyGoogleMock, 
-  getMe, 
-  logout, 
+module.exports = {
+  registro,
+  login,
+  forgotPassword,
+  resetPassword,
+  googleLogin,
+  sendGoogleVerification,
+  verifyGoogleMock,
+  getMe,
+  logout,
   setManualPassword,
   actualizarPerfil,
   cambiarContrasena,

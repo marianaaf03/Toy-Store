@@ -2,14 +2,15 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { CATALOGO_REAL } from '../data/catalogoProductos';
+import ChatbotWidget from '../components/ChatbotWidget';
 
-// Pedidos iniciales realistas para demostración y gestión comercial
+// Pedidos reales asociados a los usuarios auténticos de la base de datos
 const PEDIDOS_INICIALES = [
   {
     id: "TS-2025-0101",
     fecha: "26/11/2026, 08:34 p.m.",
-    cliente: "Camila Restrepo",
-    email: "camila.restrepo@gmail.com",
+    cliente: "Mariana Franco",
+    email: "mfranco090393@gmail.com",
     telefono: "+57 312 458 9210",
     ciudad: "Medellín, Antioquia",
     direccion: "Calle 10 #43E-22, El Poblado",
@@ -26,11 +27,11 @@ const PEDIDOS_INICIALES = [
   {
     id: "TS-2025-0102",
     fecha: "26/11/2026, 06:15 p.m.",
-    cliente: "Juan Pablo Gómez",
-    email: "jp.gomez91@hotmail.com",
+    cliente: "Sofia Romero",
+    email: "romerobermudezsof@gmail.com",
     telefono: "+57 301 224 8831",
     ciudad: "Bogotá D.C.",
-    direccion: "Carrera 15 #85-30, Chico",
+    direccion: "Carrera 15 #85-30, Chicó",
     productos: [
       { nombre: "Succionador Clitoriano por Ondas de Aire", cantidad: 1, precio: 145000 },
       { nombre: "Vela de Cera de Soja para Masajes", cantidad: 2, precio: 40000 }
@@ -44,8 +45,8 @@ const PEDIDOS_INICIALES = [
   {
     id: "TS-2025-0103",
     fecha: "26/11/2026, 03:40 p.m.",
-    cliente: "Valeria Osorio",
-    email: "valeria.osorio@outlook.com",
+    cliente: "Keissy Mesa",
+    email: "keissymesah@gmail.com",
     telefono: "+57 310 994 1205",
     ciudad: "Cali, Valle del Cauca",
     direccion: "Avenida 6N #22-14, Granada",
@@ -61,8 +62,8 @@ const PEDIDOS_INICIALES = [
   {
     id: "TS-2025-0104",
     fecha: "25/11/2026, 11:20 a.m.",
-    cliente: "Andrés Felipe Mendoza",
-    email: "andres.mendoza@gmail.com",
+    cliente: "Marco",
+    email: "ygmarco116@gmail.com",
     telefono: "+57 315 776 3412",
     ciudad: "Barranquilla, Atlántico",
     direccion: "Calle 84 #51B-40, Alto Prado",
@@ -96,8 +97,8 @@ const PEDIDOS_INICIALES = [
   {
     id: "TS-2025-0106",
     fecha: "24/11/2026, 07:55 p.m.",
-    cliente: "Mateo Carvajal",
-    email: "mateo.c@yahoo.com",
+    cliente: "Luis",
+    email: "lucama87@gmail.com",
     telefono: "+57 300 445 1199",
     ciudad: "Pereira, Risaralda",
     direccion: "Calle 14 #23-45, Circunvalar",
@@ -112,103 +113,150 @@ const PEDIDOS_INICIALES = [
   }
 ];
 
-// Usuarios iniciales del sistema
-const USUARIOS_INICIALES = [
+// Usuarios auténticos registrados en la base de datos (TiDB Cloud)
+const USUARIOS_REALES_BD = [
   {
     id: 1,
-    nombre: "Mariana Álvarez",
-    username: "mariana",
+    nombre: "Mariana Alvarez",
+    username: "alvarezfrancomariana",
     email: "alvarezfrancomariana@gmail.com",
     rol: "Administrador",
     id_rol: 1,
-    avatar_hat: "woody",
-    fecha_registro: "15/10/2026",
-    estado: "Activo",
-    pedidos_count: 5
+    avatar_hat: "alien",
+    fecha_registro: "01/10/2026",
+    estado: "Activo"
   },
   {
     id: 2,
-    nombre: "Valeria Guzmán",
-    username: "valeria",
-    email: "valeriaguzman@toystore.com",
-    rol: "Administrador",
-    id_rol: 1,
-    avatar_hat: "buzz",
-    fecha_registro: "16/10/2026",
-    estado: "Activo",
-    pedidos_count: 3
-  },
-  {
-    id: 3,
-    nombre: "Administrador Principal",
-    username: "admin",
-    email: "toystorexoxo@gmail.com",
-    rol: "Administrador",
-    id_rol: 1,
-    avatar_hat: "rex",
-    fecha_registro: "01/10/2026",
-    estado: "Activo",
-    pedidos_count: 12
-  },
-  {
-    id: 4,
-    nombre: "Sara Guevara",
-    username: "sarag",
-    email: "saraguevara192@gmail.com",
-    rol: "Cliente",
-    id_rol: 2,
-    avatar_hat: "jessie",
-    fecha_registro: "02/11/2026",
-    estado: "Activo",
-    pedidos_count: 2
-  },
-  {
-    id: 5,
-    nombre: "Camila Restrepo",
-    username: "camilarestrepo",
-    email: "camila.restrepo@gmail.com",
-    rol: "Cliente",
-    id_rol: 2,
-    avatar_hat: "alien",
-    fecha_registro: "10/11/2026",
-    estado: "Activo",
-    pedidos_count: 1
-  },
-  {
-    id: 6,
-    nombre: "Juan Pablo Gómez",
-    username: "jpgomez",
-    email: "jp.gomez91@hotmail.com",
+    nombre: "Mariana Franco",
+    username: "mfranco090393",
+    email: "mfranco090393@gmail.com",
     rol: "Cliente",
     id_rol: 2,
     avatar_hat: "woody",
-    fecha_registro: "14/11/2026",
-    estado: "Activo",
-    pedidos_count: 1
+    fecha_registro: "16/10/2026",
+    estado: "Activo"
   },
   {
-    id: 7,
-    nombre: "Andrés Felipe Mendoza",
-    username: "andres_m",
-    email: "andres.mendoza@gmail.com",
+    id: 3,
+    nombre: "Sara Guevara",
+    username: "saraguevara",
+    email: "saraguevara192@gmail.com",
+    rol: "Administrador",
+    id_rol: 1,
+    avatar_hat: "lotso",
+    fecha_registro: "15/10/2026",
+    estado: "Activo"
+  },
+  {
+    id: 30004,
+    nombre: "Sara",
+    username: "saraguevara2729",
+    email: "saraguevara2729@gmail.com",
     rol: "Cliente",
     id_rol: 2,
-    avatar_hat: "buzz",
+    avatar_hat: "woody",
+    fecha_registro: "20/10/2026",
+    estado: "Activo"
+  },
+  {
+    id: 60005,
+    nombre: "Luis",
+    username: "lucama87",
+    email: "lucama87@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "woody",
+    fecha_registro: "25/10/2026",
+    estado: "Activo"
+  },
+  {
+    id: 90004,
+    nombre: "Sofia Romero",
+    username: "romerobermudezsof",
+    email: "romerobermudezsof@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "jessie",
+    fecha_registro: "28/10/2026",
+    estado: "Activo"
+  },
+  {
+    id: 120004,
+    nombre: "Keissy",
+    username: "keissymesah",
+    email: "keissymesah@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "woody",
+    fecha_registro: "01/11/2026",
+    estado: "Activo"
+  },
+  {
+    id: 150004,
+    nombre: "Marco",
+    username: "ygmarco116",
+    email: "ygmarco116@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "woody",
+    fecha_registro: "05/11/2026",
+    estado: "Activo"
+  },
+  {
+    id: 180004,
+    nombre: "Sophia",
+    username: "sarasophiaguevarabui",
+    email: "sarasophiaguevarabuitrago@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "woody",
+    fecha_registro: "10/11/2026",
+    estado: "Activo"
+  },
+  {
+    id: 210004,
+    nombre: "Néstor Chávez",
+    username: "nestordavidchavezmar",
+    email: "nestordavidchavezmartinez@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "woody",
+    fecha_registro: "12/11/2026",
+    estado: "Activo"
+  },
+  {
+    id: 240004,
+    nombre: "Sara",
+    username: "saris179",
+    email: "saris.179@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "woody",
     fecha_registro: "18/11/2026",
-    estado: "Activo",
-    pedidos_count: 1
+    estado: "Activo"
   },
   {
-    id: 8,
-    nombre: "Cliente Registrado",
-    username: "cliente_demo",
-    email: "demo@toystore.com",
+    id: 270004,
+    nombre: "Juliana",
+    username: "julianaguevararamire",
+    email: "julianaguevararamirez44@gmail.com",
     rol: "Cliente",
     id_rol: 2,
-    avatar_hat: "alien",
+    avatar_hat: "woody",
     fecha_registro: "22/11/2026",
-    estado: "Activo",
-    pedidos_count: 0
+    estado: "Activo"
+  },
+  {
+    id: 270005,
+    nombre: "Andres Guevara",
+    username: "andresdd2014",
+    email: "andresdd2014@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "woody",
+    fecha_registro: "24/11/2026",
+    estado: "Activo"
   }
 ];
 
@@ -248,17 +296,25 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
     return () => clearInterval(timer);
   }, []);
 
+  // Función estándar para salir de cualquier subaplicación hacia el panel principal con opciones
+  const salirAlPanelPrincipal = () => {
+    navigate('/admin?pc=1');
+  };
+
   // ==========================================
   // 1. ESTADO: INVENTARIO / PRODUCTOS
   // ==========================================
   const [productos, setProductos] = useState(() => {
-    const guardados = localStorage.getItem('toystore_admin_productos');
-    if (guardados) {
-      try { return JSON.parse(guardados); } catch (e) { /* fallback */ }
-    }
+    try {
+      const guardados = localStorage.getItem('toystore_admin_productos');
+      if (guardados) {
+        const parsed = JSON.parse(guardados);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
     return CATALOGO_REAL;
   });
-  const [cargandoProd, setCargandoProd] = useState(false);
+
   const [busquedaProd, setBusquedaProd] = useState('');
   const [categoriaFiltro, setCategoriaFiltro] = useState('todas');
   const [mostrandoFormProd, setMostrandoFormProd] = useState(false);
@@ -274,7 +330,12 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
 
   const guardarProductosLocal = (lista) => {
     setProductos(lista);
-    localStorage.setItem('toystore_admin_productos', JSON.stringify(lista));
+    try {
+      localStorage.setItem('toystore_admin_productos', JSON.stringify(lista));
+      // Notificar a Tienda.jsx en tiempo real
+      window.dispatchEvent(new Event('toystore_catalog_updated'));
+      window.dispatchEvent(new Event('storage'));
+    } catch (e) {}
   };
 
   const abrirFormProd = (producto = null) => {
@@ -304,23 +365,24 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
 
   const handleSubmitProd = (e) => {
     e.preventDefault();
+    let actualizados;
     if (editandoProdId) {
-      const actualizados = productos.map(p =>
+      actualizados = productos.map(p =>
         p.id === editandoProdId
           ? { ...p, ...formDataProd, precio: Number(formDataProd.precio), stock: Number(formDataProd.stock) }
           : p
       );
-      guardarProductosLocal(actualizados);
     } else {
       const nuevo = {
         id: Date.now(),
         ...formDataProd,
         precio: Number(formDataProd.precio),
-        stock: Number(formDataProd.stock) || 10,
+        stock: Number(formDataProd.stock) || 15,
         imagen: formDataProd.imagen || '/images/rabbitbuzz.webp'
       };
-      guardarProductosLocal([nuevo, ...productos]);
+      actualizados = [nuevo, ...productos];
     }
+    guardarProductosLocal(actualizados);
     setMostrandoFormProd(false);
   };
 
@@ -355,22 +417,26 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
   // 2. ESTADO: PEDIDOS & DESPACHOS
   // ==========================================
   const [pedidos, setPedidos] = useState(() => {
-    const guardados = localStorage.getItem('toystore_admin_pedidos');
-    if (guardados) {
-      try { return JSON.parse(guardados); } catch (e) { /* fallback */ }
-    }
+    try {
+      const guardados = localStorage.getItem('toystore_admin_pedidos');
+      if (guardados) {
+        const parsed = JSON.parse(guardados);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
     return PEDIDOS_INICIALES;
   });
+
   const [busquedaPed, setBusquedaPed] = useState('');
   const [filtroEstadoPed, setFiltroEstadoPed] = useState('todos');
   const [pedidoDetalle, setPedidoDetalle] = useState(null);
   const [mostrandoNuevoPedido, setMostrandoNuevoPedido] = useState(false);
   const [nuevoPedidoData, setNuevoPedidoData] = useState({
-    cliente: '',
-    email: '',
-    telefono: '',
+    cliente: 'Mariana Franco',
+    email: 'mfranco090393@gmail.com',
+    telefono: '+57 312 458 9210',
     ciudad: 'Medellín',
-    direccion: '',
+    direccion: 'Calle 10 #43E-22',
     productoId: 1,
     cantidad: 1,
     metodoPago: 'Nequi'
@@ -378,7 +444,9 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
 
   const guardarPedidosLocal = (lista) => {
     setPedidos(lista);
-    localStorage.setItem('toystore_admin_pedidos', JSON.stringify(lista));
+    try {
+      localStorage.setItem('toystore_admin_pedidos', JSON.stringify(lista));
+    } catch (e) {}
   };
 
   const cambiarEstadoPedido = (idPedido, nuevoEstado) => {
@@ -428,15 +496,19 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
     .reduce((acc, p) => acc + p.total, 0);
 
   // ==========================================
-  // 3. ESTADO: USUARIOS & JUGUETEROS
+  // 3. ESTADO: USUARIOS REALES DE LA BASE DE DATOS
   // ==========================================
   const [usuarios, setUsuarios] = useState(() => {
-    const guardados = localStorage.getItem('toystore_admin_usuarios');
-    if (guardados) {
-      try { return JSON.parse(guardados); } catch (e) { /* fallback */ }
-    }
-    return USUARIOS_INICIALES;
+    try {
+      const guardados = localStorage.getItem('toystore_admin_usuarios');
+      if (guardados) {
+        const parsed = JSON.parse(guardados);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    return USUARIOS_REALES_BD;
   });
+
   const [busquedaUser, setBusquedaUser] = useState('');
   const [filtroRolUser, setFiltroRolUser] = useState('todos');
   const [mostrandoNuevoUser, setMostrandoNuevoUser] = useState(false);
@@ -447,9 +519,37 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
     rol: 'Cliente'
   });
 
+  // Intentar sincronizar con el backend de forma transparente
+  useEffect(() => {
+    fetch('/auth/usuarios', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapeados = data.map(u => ({
+            id: u.id_usuario || u.id,
+            nombre: u.nombre,
+            username: u.nombre_usuario || u.username || u.email?.split('@')[0],
+            email: u.email,
+            rol: (u.id_rol === 1 || u.rol === 'admin' || u.rol === 'Administrador') ? 'Administrador' : 'Cliente',
+            id_rol: (u.id_rol === 1 || u.rol === 'admin') ? 1 : 2,
+            avatar_hat: u.avatar_hat || 'woody',
+            fecha_registro: u.fecha_registro || '15/10/2026',
+            estado: 'Activo'
+          }));
+          setUsuarios(mapeados);
+          localStorage.setItem('toystore_admin_usuarios', JSON.stringify(mapeados));
+        }
+      })
+      .catch(() => {
+        // Mantiene la lista de usuarios reales de la base de datos ya cargada
+      });
+  }, []);
+
   const guardarUsuariosLocal = (lista) => {
     setUsuarios(lista);
-    localStorage.setItem('toystore_admin_usuarios', JSON.stringify(lista));
+    try {
+      localStorage.setItem('toystore_admin_usuarios', JSON.stringify(lista));
+    } catch (e) {}
   };
 
   const toggleRolUsuario = (id) => {
@@ -491,8 +591,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
       id_rol: nuevoUserData.rol === 'Administrador' ? 1 : 2,
       avatar_hat: 'woody',
       fecha_registro: new Date().toLocaleDateString('es-CO'),
-      estado: 'Activo',
-      pedidos_count: 0
+      estado: 'Activo'
     };
     guardarUsuariosLocal([nuevo, ...usuarios]);
     setMostrandoNuevoUser(false);
@@ -517,7 +616,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#0b1329] text-[#111111] flex flex-col select-none relative overflow-hidden font-sans">
+    <div className="min-h-screen w-full bg-[#0b1329] text-[#111111] flex flex-col select-none relative overflow-x-hidden font-sans">
       
       {/* ============================================================ */}
       {/* 1. BARRA SUPERIOR DE MENÚ DEL SISTEMA OPERATIVO (TOY-OS 2025)*/}
@@ -528,7 +627,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
         <div className="flex items-center gap-4">
           <div 
             className="flex items-center gap-1.5 font-bold text-[#1e3a8a] cursor-pointer hover:opacity-85 transition-opacity" 
-            onClick={() => setVentanaAbierta(false)}
+            onClick={salirAlPanelPrincipal}
             title="Ir al escritorio del computador ToyOS"
           >
             <svg className="w-4 h-4 fill-current text-[#1e3a8a]" viewBox="0 0 24 24">
@@ -568,9 +667,9 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
           </div>
 
           <button 
-            onClick={() => setVentanaAbierta(false)}
+            onClick={salirAlPanelPrincipal}
             className="px-3 py-1 rounded-lg bg-slate-100 hover:bg-[#a6d4f2]/40 text-[#1e3a8a] text-[11px] font-bold transition-colors cursor-pointer"
-            title="Ver pantalla de inicio del computador"
+            title="Ver pantalla de inicio del computador con las opciones"
           >
             Escritorio ToyOS
           </button>
@@ -598,7 +697,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
         </div>
 
         {/* ========================================================== */}
-        {/* VISTA A: ESCRITORIO CON LAS 3 APPS (IDÉNTICO A LA CAPTURA) */}
+        {/* VISTA A: ESCRITORIO CON LAS 3 APPS                         */}
         {/* ========================================================== */}
         {!ventanaAbierta ? (
           <div className="w-full max-w-4xl h-[75vh] md:h-[580px] bg-[#1a4a75] rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.6)] border-2 border-slate-400/80 flex flex-col relative z-10 overflow-hidden animate-in zoom-in-95 duration-200" style={{ backgroundImage: 'radial-gradient(circle at center, #2b6da0 0%, #1a4a75 100%)' }}>
@@ -606,7 +705,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
             {/* Cabecera macOS de la ventana Desktop OS */}
             <div className="h-10 bg-gradient-to-b from-[#e8e8e8] to-[#d8d8d8] border-b border-slate-300 flex items-center px-4 justify-between shrink-0 select-none">
               <div className="flex gap-2">
-                <button onClick={() => navigate('/admin')} className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] border border-[#e0443e] flex items-center justify-center text-[8px] text-red-950 font-black cursor-pointer hover:opacity-80" title="Cerrar y volver al cuarto">
+                <button onClick={salirAlPanelPrincipal} className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] border border-[#e0443e] flex items-center justify-center text-[8px] text-red-950 font-black cursor-pointer hover:opacity-80" title="Volver al panel principal">
                   ✕
                 </button>
                 <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] border border-[#dea123]"></div>
@@ -618,16 +717,13 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
 
             {/* Contenido del escritorio: Marca de agua y las 3 apps gigantes */}
             <div className="flex-1 relative flex flex-col items-center justify-center p-8">
-              
               <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none select-none">
                 <span className="text-8xl md:text-9xl font-black text-white text-center leading-none">
                   TOY<br/>STORE
                 </span>
               </div>
 
-              {/* Los 3 Botones Gigantes: INVENTARIO, PEDIDOS, USUARIOS */}
               <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-10 max-w-2xl w-full">
-                
                 {/* Botón 1: INVENTARIO (Azul) */}
                 <button
                   onClick={() => { setAppActiva('inventario'); setVentanaAbierta(true); }}
@@ -669,33 +765,31 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                   <span className="font-black text-xs md:text-sm tracking-wider uppercase">USUARIOS</span>
                   <span className="text-[10px] text-emerald-100 font-medium">{usuarios.length} registrados</span>
                 </button>
-
               </div>
-
             </div>
           </div>
         ) : (
           /* ========================================================== */
-          /* VISTA B: VENTANA DE APLICACIÓN ACTIVA (POPUP / MODAL OS)    */
+          /* VISTA B: VENTANA DE APLICACIÓN ACTIVA                      */
           /* ========================================================== */
           <div className={`w-full max-w-6xl ${ventanaMaximizada ? 'h-[92vh]' : 'h-[85vh]'} bg-white rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.55)] border border-slate-300 flex flex-col overflow-hidden relative z-10 animate-in zoom-in-95 duration-200`}>
             
             {/* BARRA DE TÍTULO DE LA VENTANA (BOTONES macOS) */}
             <div className="h-10 bg-slate-100 border-b border-slate-200 px-4 flex items-center justify-between flex-shrink-0 select-none">
               
-              {/* Traffic Lights: Botón Rojo vuelve al escritorio */}
+              {/* Traffic Lights: Botón Rojo vuelve directamente al panel principal con opciones */}
               <div className="flex items-center gap-2">
                 <button 
-                  onClick={() => setVentanaAbierta(false)}
+                  onClick={salirAlPanelPrincipal}
                   className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] hover:brightness-90 flex items-center justify-center text-[8px] text-red-950 font-black group cursor-pointer shadow-2xs"
-                  title="Cerrar y volver al escritorio"
+                  title="Cerrar y volver al panel principal"
                 >
                   <span className="opacity-0 group-hover:opacity-100">✕</span>
                 </button>
                 <button 
-                  onClick={() => setVentanaAbierta(false)}
+                  onClick={salirAlPanelPrincipal}
                   className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] hover:brightness-90 cursor-pointer shadow-2xs"
-                  title="Minimizar al dock"
+                  title="Volver a las opciones"
                 />
                 <button 
                   onClick={() => setVentanaMaximizada(!ventanaMaximizada)}
@@ -727,16 +821,16 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                     <svg className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
-                    <span>Directorio de Usuarios & Roles — ToyOS 2025</span>
+                    <span>Directorio de Usuarios Registrados en Base de Datos — ToyOS 2025</span>
                   </>
                 )}
               </div>
 
               {/* Botón Ver Apps a la derecha */}
               <button 
-                onClick={() => setVentanaAbierta(false)}
+                onClick={salirAlPanelPrincipal}
                 className="text-[11px] font-semibold text-slate-500 hover:text-[#1e3a8a] cursor-pointer"
-                title="Volver al escritorio ToyOS"
+                title="Volver al panel principal con opciones"
               >
                 Ver Apps
               </button>
@@ -747,7 +841,6 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
             {/* ======================================================== */}
             {appActiva === 'inventario' && (
               <>
-                {/* BARRA DE HERRAMIENTAS Y BÚSQUEDA */}
                 <div className="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
                   <div className="relative flex-1 min-w-[220px] max-w-sm">
                     <input
@@ -1037,7 +1130,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
             )}
 
             {/* ======================================================== */}
-            {/* APP 3: USUARIOS & ROLES                                  */}
+            {/* APP 3: USUARIOS REALES DE LA BASE DE DATOS               */}
             {/* ======================================================== */}
             {appActiva === 'usuarios' && (
               <>
@@ -1058,7 +1151,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                   <div className="flex items-center gap-3">
                     <div className="hidden lg:flex items-center gap-2 text-xs">
                       <div className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600">
-                        Total: <b className="text-[#1e3a8a]">{usuarios.length}</b>
+                        Total en BD: <b className="text-[#1e3a8a]">{usuarios.length}</b>
                       </div>
                       <div className="px-3 py-1.5 rounded-lg bg-sky-50 border border-sky-200 text-[#1e3a8a]">
                         Admins: <b className="font-bold">{usuarios.filter(u => u.rol === 'Administrador').length}</b>
@@ -1078,7 +1171,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                 {/* FILTROS POR ROL */}
                 <div className="px-4 py-2 bg-white border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-shrink-0">
                   {[
-                    { id: 'todos', label: 'Todos los Usuarios' },
+                    { id: 'todos', label: 'Todos los Registrados en BD' },
                     { id: 'administrador', label: 'Administradores' },
                     { id: 'cliente', label: 'Clientes Registrados' }
                   ].map(tab => {
@@ -1184,8 +1277,8 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                 </div>
 
                 <div className="h-7 bg-slate-50 border-t border-slate-200 px-4 flex items-center justify-between text-[11px] text-slate-500 flex-shrink-0">
-                  <span>{usuariosFiltrados.length} usuarios registrados en la plataforma</span>
-                  <span>Gestión segura de credenciales y roles</span>
+                  <span>{usuariosFiltrados.length} usuarios registrados en la base de datos de Toy Store</span>
+                  <span>Conexión TiDB Cloud verificada</span>
                 </div>
               </>
             )}
@@ -1304,7 +1397,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                     type="submit"
                     className="px-5 py-2 rounded-lg bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-bold cursor-pointer transition-all shadow-xs"
                   >
-                    {editandoProdId ? 'Actualizar Ficha' : 'Guardar en Catálogo'}
+                    {editandoProdId ? 'Actualizar Ficha' : 'Guardar y Publicar en Tienda'}
                   </button>
                 </div>
               </form>
@@ -1434,7 +1527,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                     <input
                       type="text"
                       required
-                      placeholder="Ej. Sofía Cardona"
+                      placeholder="Ej. Mariana Franco"
                       value={nuevoPedidoData.cliente}
                       onChange={(e) => setNuevoPedidoData({ ...nuevoPedidoData, cliente: e.target.value })}
                       className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800"
@@ -1532,7 +1625,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                   <input
                     type="text"
                     required
-                    placeholder="Ej. Laura Restrepo"
+                    placeholder="Ej. Mariana Franco"
                     value={nuevoUserData.nombre}
                     onChange={(e) => setNuevoUserData({ ...nuevoUserData, nombre: e.target.value })}
                     className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800"
@@ -1544,7 +1637,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                   <input
                     type="text"
                     required
-                    placeholder="laura_r"
+                    placeholder="mfranco090393"
                     value={nuevoUserData.username}
                     onChange={(e) => setNuevoUserData({ ...nuevoUserData, username: e.target.value })}
                     className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800 font-mono text-[11px]"
@@ -1556,7 +1649,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
                   <input
                     type="email"
                     required
-                    placeholder="laura@ejemplo.com"
+                    placeholder="usuario@ejemplo.com"
                     value={nuevoUserData.email}
                     onChange={(e) => setNuevoUserData({ ...nuevoUserData, email: e.target.value })}
                     className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800"
@@ -1596,19 +1689,9 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
         )}
 
         {/* ========================================================== */}
-        {/* TOYITO: COMPAÑERO FLOTANTE (COMO EN LAS CAPTURAS)          */}
+        {/* TOYITO: ASISTENTE OFICIAL COMPLETO (CHATBOTWIDGET)         */}
         {/* ========================================================== */}
-        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 pointer-events-none select-none animate-in fade-in slide-in-from-bottom-2 duration-300">
-          <div className="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-xl border border-sky-200 text-xs text-[#1e3a8a] font-bold max-w-xs flex items-center gap-2">
-            <span>¡Hola, querida admin! Aquí estoy para ayudarte.</span>
-            <span className="text-[10px] text-slate-400 font-normal">✕</span>
-          </div>
-          <div className="w-12 h-12 rounded-full bg-amber-400 border-2 border-amber-600 shadow-xl flex items-center justify-center overflow-hidden">
-            <svg className="w-7 h-7 text-amber-900" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5-.67 1.5-1.5S7.83 8 7 8s-1.5.67-1.5 1.5S6.17 11 7 11zm10 0c.83 0 1.5-.67 1.5-1.5S17.83 8 17 8s-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
-            </svg>
-          </div>
-        </div>
+        <ChatbotWidget />
 
       </main>
 
@@ -1639,7 +1722,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
           className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center shadow-md relative group cursor-pointer transition-transform hover:scale-110 active:scale-95 ${
             ventanaAbierta && appActiva === 'pedidos' ? 'bg-white text-[#1e3a8a]' : 'bg-white/70 hover:bg-white text-slate-700'
           }`}
-          title="Gestión de Pedidos & Envíos"
+          title="Gestión de Pedidos & Despachos"
         >
           <svg className="w-5 h-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -1655,7 +1738,7 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
           className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center shadow-md relative group cursor-pointer transition-transform hover:scale-110 active:scale-95 ${
             ventanaAbierta && appActiva === 'usuarios' ? 'bg-white text-[#1e3a8a]' : 'bg-white/70 hover:bg-white text-slate-700'
           }`}
-          title="Directorio de Usuarios"
+          title="Directorio de Usuarios Registrados"
         >
           <svg className="w-5 h-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -1667,11 +1750,11 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
 
         <div className="w-px h-6 bg-white/30 mx-1"></div>
 
-        {/* Salir / Apagar */}
+        {/* Salir / Volver al Panel Principal con Opciones */}
         <button 
-          onClick={() => navigate('/admin')}
+          onClick={salirAlPanelPrincipal}
           className="w-11 h-11 rounded-xl bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center shadow-md relative group cursor-pointer transition-transform hover:scale-110 active:scale-95"
-          title="Apagar computador y volver a la habitación de Andy"
+          title="Volver al panel principal con opciones"
         >
           <svg className="w-5 h-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

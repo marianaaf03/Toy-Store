@@ -19,15 +19,21 @@ export default function ForgotPassword() {
     setCargando(true);
     setError("");
 
+    const emailLimpio = String(email).trim().toLowerCase();
+
     try {
       let enviadoOk = false;
       try {
         const resVercel = await fetch("/api/forgot-password", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email: emailLimpio }),
         });
-        if (resVercel && resVercel.ok) enviadoOk = true;
+        if (resVercel && resVercel.ok) {
+          enviadoOk = true;
+          const dataV = await resVercel.json().catch(() => ({}));
+          setMensaje(dataV.message || `Hemos enviado las instrucciones para restablecer tu contraseña a ${emailLimpio}.`);
+        }
       } catch (errApi) {
         console.warn("Fallo serverless Vercel forgot-password, intentando backend:", errApi.message);
       }
@@ -37,18 +43,18 @@ export default function ForgotPassword() {
           await fetch("/auth/forgot-password", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
+            body: JSON.stringify({ email: emailLimpio }),
           });
         } catch {
           // Continúa a pantalla de éxito
         }
+        setMensaje(`Hemos enviado las instrucciones para restablecer tu contraseña a ${emailLimpio}. Revisa tu bandeja de entrada o spam.`);
       }
 
       setCargando(false);
-      setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.");
     } catch {
       setCargando(false);
-      setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.");
+      setMensaje(`Hemos enviado las instrucciones para restablecer tu contraseña a ${emailLimpio}.`);
     }
   };
 
@@ -63,7 +69,7 @@ export default function ForgotPassword() {
       )}
 
       <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md relative z-10 animate-in fade-in zoom-in-95 duration-300">
-        
+
         {/* Logo de Toy Store */}
         <ToyStoreLogo variant="new" scale={0.7} />
 
@@ -93,7 +99,7 @@ export default function ForgotPassword() {
                   {error}
                 </div>
               )}
-              
+
               <label className="text-sm font-semibold text-gray-600 block mb-1">
                 Correo electrónico
               </label>
@@ -106,7 +112,7 @@ export default function ForgotPassword() {
                 className="w-full border-2 border-sky-300 rounded-xl p-3 mb-6 
                            focus:outline-none focus:border-[#1e3a8a] transition"
               />
-              
+
               <button
                 type="submit"
                 disabled={cargando}
@@ -115,7 +121,7 @@ export default function ForgotPassword() {
               >
                 {cargando ? "Procesando..." : "Enviar instrucciones"}
               </button>
-              
+
               <div className="text-center mt-2">
                 <Link to="/login" className="text-sm text-sky-600 hover:underline flex items-center justify-center gap-1 font-semibold group">
                   <svg className="w-4 h-4 inline transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>

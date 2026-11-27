@@ -137,7 +137,7 @@ export default function RoomWrapper({
   const activeBlur = isBlurred || showFilterSidebar || showPurposeSidebar;
 
   return (
-    <div className="min-h-screen relative flex flex-col overflow-x-hidden">
+    <div className="min-h-screen relative flex flex-col">
       
       {/* 
       ========================================================================

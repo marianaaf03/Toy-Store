@@ -291,10 +291,24 @@ function getCategoryPriority(cat = '') {
   return 8;
 }
 
+export function getCatalogoUnificado() {
+  try {
+    const guardados = localStorage.getItem('toystore_admin_productos');
+    if (guardados) {
+      const parsed = JSON.parse(guardados);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch {}
+  return CATALOGO_REAL;
+}
+
 function getProductosPorCategoria(cat = 'todos') {
+  const catalogoActual = getCatalogoUnificado();
   const filtered = cat === 'todos' 
-    ? CATALOGO_REAL 
-    : CATALOGO_REAL.filter(p => p.categoria.toLowerCase().includes(cat.toLowerCase()));
+    ? catalogoActual 
+    : catalogoActual.filter(p => p.categoria.toLowerCase().includes(cat.toLowerCase()));
   return [...filtered].sort((a, b) => {
     const prioA = getCategoryPriority(a.categoria);
     const prioB = getCategoryPriority(b.categoria);
@@ -311,9 +325,22 @@ export default function Tienda() {
   const [pagina, setPagina] = useState(1);
   const [filtroTexto, setFiltroTexto] = useState(busqueda);
 
-  // Inicialización instantánea sin demora ni pantalla rara al recargar
+  // Inicialización instantánea con catálogo unificado de la tienda
   const [productos, setProductos] = useState(() => getProductosPorCategoria(categoriaActiva));
   const [cargando, setCargando] = useState(false);
+
+  // Sincronización en tiempo real si el administrador añade o edita productos
+  useEffect(() => {
+    const sincronizarCatalogo = () => {
+      setProductos(getProductosPorCategoria(categoriaActiva));
+    };
+    window.addEventListener('storage', sincronizarCatalogo);
+    window.addEventListener('toystore_catalog_updated', sincronizarCatalogo);
+    return () => {
+      window.removeEventListener('storage', sincronizarCatalogo);
+      window.removeEventListener('toystore_catalog_updated', sincronizarCatalogo);
+    };
+  }, [categoriaActiva]);
 
   // Carrito sincronizado con localStorage
   const [carrito, setCarrito] = useState(() => {

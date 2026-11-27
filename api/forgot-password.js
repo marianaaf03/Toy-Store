@@ -30,13 +30,15 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'El correo electrónico es obligatorio.' });
     }
 
+    const destinatario = String(email).trim().toLowerCase();
     const token = crypto.randomBytes(32).toString('hex');
     const frontendBase = 'https://front-psi-five.vercel.app';
     const resetLink = `${frontendBase}/reset-password/${token}`;
 
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"Toy Store Oficial" <toystorexoxo@gmail.com>`,
-      to: email,
+      to: destinatario,
+      replyTo: 'toystorexoxo@gmail.com',
       subject: 'Recupera tu contraseña - Toy Store',
       html: `
         <div style="font-family: Arial, sans-serif; padding: 24px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; max-width: 550px; color: #1e293b;">
@@ -44,7 +46,7 @@ export default async function handler(req, res) {
             Restablecer contraseña en Toy Store
           </h2>
           <p>Hola,</p>
-          <p>Hemos recibido una solicitud para restablecer la contraseña asociada a tu cuenta <strong>${email}</strong> en Toy Store.</p>
+          <p>Hemos recibido una solicitud para restablecer la contraseña asociada a tu cuenta <strong>${destinatario}</strong> en Toy Store.</p>
           <p style="margin: 24px 0; text-align: center;">
             <a href="${resetLink}" style="background: #1e3a8a; color: white; padding: 14px 28px; text-decoration: none; border-radius: 9999px; font-weight: bold; display: inline-block; box-shadow: 0 4px 12px rgba(30,58,138,0.25);">
               Restablecer mi Contraseña
@@ -62,22 +64,11 @@ export default async function handler(req, res) {
       `
     });
 
-    if (email.toLowerCase() !== 'toystorexoxo@gmail.com') {
-      try {
-        await transporter.sendMail({
-          from: `"Toy Store Sistema" <toystorexoxo@gmail.com>`,
-          to: 'toystorexoxo@gmail.com',
-          subject: `Aviso: Solicitud de Recuperación para ${email}`,
-          html: `<p>Se ha solicitado restablecimiento de contraseña para: <strong>${email}</strong></p><p>Enlace generado: <a href="${resetLink}">${resetLink}</a></p>`
-        });
-      } catch (e2) {
-        console.warn('Aviso copia admin:', e2.message);
-      }
-    }
+    console.log(`Correo de recuperacion enviado exitosamente al usuario ${destinatario}: ${info.messageId}`);
 
     return res.status(200).json({
       ok: true,
-      message: 'Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.'
+      message: `Hemos enviado las instrucciones para restablecer tu contraseña al correo ${destinatario}.`
     });
   } catch (error) {
     console.error('Error enviando correo de recuperacion:', error.message);
