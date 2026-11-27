@@ -137,7 +137,7 @@ export default function RoomWrapper({
   const activeBlur = isBlurred || showFilterSidebar || showPurposeSidebar;
 
   return (
-    <div className={`min-h-screen relative flex flex-col ${styles.floor}`}>
+    <div className="min-h-screen relative flex flex-col">
       
       {/* 
       ========================================================================
@@ -213,7 +213,7 @@ export default function RoomWrapper({
       TRANSPARENTES PARA QUE SE REVELE EL FONDO ESTÁTICO DE ATRÁS.
       ========================================================================
       */}
-      <div className={`relative z-10 flex-1 flex flex-col min-h-full transition-all duration-300 ${isAnyDrawerOpen ? 'pl-[360px]' : ''}`}>
+      <div className={`relative z-10 flex-1 flex flex-col h-full transition-all duration-300 ${isAnyDrawerOpen ? 'pl-[360px]' : ''}`}>
         
         {/* NAVBAR GLOBAL INTEGRADA (Solo aparece si no se solicita ocultarla) */}
         {!hideNavbar && (

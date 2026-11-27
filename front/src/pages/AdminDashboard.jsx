@@ -100,7 +100,9 @@ const WallClock = () => {
 
 const AdminDashboard = () => {
   const location = useLocation();
-  const [isComputerOpen, setIsComputerOpen] = useState(false);
+  const [isComputerOpen, setIsComputerOpen] = useState(() => {
+    return location.search.includes('pc=1') || location.search.includes('screen=computer');
+  });
   const { usuario, logout, cargandoSesion, userNameHint, isLoggedInHint, setVistaAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -111,6 +113,12 @@ const AdminDashboard = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (location.search.includes('pc=1') || location.search.includes('screen=computer')) {
+      setIsComputerOpen(true);
+    }
+  }, [location.search]);
 
   const handlePrint = () => {
     setIsPrinting(true);
@@ -242,7 +250,7 @@ const AdminDashboard = () => {
         <WallClock />
 
         {/* --- TABLERO DE TIZA/MARCADOR (ESTILO FIJO Y ESTABLE) --- */}
-        <div className="z-30 text-center relative mt-32 animate-in fade-in slide-in-from-top-10 duration-1000">
+        <div className="z-30 text-center relative mt-48 md:mt-52 animate-in fade-in slide-in-from-top-10 duration-1000">
           
           <div className="relative inline-block px-16 py-12 bg-white rounded-xl shadow-[0_40px_80px_rgba(0,0,0,0.3)] transform scale-110 transition-transform group mt-6">
             {/* Tornillos */}

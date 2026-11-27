@@ -183,7 +183,7 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-[100] w-full pointer-events-none pt-2">
-        {/* Fondo de Nube SVG */}
+      {/* Fondo de Nube SVG */}
       <div className="absolute top-0 left-0 w-full h-[160px] md:h-[200px] z-0 pointer-events-auto">
         <svg viewBox="0 0 1000 150" preserveAspectRatio="none" className="w-full h-full" style={{ filter: 'drop-shadow(0px 8px 12px rgba(0,0,0,0.08))' }}>
           <defs>
