@@ -26,26 +26,41 @@ export default function ForgotPassword() {
     }, 1200);
 
     try {
-      const res = await fetch("/auth/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      let enviadoOk = false;
+
+      // 1. Envío prioritario directo a Serverless Function en Vercel
+      try {
+        const res1 = await fetch("/api/forgot-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        if (res1 && res1.ok) enviadoOk = true;
+      } catch (errApi) {
+        console.warn("Fallback /api/forgot-password:", errApi.message);
+      }
+
+      // 2. Fallback secundario a través de /auth/forgot-password
+      if (!enviadoOk) {
+        try {
+          const res2 = await fetch("/auth/forgot-password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          });
+          if (res2 && res2.ok) enviadoOk = true;
+        } catch (errAuth) {
+          console.warn("Fallback /auth/forgot-password:", errAuth.message);
+        }
+      }
 
       clearTimeout(fallbackTimer);
-      const data = await res.json().catch(() => ({}));
-
       setCargando(false);
-      if (res.ok) {
-        setMensaje(data.message || "Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación.");
-      } else {
-        // Mensaje genérico de seguridad
-        setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación.");
-      }
+      setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.");
     } catch {
       clearTimeout(fallbackTimer);
       setCargando(false);
-      setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación.");
+      setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.");
     }
   };
 

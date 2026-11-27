@@ -192,37 +192,45 @@ const forgotPassword = async (req, res) => {
   if (!email) return res.status(400).json({ error: 'El email es obligatorio' });
 
   try {
-    const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
-    if (rows.length === 0) return res.json({ message: 'Si el correo existe, recibirás instrucciones.' });
+    let usuario = null;
+    try {
+      const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
+      if (rows && rows.length > 0) {
+        usuario = rows[0];
+      }
+    } catch (dbErr) {
+      console.warn('Aviso DB select usuario:', dbErr.message);
+    }
 
-    const usuario = rows[0];
     const token = crypto.randomBytes(32).toString('hex');
     const expiry = new Date(Date.now() + 3600000);
 
-    try {
-      await db.query('UPDATE usuarios SET reset_token = ?, reset_token_expiry = ? WHERE id_usuario = ?', [token, expiry, usuario.id_usuario]);
-    } catch (dbErr) {
-      console.warn('Aviso DB reset_token:', dbErr.message);
+    if (usuario) {
+      try {
+        await db.query('UPDATE usuarios SET reset_token = ?, reset_token_expiry = ? WHERE id_usuario = ?', [token, expiry, usuario.id_usuario]);
+      } catch (dbErr) {
+        console.warn('Aviso DB reset_token:', dbErr.message);
+      }
     }
 
     const frontendBase = process.env.FRONTEND_URL || 'https://front-psi-five.vercel.app';
     const resetLink = `${frontendBase}/reset-password/${token}`;
 
-    // Responder inmediatamente al cliente para evitar esperas y bloqueos de interfaz
+    // Responder inmediatamente al cliente
     res.json({ message: 'Si el correo existe, recibirás instrucciones para restablecer tu contraseña.' });
 
     // Envío asíncrono en segundo plano garantizado con credenciales oficiales
     transporter.sendMail({
-      from: `"Toy Store" <${process.env.EMAIL_USER || 'toystorexoxo@gmail.com'}>`,
+      from: `"Toy Store Oficial" <${process.env.EMAIL_USER || 'toystorexoxo@gmail.com'}>`,
       to: email,
       subject: 'Recupera tu contraseña - Toy Store',
       html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; max-width: 550px;">
-          <h2 style="color: #7c3aed; margin-top: 0;">Restablecer contraseña en Toy Store</h2>
-          <p>Hola <strong>${usuario.nombre || 'amigo(a)'}</strong>,</p>
+        <div style="font-family: Arial, sans-serif; padding: 20px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; max-width: 550px; color: #1e293b;">
+          <h2 style="color: #1e3a8a; margin-top: 0; border-bottom: 2px solid #a6d4f2; padding-bottom: 8px;">Restablecer contraseña en Toy Store</h2>
+          <p>Hola <strong>${usuario ? usuario.nombre || 'amigo(a)' : 'amigo(a)'}</strong>,</p>
           <p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta en Toy Store.</p>
-          <p style="margin: 24px 0;">
-            <a href="${resetLink}" style="background: #8B5CF6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+          <p style="margin: 24px 0; text-align: center;">
+            <a href="${resetLink}" style="background: #1e3a8a; color: white; padding: 14px 28px; text-decoration: none; border-radius: 9999px; font-weight: bold; display: inline-block;">
               Restablecer mi Contraseña
             </a>
           </p>
@@ -232,7 +240,7 @@ const forgotPassword = async (req, res) => {
     }).then(info => {
       console.log('Correo de recuperacion enviado exitosamente a:', email, info.messageId);
     }).catch(mailErr => {
-      console.error('Aviso: No se pudo enviar el correo de recuperación en segundo plano:', mailErr.message);
+      console.error('Aviso correo de recuperación:', mailErr.message);
     });
   } catch (error) {
     console.error(error);

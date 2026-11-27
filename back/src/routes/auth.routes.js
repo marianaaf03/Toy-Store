@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const contactoController = require('../controllers/contacto.controller');
-const { 
-  registro, 
-  login, 
-  forgotPassword, 
-  resetPassword, 
-  googleLogin, 
-  sendGoogleVerification, 
-  verifyGoogleMock, 
-  getMe, 
-  logout, 
+const {
+  registro,
+  login,
+  forgotPassword,
+  resetPassword,
+  googleLogin,
+  sendGoogleVerification,
+  verifyGoogleMock,
+  getMe,
+  logout,
   setManualPassword,
   actualizarPerfil,
   cambiarContrasena,
