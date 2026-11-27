@@ -190,11 +190,11 @@ export default function Inicio() {
     if (!ageVerifiedGlobal && !usuario) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
     }
     // Cleanup al desmontar
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
     };
   }, [ageVerifiedGlobal, usuario]);
 
