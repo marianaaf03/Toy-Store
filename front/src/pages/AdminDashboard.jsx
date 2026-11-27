@@ -100,9 +100,7 @@ const WallClock = () => {
 
 const AdminDashboard = () => {
   const location = useLocation();
-  const [isComputerOpen, setIsComputerOpen] = useState(() => {
-    return location.search.includes('pc=1') || location.search.includes('screen=computer');
-  });
+  const [isComputerOpen, setIsComputerOpen] = useState(false);
   const { usuario, logout, cargandoSesion, userNameHint, isLoggedInHint, setVistaAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -113,12 +111,6 @@ const AdminDashboard = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  useEffect(() => {
-    if (location.search.includes('pc=1') || location.search.includes('screen=computer')) {
-      setIsComputerOpen(true);
-    }
-  }, [location.search]);
 
   const handlePrint = () => {
     setIsPrinting(true);
