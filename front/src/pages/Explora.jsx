@@ -9,7 +9,7 @@ const CheckeredStripe = () => (
   <div
     className="w-full h-4 sm:h-5 shrink-0"
     style={{
-      backgroundImage: 'linear-gradient(45deg, #E52521 25%, transparent 25%), linear-gradient(-45deg, #E52521 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #E52521 75%), linear-gradient(-45deg, transparent 75%, #E52521 75%)',
+      backgroundImage: 'linear-gradient(45deg, #a6d4f2 25%, transparent 25%), linear-gradient(-45deg, #a6d4f2 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #a6d4f2 75%), linear-gradient(-45deg, transparent 75%, #a6d4f2 75%)',
       backgroundSize: '16px 16px',
       backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px',
       backgroundColor: '#ffffff'
@@ -512,15 +512,15 @@ export default function Explora() {
           ========================================================================= */}
       {modalAbierto && (
         <div className="fixed inset-0 z-[400] bg-black/10 backdrop-blur-[3px] flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none font-fredoka">
-          <div className="relative w-full max-w-2xl bg-white rounded-lg sm:rounded-xl border-4 sm:border-[6px] border-[#E52521] shadow-[0_25px_70px_rgba(229,37,33,0.35)] overflow-hidden flex flex-col justify-between max-h-[90vh]">
+          <div className="relative w-full max-w-2xl bg-white rounded-2xl border-4 sm:border-[6px] border-[#a6d4f2] shadow-[0_25px_70px_rgba(166,212,242,0.45)] overflow-hidden flex flex-col justify-between max-h-[90vh]">
 
-            {/* FRANJA SUPERIOR A CUADROS ROJOS Y BLANCOS (ESTILO CAJA DE PIZZA) */}
+            {/* FRANJA SUPERIOR A CUADROS CELESTES Y BLANCOS */}
             <CheckeredStripe />
 
             {/* Botón de cerrar (X) */}
             <button
               onClick={() => setModalAbierto(false)}
-              className="absolute top-5 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-[#E52521] border border-slate-300 flex items-center justify-center text-sm font-black transition cursor-pointer z-30"
+              className="absolute top-5 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-500 hover:text-[#1e3a8a] border border-slate-300 flex items-center justify-center text-sm font-black transition cursor-pointer z-30"
               title="Cerrar ventana"
             >
               ✕
@@ -532,20 +532,20 @@ export default function Explora() {
                 /* ================= MODO PREGUNTAS (1 A 7) ================= */
                 <div className="flex flex-col items-center">
                   <div className="text-center w-full mb-6">
-                    <div className="flex items-center justify-between text-xs font-black text-[#E52521] uppercase tracking-widest mb-2 px-1">
+                    <div className="flex items-center justify-between text-xs font-black text-[#1e3a8a] uppercase tracking-widest mb-2 px-1">
                       <span className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-[#E52521] animate-ping"></span>
+                        <span className="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
                         <span>{preg.categoria}</span>
                       </span>
-                      <span className="bg-red-50 px-3 py-1 rounded-full border border-red-200">
+                      <span className="bg-sky-50 text-[#1e3a8a] px-3 py-1 rounded-full border border-sky-200">
                         PREGUNTA {preg.numero}
                       </span>
                     </div>
 
-                    {/* Barra de progreso en rojo Pizza Planet */}
+                    {/* Barra de progreso en azul celeste Toy Store */}
                     <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200 p-0.5">
                       <div
-                        className="h-full bg-gradient-to-r from-red-500 via-rose-500 to-[#E52521] rounded-full transition-all duration-300 shadow-xs"
+                        className="h-full bg-gradient-to-r from-sky-300 via-sky-400 to-[#0284c7] rounded-full transition-all duration-300 shadow-xs"
                         style={{ width: `${((preguntaActual + 1) / 7) * 100}%` }}
                       ></div>
                     </div>
@@ -565,12 +565,12 @@ export default function Explora() {
                         key={opc.id}
                         type="button"
                         onClick={() => handleResponder(opc.tipo)}
-                        className="text-left p-3.5 sm:p-4 rounded-xl bg-slate-50/80 hover:bg-red-50/70 border-2 border-slate-200 hover:border-[#E52521] transition-all flex items-center gap-3.5 group cursor-pointer active:scale-95 shadow-2xs"
+                        className="text-left p-3.5 sm:p-4 rounded-xl bg-slate-50/80 hover:bg-sky-50 border-2 border-slate-200 hover:border-[#a6d4f2] transition-all flex items-center gap-3.5 group cursor-pointer active:scale-95 shadow-2xs"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-white text-[#E52521] border-2 border-[#E52521] group-hover:bg-[#E52521] group-hover:text-white flex items-center justify-center font-black text-xs sm:text-sm shrink-0 transition-colors shadow-xs">
+                        <div className="w-8 h-8 rounded-lg bg-white text-[#1e3a8a] border-2 border-[#a6d4f2] group-hover:bg-[#a6d4f2] group-hover:text-[#1e3a8a] flex items-center justify-center font-black text-xs sm:text-sm shrink-0 transition-colors shadow-xs">
                           {opc.letra}
                         </div>
-                        <span className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-[#E52521] transition-colors leading-snug">
+                        <span className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-[#1e3a8a] transition-colors leading-snug">
                           {opc.texto}
                         </span>
                       </button>
@@ -585,10 +585,10 @@ export default function Explora() {
                 /* ================= MODO RESULTADOS ================= */
                 <div className="flex flex-col items-center animate-in fade-in zoom-in-95 duration-300">
                   <div className="text-center mb-6">
-                    <span className="inline-block px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-[#E52521] text-[11px] font-black tracking-widest uppercase mb-2">
+                    <span className="inline-block px-3.5 py-1 rounded-full bg-sky-50 border border-sky-200 text-[#1e3a8a] text-[11px] font-black tracking-widest uppercase mb-2">
                       ¡RESULTADO CÓSMICO DE TU TRIVIA!
                     </span>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#E52521] uppercase leading-tight">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#1e3a8a] uppercase leading-tight">
                       {recomendacion.titulo}
                     </h2>
                     <p className="text-xs sm:text-sm text-slate-600 font-medium mt-2 leading-relaxed max-w-lg mx-auto">
@@ -604,7 +604,7 @@ export default function Explora() {
                     {recomendacion.categorias.map((cat, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 rounded-full bg-red-50 text-[#E52521] border border-red-300 text-xs font-black uppercase shadow-2xs"
+                        className="px-3 py-1 rounded-full bg-sky-50 text-[#1e3a8a] border border-[#a6d4f2] text-xs font-black uppercase shadow-2xs"
                       >
                         {cat}
                       </span>
@@ -616,7 +616,7 @@ export default function Explora() {
                     {recomendacion.productos.map(p => (
                       <div
                         key={p.id}
-                        className="bg-slate-50/80 rounded-xl border-2 border-slate-200 p-3 flex flex-col justify-between text-center group hover:border-[#E52521] transition shadow-xs"
+                        className="bg-slate-50/80 rounded-xl border-2 border-slate-200 p-3 flex flex-col justify-between text-center group hover:border-[#a6d4f2] transition shadow-xs"
                       >
                         <div className="w-full h-28 rounded-lg bg-white flex items-center justify-center p-2 mb-2 group-hover:scale-105 transition-transform overflow-hidden shadow-2xs">
                           <img
@@ -653,7 +653,7 @@ export default function Explora() {
                         setModalAbierto(false);
                         navigate(`/tienda?cat=${encodeURIComponent(recomendacion.categoriaFiltro)}`);
                       }}
-                      className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-red-500 to-[#E52521] hover:from-red-600 hover:to-red-700 text-white font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer"
+                      className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer"
                     >
                       Ver en Tienda
                     </button>
@@ -662,7 +662,7 @@ export default function Explora() {
               )}
             </div>
 
-            {/* FRANJA INFERIOR A CUADROS ROJOS Y BLANCOS (ESTILO CAJA DE PIZZA) */}
+            {/* FRANJA INFERIOR A CUADROS CELESTES Y BLANCOS */}
             <CheckeredStripe />
           </div>
         </div>

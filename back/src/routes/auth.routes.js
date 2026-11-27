@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const contactoController = require('../controllers/contacto.controller');
 const { 
   registro, 
   login, 
@@ -26,6 +27,7 @@ const {
 } = require('../controllers/auth.controller');
 
 router.post('/registro', registro);
+router.post('/contacto', contactoController.enviarMensaje);
 router.post('/login', login);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
