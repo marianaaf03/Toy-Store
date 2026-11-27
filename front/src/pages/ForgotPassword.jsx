@@ -33,6 +33,12 @@ export default function ForgotPassword() {
           enviadoOk = true;
           const dataV = await resVercel.json().catch(() => ({}));
           setMensaje(dataV.message || `Hemos enviado las instrucciones para restablecer tu contraseña a ${emailLimpio}.`);
+          // Notificar en segundo plano al backend para sincronizar TiDB
+          fetch("/auth/forgot-password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: emailLimpio }),
+          }).catch(() => {});
         }
       } catch (errApi) {
         console.warn("Fallo serverless Vercel forgot-password, intentando backend:", errApi.message);

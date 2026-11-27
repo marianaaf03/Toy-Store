@@ -26,11 +26,21 @@ export default function ResetPassword() {
     setCargando(true);
 
     try {
-      const res = await fetch("/auth/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, nuevaContrasena }),
-      });
+      let res;
+      try {
+        res = await fetch("/auth/reset-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, nuevaContrasena }),
+        });
+      } catch (errProxy) {
+        console.warn("Intento directo a backend Render:", errProxy.message);
+        res = await fetch("https://toystore-backend-5v90.onrender.com/auth/reset-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, nuevaContrasena }),
+        });
+      }
 
       const data = await res.json();
 

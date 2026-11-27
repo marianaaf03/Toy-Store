@@ -431,6 +431,26 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
     return PEDIDOS_INICIALES;
   });
 
+  useEffect(() => {
+    const sincronizarPedidos = () => {
+      try {
+        const guardados = localStorage.getItem('toystore_admin_pedidos');
+        if (guardados) {
+          const parsed = JSON.parse(guardados);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setPedidos(parsed);
+          }
+        }
+      } catch (e) {}
+    };
+    window.addEventListener('toystore_orders_updated', sincronizarPedidos);
+    window.addEventListener('storage', sincronizarPedidos);
+    return () => {
+      window.removeEventListener('toystore_orders_updated', sincronizarPedidos);
+      window.removeEventListener('storage', sincronizarPedidos);
+    };
+  }, []);
+
   const [busquedaPed, setBusquedaPed] = useState('');
   const [filtroEstadoPed, setFiltroEstadoPed] = useState('todos');
   const [pedidoDetalle, setPedidoDetalle] = useState(null);

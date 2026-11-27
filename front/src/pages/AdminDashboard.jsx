@@ -243,7 +243,7 @@ const AdminDashboard = () => {
 
   return (
     <RoomWrapper theme="andy" wallpaperContent={<AndyCloudsWallpaper />} showFooter={false} hideNavbar={true}>
-      <div className="flex-1 flex flex-col items-center pt-2 px-6 relative min-h-[160vh] pb-60">
+      <div className="flex-1 flex flex-col items-center pt-2 px-6 relative pb-72">
         
         <Navbar minimal={true} />
 

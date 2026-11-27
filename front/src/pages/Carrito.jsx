@@ -56,6 +56,49 @@ export default function Carrito() {
   const [mensajePromo, setMensajePromo] = useState('');
   const [cuponValido, setCuponValido] = useState(false);
 
+  // Estados del Checkout / Pasarela de Pago Realista
+  const [mostrarCheckout, setMostrarCheckout] = useState(false);
+  const [pasoCheckout, setPasoCheckout] = useState(1);
+  const [errorCheckout, setErrorCheckout] = useState('');
+  const [pedidoConfirmado, setPedidoConfirmado] = useState(null);
+
+  const [datosEnvio, setDatosEnvio] = useState({
+    nombre: '',
+    email: '',
+    telefono: '',
+    departamento: 'Antioquia',
+    ciudad: 'Medellín',
+    direccion: '',
+    barrio: '',
+    notas: '',
+    empaqueDiscreto: true
+  });
+
+  const [datosPago, setDatosPago] = useState({
+    metodo: 'pse',
+    pseBanco: 'Bancolombia',
+    pseTipoPersona: 'Natural',
+    pseDocTipo: 'CC',
+    pseDocNumero: '',
+    tarjetaNumero: '',
+    tarjetaNombre: '',
+    tarjetaExpiracion: '',
+    tarjetaCvv: '',
+    tarjetaCuotas: '1',
+    nequiComprobante: ''
+  });
+
+  useEffect(() => {
+    if (usuario) {
+      setDatosEnvio(prev => ({
+        ...prev,
+        nombre: prev.nombre || usuario.nombre || '',
+        email: prev.email || usuario.email || '',
+        telefono: prev.telefono || usuario.telefono || ''
+      }));
+    }
+  }, [usuario]);
+
   useEffect(() => {
     try {
       localStorage.setItem('toy_carrito', JSON.stringify(items));
@@ -102,6 +145,136 @@ export default function Carrito() {
   const subtotal = items.reduce((acc, item) => acc + (Number(item.precio) * item.cantidad), 0);
   const totalArticulos = items.reduce((acc, item) => acc + item.cantidad, 0);
   const total = Math.max(0, subtotal - descuentoAplicado);
+
+  const handleIniciarCheckout = () => {
+    if (items.length === 0) return;
+    setErrorCheckout('');
+    setPasoCheckout(1);
+    setMostrarCheckout(true);
+  };
+
+  const handleValidarEnvio = (e) => {
+    e.preventDefault();
+    setErrorCheckout('');
+    if (!datosEnvio.nombre.trim()) {
+      setErrorCheckout('Por favor ingresa tu nombre completo.');
+      return;
+    }
+    if (!datosEnvio.email.trim() || !datosEnvio.email.includes('@')) {
+      setErrorCheckout('Por favor ingresa un correo electrónico válido.');
+      return;
+    }
+    if (!datosEnvio.telefono.trim()) {
+      setErrorCheckout('Por favor ingresa un número de teléfono o celular.');
+      return;
+    }
+    if (!datosEnvio.direccion.trim()) {
+      setErrorCheckout('Por favor ingresa la dirección de entrega.');
+      return;
+    }
+    setPasoCheckout(2);
+  };
+
+  const handleConfirmarPago = (e) => {
+    e.preventDefault();
+    setErrorCheckout('');
+
+    if (datosPago.metodo === 'pse') {
+      if (!datosPago.pseDocNumero.trim()) {
+        setErrorCheckout('Por favor ingresa tu número de documento para PSE.');
+        return;
+      }
+    } else if (datosPago.metodo === 'tarjeta') {
+      const limpioNum = datosPago.tarjetaNumero.replace(/\s+/g, '');
+      if (limpioNum.length < 15) {
+        setErrorCheckout('Por favor ingresa los 16 dígitos de tu tarjeta.');
+        return;
+      }
+      if (!datosPago.tarjetaNombre.trim()) {
+        setErrorCheckout('Por favor ingresa el nombre impreso en la tarjeta.');
+        return;
+      }
+      if (!datosPago.tarjetaExpiracion.trim()) {
+        setErrorCheckout('Por favor ingresa la fecha de vencimiento (MM/AA).');
+        return;
+      }
+      if (datosPago.tarjetaCvv.length < 3) {
+        setErrorCheckout('Por favor ingresa el código CVV.');
+        return;
+      }
+    }
+
+    // Paso 3: Pantalla de procesamiento realista (2.2 segundos)
+    setPasoCheckout(3);
+
+    setTimeout(() => {
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      const idOrden = `TS-2026-${randomNum}`;
+      const idGuia = `ENV-${Math.floor(10000000 + Math.random() * 90000000)}CO`;
+      const fechaActual = new Date().toLocaleString('es-CO', { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: true 
+      });
+
+      let metodoNombre = 'PSE';
+      if (datosPago.metodo === 'pse') {
+        metodoNombre = `PSE (${datosPago.pseBanco})`;
+      } else if (datosPago.metodo === 'tarjeta') {
+        const ultimos4 = datosPago.tarjetaNumero.replace(/\s+/g, '').slice(-4) || '4242';
+        metodoNombre = `Tarjeta Débito/Crédito (•••• ${ultimos4})`;
+      } else if (datosPago.metodo === 'nequi') {
+        metodoNombre = 'Nequi / Daviplata';
+      } else if (datosPago.metodo === 'contraentrega') {
+        metodoNombre = 'Pago Contra Entrega (Efectivo)';
+      }
+
+      const ordenCreada = {
+        id: idOrden,
+        fecha: fechaActual,
+        cliente: datosEnvio.nombre.trim(),
+        email: datosEnvio.email.trim(),
+        telefono: datosEnvio.telefono.trim(),
+        ciudad: `${datosEnvio.ciudad}, ${datosEnvio.departamento}`,
+        direccion: `${datosEnvio.direccion.trim()}${datosEnvio.barrio ? ', ' + datosEnvio.barrio.trim() : ''}`,
+        productos: items.map(it => ({
+          nombre: it.nombre,
+          cantidad: it.cantidad,
+          precio: Number(it.precio)
+        })),
+        total: total,
+        metodoPago: metodoNombre,
+        estado: datosPago.metodo === 'contraentrega' ? 'Pendiente' : 'En camino',
+        guia: idGuia,
+        empaqueDiscreto: true,
+        notas: datosEnvio.notas ? datosEnvio.notas.trim() : 'Empaque 100% sellado neutro y confidencial.'
+      };
+
+      // Registrar pedido en localStorage para el panel de administración
+      try {
+        const guardados = localStorage.getItem('toystore_admin_pedidos');
+        let lista = guardados ? JSON.parse(guardados) : [];
+        if (!Array.isArray(lista)) lista = [];
+        lista = [ordenCreada, ...lista];
+        localStorage.setItem('toystore_admin_pedidos', JSON.stringify(lista));
+        window.dispatchEvent(new Event('toystore_orders_updated'));
+      } catch (err) {
+        console.warn('Error guardando en historial admin:', err);
+      }
+
+      setPedidoConfirmado(ordenCreada);
+      setItems([]);
+      try {
+        localStorage.removeItem('toy_carrito');
+        localStorage.removeItem('toy_cart');
+      } catch {}
+
+      setPasoCheckout(4);
+    }, 2200);
+  };
 
   const enviarPedidoWhatsApp = () => {
     if (items.length === 0) return;
@@ -538,7 +711,7 @@ export default function Carrito() {
                     </button>
 
                     <button
-                      onClick={() => alert("Conexión con pasarela de pagos segura PSE / Tarjeta en proceso.")}
+                      onClick={handleIniciarCheckout}
                       className="w-full py-3.5 bg-[#a6d4f2] hover:bg-[#8ac6ee] text-[#1e3a8a] font-black rounded-2xl text-xs uppercase tracking-wider shadow-sm transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer border-2 border-white"
                     >
                       <svg className="w-4 h-4 text-[#1e3a8a]" fill="none" stroke="currentColor" strokeWidth="2.3" viewBox="0 0 24 24">
@@ -555,6 +728,550 @@ export default function Carrito() {
           )}
         </main>
       </div>
+
+      {/* ============================================================ */}
+      {/* MODAL DE CHECKOUT / PASARELA DE PAGO PROFESIONAL Y REALISTA */}
+      {/* ============================================================ */}
+      {mostrarCheckout && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
+            
+            {/* Header del Modal */}
+            <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-[#1e3a8a]">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-[#1e3a8a]">Pasarela de Pago Segura</h3>
+                  <p className="text-[11px] text-slate-500 font-medium">Toy Store Colombia • Cifrado SSL 256-Bit</p>
+                </div>
+              </div>
+
+              {pasoCheckout !== 3 && (
+                <button
+                  onClick={() => setMostrarCheckout(false)}
+                  className="w-8 h-8 rounded-full bg-slate-200/60 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            {/* Barra de progreso de pasos */}
+            <div className="bg-white px-6 py-3 border-b border-slate-100 flex items-center justify-between text-xs font-bold text-slate-500">
+              <div className={`flex items-center gap-2 ${pasoCheckout >= 1 ? 'text-[#1e3a8a]' : 'opacity-40'}`}>
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] text-white ${pasoCheckout >= 1 ? 'bg-[#1e3a8a]' : 'bg-slate-300'}`}>1</span>
+                <span>Envío</span>
+              </div>
+              <div className="flex-1 h-[2px] bg-slate-100 mx-3"></div>
+              <div className={`flex items-center gap-2 ${pasoCheckout >= 2 ? 'text-[#1e3a8a]' : 'opacity-40'}`}>
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] text-white ${pasoCheckout >= 2 ? 'bg-[#1e3a8a]' : 'bg-slate-300'}`}>2</span>
+                <span>Pago</span>
+              </div>
+              <div className="flex-1 h-[2px] bg-slate-100 mx-3"></div>
+              <div className={`flex items-center gap-2 ${pasoCheckout >= 3 ? 'text-[#1e3a8a]' : 'opacity-40'}`}>
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] text-white ${pasoCheckout >= 3 ? 'bg-[#1e3a8a]' : 'bg-slate-300'}`}>3</span>
+                <span>Confirmación</span>
+              </div>
+            </div>
+
+            {/* Mensaje de error general si ocurre */}
+            {errorCheckout && (
+              <div className="mx-6 mt-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-bold flex items-center gap-2">
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{errorCheckout}</span>
+              </div>
+            )}
+
+            {/* Contenido según el paso */}
+            <div className="p-6 overflow-y-auto flex-1">
+              
+              {/* ================================================= */}
+              {/* PASO 1: DATOS DE ENVÍO Y CONFIDENCIALIDAD */}
+              {/* ================================================= */}
+              {pasoCheckout === 1 && (
+                <form onSubmit={handleValidarEnvio} className="space-y-4">
+                  <div className="p-3 bg-blue-50/60 rounded-2xl border border-blue-100/80 flex items-start gap-3">
+                    <svg className="w-5 h-5 text-[#1e3a8a] shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    <div className="text-xs">
+                      <p className="font-bold text-[#1e3a8a]">Garantía de Privacidad Absoluta</p>
+                      <p className="text-slate-500">Tus datos personales y de envío son tratados bajo estricta confidencialidad. Tu pedido se enviará en empaque 100% neutro.</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Nombre y Apellido *</label>
+                      <input
+                        type="text"
+                        value={datosEnvio.nombre}
+                        onChange={e => setDatosEnvio({ ...datosEnvio, nombre: e.target.value })}
+                        placeholder="Ej. Keissy Mesa"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Correo Electrónico *</label>
+                      <input
+                        type="email"
+                        value={datosEnvio.email}
+                        onChange={e => setDatosEnvio({ ...datosEnvio, email: e.target.value })}
+                        placeholder="tucorreo@ejemplo.com"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Teléfono / WhatsApp *</label>
+                      <input
+                        type="tel"
+                        value={datosEnvio.telefono}
+                        onChange={e => setDatosEnvio({ ...datosEnvio, telefono: e.target.value })}
+                        placeholder="+57 300 000 0000"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Departamento</label>
+                      <select
+                        value={datosEnvio.departamento}
+                        onChange={e => setDatosEnvio({ ...datosEnvio, departamento: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a8a] transition bg-white"
+                      >
+                        <option value="Antioquia">Antioquia</option>
+                        <option value="Bogotá D.C.">Bogotá D.C.</option>
+                        <option value="Valle del Cauca">Valle del Cauca</option>
+                        <option value="Atlántico">Atlántico</option>
+                        <option value="Santander">Santander</option>
+                        <option value="Cundinamarca">Cundinamarca</option>
+                        <option value="Risaralda">Risaralda</option>
+                        <option value="Caldas">Caldas</option>
+                        <option value="Bolívar">Bolívar</option>
+                        <option value="Otro">Otro departamento</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Ciudad *</label>
+                      <input
+                        type="text"
+                        value={datosEnvio.ciudad}
+                        onChange={e => setDatosEnvio({ ...datosEnvio, ciudad: e.target.value })}
+                        placeholder="Ej. Medellín"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Barrio / Sector</label>
+                      <input
+                        type="text"
+                        value={datosEnvio.barrio}
+                        onChange={e => setDatosEnvio({ ...datosEnvio, barrio: e.target.value })}
+                        placeholder="Ej. El Poblado / Laureles"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Dirección Completa de Entrega *</label>
+                    <input
+                      type="text"
+                      value={datosEnvio.direccion}
+                      onChange={e => setDatosEnvio({ ...datosEnvio, direccion: e.target.value })}
+                      placeholder="Calle / Carrera #, Apto, Torre, Oficina"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Instrucciones para la Entrega (Opcional)</label>
+                    <input
+                      type="text"
+                      value={datosEnvio.notas}
+                      onChange={e => setDatosEnvio({ ...datosEnvio, notas: e.target.value })}
+                      placeholder="Ej. Dejar en recepción o portería, no timbrar"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1e3a8a] transition"
+                    />
+                  </div>
+
+                  <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200/80 flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="empaqueDiscretoCheck"
+                      checked={datosEnvio.empaqueDiscreto}
+                      onChange={e => setDatosEnvio({ ...datosEnvio, empaqueDiscreto: e.target.checked })}
+                      className="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer"
+                    />
+                    <label htmlFor="empaqueDiscretoCheck" className="text-xs font-bold text-emerald-800 cursor-pointer">
+                      Solicitar empaque 100% neutro, sellado y sin descripción ni logos visibles de sex shop (Recomendado).
+                    </label>
+                  </div>
+
+                  <div className="pt-3 flex justify-between items-center border-t border-slate-100">
+                    <span className="text-sm font-bold text-slate-600">Total a pagar: <strong className="text-[#1e3a8a] text-base">${total.toLocaleString('es-CO')} COP</strong></span>
+                    <button
+                      type="submit"
+                      className="px-6 py-3 bg-[#1e3a8a] hover:bg-blue-900 text-white font-bold rounded-2xl text-xs uppercase tracking-wider transition shadow-md active:scale-95"
+                    >
+                      Continuar al Pago
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* ================================================= */}
+              {/* PASO 2: MÉTODO DE PAGO */}
+              {/* ================================================= */}
+              {pasoCheckout === 2 && (
+                <form onSubmit={handleConfirmarPago} className="space-y-5">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {[
+                      { id: 'pse', titulo: 'PSE', subtitulo: 'Débito Bancario' },
+                      { id: 'tarjeta', titulo: 'Tarjeta', subtitulo: 'Crédito / Débito' },
+                      { id: 'nequi', titulo: 'Nequi / Davi', subtitulo: 'Billetera Móvil' },
+                      { id: 'contraentrega', titulo: 'Contra Entrega', subtitulo: 'Pago en Efectivo' }
+                    ].map(met => (
+                      <button
+                        key={met.id}
+                        type="button"
+                        onClick={() => setDatosPago({ ...datosPago, metodo: met.id })}
+                        className={`p-3 rounded-2xl border-2 text-left transition ${datosPago.metodo === met.id ? 'border-[#1e3a8a] bg-blue-50/50' : 'border-slate-200 hover:border-slate-300'}`}
+                      >
+                        <div className="text-xs font-black text-[#1e3a8a]">{met.titulo}</div>
+                        <div className="text-[10px] text-slate-500 font-medium">{met.subtitulo}</div>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* FORMULARIO PSE */}
+                  {datosPago.metodo === 'pse' && (
+                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                      <p className="text-xs font-bold text-[#1e3a8a]">Pago Seguro mediante PSE (Transferencia en Línea)</p>
+                      
+                      <div>
+                        <label className="block text-xs font-bold text-slate-600 mb-1">Selecciona tu Banco *</label>
+                        <select
+                          value={datosPago.pseBanco}
+                          onChange={e => setDatosPago({ ...datosPago, pseBanco: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1e3a8a]"
+                        >
+                          <option value="Bancolombia">Bancolombia</option>
+                          <option value="Davivienda">Davivienda</option>
+                          <option value="Nequi">Nequi</option>
+                          <option value="Banco de Bogotá">Banco de Bogotá</option>
+                          <option value="BBVA Colombia">BBVA Colombia</option>
+                          <option value="Banco de Occidente">Banco de Occidente</option>
+                          <option value="Scotiabank Colpatria">Scotiabank Colpatria</option>
+                          <option value="Banco Popular">Banco Popular</option>
+                          <option value="Banco AV Villas">Banco AV Villas</option>
+                          <option value="Nubank">Nubank Colombia</option>
+                          <option value="Lulo Bank">Lulo Bank</option>
+                          <option value="Dale!">Dale!</option>
+                          <option value="Banco Caja Social">Banco Caja Social</option>
+                          <option value="RappiPay">RappiPay</option>
+                        </select>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-600 mb-1">Tipo de Persona</label>
+                          <select
+                            value={datosPago.pseTipoPersona}
+                            onChange={e => setDatosPago({ ...datosPago, pseTipoPersona: e.target.value })}
+                            className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white"
+                          >
+                            <option value="Natural">Persona Natural</option>
+                            <option value="Jurídica">Persona Jurídica</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-slate-600 mb-1">Tipo y Documento *</label>
+                          <div className="flex gap-2">
+                            <select
+                              value={datosPago.pseDocTipo}
+                              onChange={e => setDatosPago({ ...datosPago, pseDocTipo: e.target.value })}
+                              className="w-24 px-2 py-2 rounded-xl border border-slate-200 text-sm bg-white"
+                            >
+                              <option value="CC">CC</option>
+                              <option value="CE">CE</option>
+                              <option value="NIT">NIT</option>
+                              <option value="PP">PP</option>
+                            </select>
+                            <input
+                              type="text"
+                              value={datosPago.pseDocNumero}
+                              onChange={e => setDatosPago({ ...datosPago, pseDocNumero: e.target.value })}
+                              placeholder="Número documento"
+                              className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1e3a8a]"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* FORMULARIO TARJETA */}
+                  {datosPago.metodo === 'tarjeta' && (
+                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                      <p className="text-xs font-bold text-[#1e3a8a]">Tarjeta de Crédito o Débito (Visa, Mastercard, Amex)</p>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-600 mb-1">Número de Tarjeta *</label>
+                        <input
+                          type="text"
+                          maxLength={19}
+                          value={datosPago.tarjetaNumero}
+                          onChange={e => {
+                            const val = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+                            setDatosPago({ ...datosPago, tarjetaNumero: val });
+                          }}
+                          placeholder="4500 •••• •••• ••••"
+                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white font-mono focus:outline-none focus:border-[#1e3a8a]"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-600 mb-1">Nombre del Titular *</label>
+                        <input
+                          type="text"
+                          value={datosPago.tarjetaNombre}
+                          onChange={e => setDatosPago({ ...datosPago, tarjetaNombre: e.target.value })}
+                          placeholder="Como figura en la tarjeta"
+                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white uppercase focus:outline-none focus:border-[#1e3a8a]"
+                          required
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-600 mb-1">Expiración *</label>
+                          <input
+                            type="text"
+                            maxLength={5}
+                            value={datosPago.tarjetaExpiracion}
+                            onChange={e => {
+                              let v = e.target.value.replace(/\D/g, '');
+                              if (v.length >= 2) v = v.slice(0, 2) + '/' + v.slice(2, 4);
+                              setDatosPago({ ...datosPago, tarjetaExpiracion: v });
+                            }}
+                            placeholder="MM/AA"
+                            className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white font-mono text-center"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-slate-600 mb-1">CVV / CVC *</label>
+                          <input
+                            type="password"
+                            maxLength={4}
+                            value={datosPago.tarjetaCvv}
+                            onChange={e => setDatosPago({ ...datosPago, tarjetaCvv: e.target.value.replace(/\D/g, '') })}
+                            placeholder="•••"
+                            className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white font-mono text-center"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-slate-600 mb-1">Cuotas</label>
+                          <select
+                            value={datosPago.tarjetaCuotas}
+                            onChange={e => setDatosPago({ ...datosPago, tarjetaCuotas: e.target.value })}
+                            className="w-full px-2 py-2 rounded-xl border border-slate-200 text-sm bg-white"
+                          >
+                            <option value="1">1 cuota</option>
+                            <option value="2">2 cuotas</option>
+                            <option value="3">3 cuotas</option>
+                            <option value="6">6 cuotas</option>
+                            <option value="12">12 cuotas</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* FORMULARIO NEQUI / DAVIPLATA */}
+                  {datosPago.metodo === 'nequi' && (
+                    <div className="p-4 bg-purple-50 rounded-2xl border border-purple-200 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black text-purple-900">Transferencia Directa Nequi / Daviplata</span>
+                        <span className="px-2 py-0.5 bg-purple-200 text-purple-900 rounded-md text-[10px] font-bold">Inmediato</span>
+                      </div>
+                      <p className="text-xs text-purple-800">
+                        Envía el total de <strong>${total.toLocaleString('es-CO')} COP</strong> al número oficial:
+                      </p>
+                      <div className="p-3 bg-white rounded-xl border border-purple-100 flex items-center justify-between">
+                        <div>
+                          <span className="text-[10px] text-slate-400 block font-bold uppercase">Línea Oficial Toy Store</span>
+                          <span className="text-base font-black text-purple-950 font-mono tracking-wider">300 902 8001</span>
+                        </div>
+                        <span className="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg">Toy Store SAS</span>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-purple-900 mb-1">Número de Aprobación / Referencia (Opcional)</label>
+                        <input
+                          type="text"
+                          value={datosPago.nequiComprobante}
+                          onChange={e => setDatosPago({ ...datosPago, nequiComprobante: e.target.value })}
+                          placeholder="Ej. M18928374 o últimos 6 dígitos"
+                          className="w-full px-3 py-2 rounded-xl border border-purple-200 text-sm bg-white"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* FORMULARIO CONTRA ENTREGA */}
+                  {datosPago.metodo === 'contraentrega' && (
+                    <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 space-y-2">
+                      <div className="text-xs font-black text-amber-900">Pago Contra Entrega en Efectivo</div>
+                      <p className="text-xs text-amber-800">
+                        Pagarás el valor exacto de <strong>${total.toLocaleString('es-CO')} COP</strong> al mensajero cuando entregue el paquete sellado y neutro en tu dirección.
+                      </p>
+                      <p className="text-[11px] text-amber-700 italic">
+                        * Recuerda tener a mano el dinero en efectivo para facilitar la recepción rápida y discreta.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="pt-3 flex justify-between items-center border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => setPasoCheckout(1)}
+                      className="px-4 py-2.5 text-xs font-bold text-slate-500 hover:text-slate-800 transition"
+                    >
+                      ← Volver a Envío
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-3 bg-[#1e3a8a] hover:bg-blue-900 text-white font-bold rounded-2xl text-xs uppercase tracking-wider transition shadow-md active:scale-95 flex items-center gap-2"
+                    >
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span>Confirmar y Pagar</span>
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* ================================================= */}
+              {/* PASO 3: PROCESANDO PAGO CON ANIMACIÓN REALISTA */}
+              {/* ================================================= */}
+              {pasoCheckout === 3 && (
+                <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
+                  <div className="relative w-16 h-16">
+                    <div className="w-16 h-16 rounded-full border-4 border-blue-100 border-t-[#1e3a8a] animate-spin"></div>
+                    <div className="absolute inset-0 flex items-center justify-center text-[#1e3a8a]">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-base font-black text-[#1e3a8a]">Procesando transacción segura...</h4>
+                    <p className="text-xs text-slate-500 mt-1">Conectando con la red bancaria y validando embalaje confidencial</p>
+                  </div>
+                  <div className="w-48 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#1e3a8a] rounded-full animate-pulse"></div>
+                  </div>
+                </div>
+              )}
+
+              {/* ================================================= */}
+              {/* PASO 4: COMPRA CONFIRMADA EXITOSA */}
+              {/* ================================================= */}
+              {pasoCheckout === 4 && pedidoConfirmado && (
+                <div className="space-y-5 animate-in zoom-in-95 duration-300">
+                  <div className="text-center py-2">
+                    <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
+                      <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <h4 className="text-xl font-black text-[#1e3a8a]">¡Pedido Confirmado con Éxito!</h4>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Hemos recibido tu orden y ya está en proceso de alistamiento.
+                    </p>
+                  </div>
+
+                  {/* Resumen de la Orden */}
+                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs space-y-2">
+                    <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                      <span className="text-slate-500 font-bold">Número de Pedido:</span>
+                      <span className="font-mono font-black text-[#1e3a8a] text-sm">{pedidoConfirmado.id}</span>
+                    </div>
+                    <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                      <span className="text-slate-500 font-bold">Guía de Transporte:</span>
+                      <span className="font-mono font-bold text-emerald-700">{pedidoConfirmado.guia}</span>
+                    </div>
+                    <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                      <span className="text-slate-500 font-bold">Destinatario:</span>
+                      <span className="font-bold text-slate-800">{pedidoConfirmado.cliente}</span>
+                    </div>
+                    <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                      <span className="text-slate-500 font-bold">Destino:</span>
+                      <span className="font-bold text-slate-800">{pedidoConfirmado.direccion}</span>
+                    </div>
+                    <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                      <span className="text-slate-500 font-bold">Método de Pago:</span>
+                      <span className="font-bold text-slate-800">{pedidoConfirmado.metodoPago}</span>
+                    </div>
+                    <div className="flex justify-between items-center pt-1 text-sm font-black text-[#1e3a8a]">
+                      <span>Total Pagado:</span>
+                      <span>${pedidoConfirmado.total.toLocaleString('es-CO')} COP</span>
+                    </div>
+                  </div>
+
+                  {/* Certificado de Empaque Neutro */}
+                  <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center gap-3">
+                    <svg className="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7m0 0l7-7m-7 7l-7-7" />
+                    </svg>
+                    <p className="text-xs text-emerald-800 font-medium">
+                      <strong>Garantía de Confidencialidad:</strong> Tu caja será despachada totalmente sellada, sin leyendas, marcas ni distintivos relacionados con la tienda.
+                    </p>
+                  </div>
+
+                  <div className="pt-3 flex gap-3">
+                    <button
+                      onClick={() => {
+                        setMostrarCheckout(false);
+                        navigate('/tienda');
+                      }}
+                      className="flex-1 py-3 bg-[#1e3a8a] hover:bg-blue-900 text-white font-bold rounded-2xl text-xs uppercase tracking-wider transition text-center shadow-md cursor-pointer"
+                    >
+                      Continuar en la Tienda
+                    </button>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

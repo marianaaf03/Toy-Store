@@ -31,7 +31,16 @@ export default async function handler(req, res) {
     }
 
     const destinatario = String(email).trim().toLowerCase();
-    const token = crypto.randomBytes(32).toString('hex');
+    
+    // Generar token criptográficamente firmado con expiración garantizada de 24 horas
+    const secret = process.env.JWT_SECRET || 'toystore_clave_secreta_2024';
+    const payload = Buffer.from(JSON.stringify({
+      email: destinatario,
+      exp: Date.now() + 24 * 3600 * 1000
+    })).toString('base64url');
+    const signature = crypto.createHmac('sha256', secret).update(payload).digest('base64url');
+    const token = `${payload}.${signature}`;
+
     const frontendBase = 'https://front-psi-five.vercel.app';
     const resetLink = `${frontendBase}/reset-password/${token}`;
 

@@ -202,8 +202,15 @@ const forgotPassword = async (req, res) => {
       console.warn('Aviso consulta usuario en forgotPassword:', eDb.message);
     }
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const expiry = new Date(Date.now() + 3600000);
+    // Generar token criptográficamente firmado con 24 horas de validez
+    const secret = process.env.JWT_SECRET || 'toystore_clave_secreta_2024';
+    const payload = Buffer.from(JSON.stringify({
+      email: email.trim().toLowerCase(),
+      exp: Date.now() + 24 * 3600 * 1000
+    })).toString('base64url');
+    const signature = crypto.createHmac('sha256', secret).update(payload).digest('base64url');
+    const token = `${payload}.${signature}`;
+    const expiry = new Date(Date.now() + 24 * 3600000);
 
     if (usuario) {
       try {
@@ -256,11 +263,42 @@ const resetPassword = async (req, res) => {
   if (!token || !nuevaContrasena) return res.status(400).json({ error: 'Datos obligatorios' });
 
   try {
-    const [rows] = await db.query('SELECT * FROM usuarios WHERE reset_token = ? AND reset_token_expiry > NOW()', [token]);
-    if (rows.length === 0) return res.status(400).json({ error: 'Token inválido o expirado' });
+    let idUsuario = null;
+
+    // 1. Verificar si es un token firmado criptográficamente
+    if (token && typeof token === 'string' && token.includes('.')) {
+      try {
+        const [tokenData, signature] = token.split('.');
+        const secret = process.env.JWT_SECRET || 'toystore_clave_secreta_2024';
+        const expectedSig = crypto.createHmac('sha256', secret).update(tokenData).digest('base64url');
+        if (signature === expectedSig) {
+          const payload = JSON.parse(Buffer.from(tokenData, 'base64url').toString('utf8'));
+          if (payload && payload.email && Number(payload.exp) > Date.now()) {
+            const [uRows] = await db.query('SELECT * FROM usuarios WHERE LOWER(email) = LOWER(?)', [payload.email.trim()]);
+            if (uRows && uRows.length > 0) {
+              idUsuario = uRows[0].id_usuario;
+            }
+          }
+        }
+      } catch (errSig) {
+        console.warn('Aviso validando token firmado:', errSig.message);
+      }
+    }
+
+    // 2. Si no es token firmado o no halló usuario, buscar por columna reset_token en BD
+    if (!idUsuario) {
+      const [rows] = await db.query('SELECT * FROM usuarios WHERE reset_token = ? AND reset_token_expiry > NOW()', [token]);
+      if (rows && rows.length > 0) {
+        idUsuario = rows[0].id_usuario;
+      }
+    }
+
+    if (!idUsuario) {
+      return res.status(400).json({ error: 'Token inválido o expirado. Solicita un nuevo enlace.' });
+    }
 
     const hash = await bcrypt.hash(nuevaContrasena, 10);
-    await db.query('UPDATE usuarios SET contrasena = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id_usuario = ?', [hash, rows[0].id_usuario]);
+    await db.query('UPDATE usuarios SET contrasena = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id_usuario = ?', [hash, idUsuario]);
     res.json({ message: 'Contraseña actualizada exitosamente' });
   } catch (error) {
     console.error(error);
