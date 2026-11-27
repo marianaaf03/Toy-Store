@@ -4,12 +4,12 @@ require('dotenv').config();
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
+    user: process.env.EMAIL_USER || 'toystorexoxo@gmail.com',
+    pass: process.env.EMAIL_PASSWORD || 'wure smub xunr upjo'
   },
-  connectionTimeout: 5000,
-  greetingTimeout: 5000,
-  socketTimeout: 5000
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000
 });
 
 // Verificamos conexión de forma asíncrona sin bloquear el arranque del servidor
