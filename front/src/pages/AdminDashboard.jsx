@@ -243,14 +243,14 @@ const AdminDashboard = () => {
 
   return (
     <RoomWrapper theme="andy" wallpaperContent={<AndyCloudsWallpaper />} showFooter={false} hideNavbar={true}>
-      <div className="flex-1 flex flex-col items-center pt-2 px-6 relative min-h-[160vh] pb-60">
+      <div className="flex-1 flex flex-col items-center pt-2 px-6 relative min-h-[130vh] pb-28">
         
         <Navbar minimal={true} />
 
         <WallClock />
 
         {/* --- TABLERO DE TIZA/MARCADOR (ESTILO FIJO Y ESTABLE) --- */}
-        <div className="z-30 text-center relative mt-48 md:mt-52 animate-in fade-in slide-in-from-top-10 duration-1000">
+        <div className="z-30 text-center relative mt-38 md:mt-40 animate-in fade-in slide-in-from-top-10 duration-1000">
           
           <div className="relative inline-block px-16 py-12 bg-white rounded-xl shadow-[0_40px_80px_rgba(0,0,0,0.3)] transform scale-110 transition-transform group mt-6">
             {/* Tornillos */}
