@@ -110,6 +110,16 @@ const AdminDashboard = () => {
   const [flyingPapers, setFlyingPapers] = useState([]);
   const [isLampOn, setIsLampOn] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (location.search.includes('pc=1') || location.search.includes('screen=computer')) {
+      setIsComputerOpen(true);
+    }
+  }, [location.search]);
+
   const handlePrint = () => {
     setIsPrinting(true);
     // Lanzar varios papeles
@@ -233,7 +243,7 @@ const AdminDashboard = () => {
 
   return (
     <RoomWrapper theme="andy" wallpaperContent={<AndyCloudsWallpaper />} showFooter={false} hideNavbar={true}>
-      <div className="flex-1 flex flex-col items-center pt-2 px-6 relative min-h-[160vh] pb-60">
+      <div className="flex-1 flex flex-col items-center pt-2 px-6 relative pb-[360px]">
         
         <Navbar minimal={true} />
 

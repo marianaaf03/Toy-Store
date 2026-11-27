@@ -298,7 +298,11 @@ export default function AdminInventory({ defaultApp = 'inventario' }) {
 
   // Función estándar para salir de cualquier subaplicación hacia el panel principal con opciones
   const salirAlPanelPrincipal = () => {
-    navigate('/admin?pc=1');
+    if (ventanaAbierta) {
+      setVentanaAbierta(false);
+    } else {
+      navigate('/admin');
+    }
   };
 
   // ==========================================
