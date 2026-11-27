@@ -42,7 +42,7 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
   // Si es modo minimalista, solo renderizamos el globo de perfil flotante alineado igual que el principal
   if (minimal) {
     return (
-      <nav className="fixed top-0 left-0 right-0 z-[200] w-full pointer-events-none pt-2">
+      <nav className="sticky top-0 z-[200] w-full pointer-events-none pt-2">
         {/* Incluimos los filtros globales para que la nube tenga borde en admin */}
         <svg className="absolute w-0 h-0 overflow-hidden">
           <defs>
@@ -181,8 +181,7 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
   }
 
   return (
-    <>
-      <nav className="fixed top-0 left-0 right-0 z-[100] w-full pointer-events-none pt-2">
+    <nav className="sticky top-0 z-[100] w-full pointer-events-none pt-2">
       {/* Fondo de Nube SVG */}
       <div className="absolute top-0 left-0 w-full h-[160px] md:h-[200px] z-0 pointer-events-auto">
         <svg viewBox="0 0 1000 150" preserveAspectRatio="none" className="w-full h-full" style={{ filter: 'drop-shadow(0px 8px 12px rgba(0,0,0,0.08))' }}>
@@ -515,8 +514,5 @@ export default function Navbar({ onHeartClick, onStarClick, onMoonClick, minimal
         </div>
       )}
     </nav>
-    {/* Espaciador de flujo que reserva la altura de la navbar para evitar saltos o solapamientos */}
-    <div className="h-[74px] md:h-[90px] w-full shrink-0 pointer-events-none" aria-hidden="true" />
-  </>
   );
 }
