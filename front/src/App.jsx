@@ -61,7 +61,10 @@ export default function App() {
           <Route path="/usuario/:username" element={<PerfilPublico />} />
           <Route path="/configuracion" element={<RutaProtegida><Configuracion /></RutaProtegida>} />
           <Route path="/admin" element={<RutaProtegida><AdminDashboard /></RutaProtegida>} />
-          <Route path="/admin/productos" element={<RutaProtegida><AdminInventory /></RutaProtegida>} />
+          <Route path="/admin/productos" element={<RutaProtegida><AdminInventory defaultApp="inventario" /></RutaProtegida>} />
+          <Route path="/admin/pedidos" element={<RutaProtegida><AdminInventory defaultApp="pedidos" /></RutaProtegida>} />
+          <Route path="/admin/usuarios" element={<RutaProtegida><AdminInventory defaultApp="usuarios" /></RutaProtegida>} />
+          <Route path="/admin/stock" element={<Navigate to="/admin/productos" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

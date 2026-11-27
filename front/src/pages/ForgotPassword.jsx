@@ -19,46 +19,34 @@ export default function ForgotPassword() {
     setCargando(true);
     setError("");
 
-    // Fallback de respuesta rápida para presentación fluida (máximo 1.2s de espera)
-    const fallbackTimer = setTimeout(() => {
-      setCargando(false);
-      setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.");
-    }, 1200);
-
     try {
       let enviadoOk = false;
-
-      // 1. Envío prioritario directo a Serverless Function en Vercel
       try {
-        const res1 = await fetch("/api/forgot-password", {
+        const resVercel = await fetch("/api/forgot-password", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email }),
         });
-        if (res1 && res1.ok) enviadoOk = true;
+        if (resVercel && resVercel.ok) enviadoOk = true;
       } catch (errApi) {
-        console.warn("Fallback /api/forgot-password:", errApi.message);
+        console.warn("Fallo serverless Vercel forgot-password, intentando backend:", errApi.message);
       }
 
-      // 2. Fallback secundario a través de /auth/forgot-password
       if (!enviadoOk) {
         try {
-          const res2 = await fetch("/auth/forgot-password", {
+          await fetch("/auth/forgot-password", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email }),
           });
-          if (res2 && res2.ok) enviadoOk = true;
-        } catch (errAuth) {
-          console.warn("Fallback /auth/forgot-password:", errAuth.message);
+        } catch {
+          // Continúa a pantalla de éxito
         }
       }
 
-      clearTimeout(fallbackTimer);
       setCargando(false);
       setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.");
     } catch {
-      clearTimeout(fallbackTimer);
       setCargando(false);
       setMensaje("Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.");
     }

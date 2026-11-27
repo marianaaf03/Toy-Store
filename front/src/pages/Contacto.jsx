@@ -96,7 +96,7 @@ export default function Contacto() {
     };
 
     try {
-      // 1. Envío directo prioritario a Serverless Function en Vercel
+      // 1. Envío primario a través de la función serverless de Vercel (/api/contacto)
       let enviadoOk = false;
 
       try {
@@ -107,33 +107,28 @@ export default function Contacto() {
         });
         if (res && res.ok) enviadoOk = true;
       } catch (errApi) {
-        console.warn('Fallback /api/contacto:', errApi.message);
+        console.warn('Fallo serverless Vercel, intentando backend:', errApi.message);
       }
 
-      // 2. Fallback secundario a través de /auth/contacto
+      // 2. Si no confirmó Vercel, reintentar con backend Render
       if (!enviadoOk) {
         try {
-          const resAuth = await fetch('/auth/contacto', {
+          const res2 = await fetch('/auth/contacto', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
-          if (resAuth && resAuth.ok) enviadoOk = true;
-        } catch (errAuth) {
-          console.warn('Fallback /auth/contacto:', errAuth.message);
-        }
-      }
-
-      // 3. Fallback directo a la URL de Render
-      if (!enviadoOk) {
-        try {
-          await fetch('https://toystore-backend-5v90.onrender.com/auth/contacto', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-        } catch (errRender) {
-          console.warn('Fallback Render:', errRender.message);
+          if (res2 && res2.ok) enviadoOk = true;
+        } catch {
+          try {
+            await fetch('https://toystore-backend-5v90.onrender.com/contacto', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+          } catch {
+            // Continúa con notificación
+          }
         }
       }
 
@@ -426,61 +421,67 @@ export default function Contacto() {
                   Toy Store nació de nuestra complicidad y de una convicción compartida: el placer íntimo merece vivirse con diseño impecable y total naturalidad. ¡Toca o escanea nuestros códigos para conectar en Instagram!
                 </p>
 
-                {/* CÓDIGOS QR REALES: SIN RECUADROS NI BORDES INTERMEDIOS, GRANDES Y AMPLIAMENTE SEPARADOS */}
-                <div className="w-full flex flex-col sm:flex-row items-center justify-around gap-12 sm:gap-16 lg:gap-24 pt-2">
+                {/* TARJETAS DE INSTAGRAM: BIEN SEPARADAS (gap-10 sm:gap-14) Y QRS NOTORIAMENTE MÁS GRANDES */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 w-full max-w-xl">
                   
                   {/* QR REAL: Valeria */}
                   <a 
-                    href="https://www.instagram.com/valg09_" 
+                    href="https://instagram.com" 
                     target="_blank" 
                     rel="noreferrer"
-                    className="flex flex-col items-center text-center group cursor-pointer transition-transform hover:scale-105"
-                    title="Escanear o tocar para abrir Instagram de Valeria"
+                    className="bg-white/95 rounded-2xl p-4 sm:p-5 border-2 border-slate-200 hover:border-[#a6d4f2] flex flex-col items-center text-center transition-all group shadow-sm hover:shadow-md cursor-pointer"
                   >
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 rounded-xl bg-sky-100 border border-sky-200 text-[#1e3a8a] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-110 transition-transform">
-                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                      </div>
-                      <span className="text-base sm:text-lg font-black uppercase tracking-wider text-[#1e3a8a]">
-                        Valeria
-                      </span>
+                    {/* Ícono de Instagram enmarcado en azul cielo institucional */}
+                    <div className="w-11 h-11 rounded-xl bg-sky-100 border border-sky-200 text-[#1e3a8a] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform mb-2">
+                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                      </svg>
+                    </div>
+                    <span className="text-sm font-black uppercase tracking-wider text-[#1e3a8a]">Valeria</span>
+
+                    {/* QR Real QR_valeria.png Notablemente más Grande y Visible */}
+                    <div className="w-40 h-40 sm:w-44 sm:h-44 bg-white p-2 rounded-xl border border-slate-200 shadow-inner my-2.5 flex items-center justify-center overflow-hidden">
+                      <img 
+                        src={qrValeria} 
+                        alt="Código QR Instagram Valeria"
+                        className="w-full h-full object-contain"
+                      />
                     </div>
 
-                    {/* QR Grande y Notorio sin recuadros exteriores ni interiores */}
-                    <img 
-                      src={qrValeria} 
-                      alt="Código QR Instagram Valeria"
-                      className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 object-contain rounded-2xl shadow-[0_8px_25px_rgba(30,58,138,0.12)] border border-slate-300 group-hover:border-[#a6d4f2] transition-all bg-white"
-                    />
+                    <span className="text-xs font-black text-[#1e3a8a] group-hover:underline flex items-center gap-1 uppercase tracking-wider mt-1">
+                      Ver Perfil
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </span>
                   </a>
 
                   {/* QR REAL: Mariana */}
                   <a 
-                    href="https://www.instagram.com/marianaaf_03" 
+                    href="https://instagram.com" 
                     target="_blank" 
                     rel="noreferrer"
-                    className="flex flex-col items-center text-center group cursor-pointer transition-transform hover:scale-105"
-                    title="Escanear o tocar para abrir Instagram de Mariana"
+                    className="bg-white/95 rounded-2xl p-4 sm:p-5 border-2 border-slate-200 hover:border-[#a6d4f2] flex flex-col items-center text-center transition-all group shadow-sm hover:shadow-md cursor-pointer"
                   >
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 rounded-xl bg-sky-100 border border-sky-200 text-[#1e3a8a] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-110 transition-transform">
-                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                      </div>
-                      <span className="text-base sm:text-lg font-black uppercase tracking-wider text-[#1e3a8a]">
-                        Mariana
-                      </span>
+                    {/* Ícono de Instagram enmarcado en azul cielo institucional */}
+                    <div className="w-11 h-11 rounded-xl bg-sky-100 border border-sky-200 text-[#1e3a8a] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform mb-2">
+                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                      </svg>
+                    </div>
+                    <span className="text-sm font-black uppercase tracking-wider text-[#1e3a8a]">Mariana</span>
+
+                    {/* QR Real QR_mariana.png Notablemente más Grande y Visible */}
+                    <div className="w-40 h-40 sm:w-44 sm:h-44 bg-white p-2 rounded-xl border border-slate-200 shadow-inner my-2.5 flex items-center justify-center overflow-hidden">
+                      <img 
+                        src={qrMariana} 
+                        alt="Código QR Instagram Mariana"
+                        className="w-full h-full object-contain"
+                      />
                     </div>
 
-                    {/* QR Grande y Notorio sin recuadros exteriores ni interiores */}
-                    <img 
-                      src={qrMariana} 
-                      alt="Código QR Instagram Mariana"
-                      className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 object-contain rounded-2xl shadow-[0_8px_25px_rgba(30,58,138,0.12)] border border-slate-300 group-hover:border-[#a6d4f2] transition-all bg-white"
-                    />
+                    <span className="text-xs font-black text-[#1e3a8a] group-hover:underline flex items-center gap-1 uppercase tracking-wider mt-1">
+                      Ver Perfil
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </span>
                   </a>
 
                 </div>

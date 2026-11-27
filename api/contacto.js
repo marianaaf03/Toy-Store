@@ -1,9 +1,11 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_USER || 'toystorexoxo@gmail.com',
+    user: (process.env.EMAIL_USER || 'toystorexoxo@gmail.com').trim(),
     pass: (process.env.EMAIL_PASSWORD || 'wuresmubxunrupjo').replace(/\s+/g, '')
   }
 });
@@ -32,7 +34,7 @@ module.exports = async (req, res) => {
 
     const destino = 'toystorexoxo@gmail.com';
 
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"Toy Store Contacto" <toystorexoxo@gmail.com>`,
       to: destino,
       replyTo: remitenteEmail,
@@ -56,7 +58,7 @@ ${mensaje}
       `
     });
 
-    console.log(`Mensaje enviado con éxito a ${destino}`);
+    console.log(`Mensaje enviado con éxito a ${destino}: ${info.messageId}`);
     return res.status(200).json({
       ok: true,
       message: 'Mensaje transmitido con éxito al correo oficial toystorexoxo@gmail.com'

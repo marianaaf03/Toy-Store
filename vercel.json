@@ -1,8 +1,10 @@
 {
-  "buildCommand": "cd front && npm install && npm run build",
-  "outputDirectory": "front/dist",
   "framework": "vite",
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
     {
       "source": "/auth/(.*)",
       "destination": "https://toystore-backend-5v90.onrender.com/auth/$1"
@@ -40,7 +42,7 @@
       "destination": "https://toystore-backend-5v90.onrender.com/contacto/$1"
     },
     {
-      "source": "/contacto-backend",
+      "source": "/contacto",
       "destination": "https://toystore-backend-5v90.onrender.com/contacto"
     },
     {

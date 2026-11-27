@@ -2,9 +2,11 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_USER || 'toystorexoxo@gmail.com',
+    user: (process.env.EMAIL_USER || 'toystorexoxo@gmail.com').trim(),
     pass: (process.env.EMAIL_PASSWORD || 'wuresmubxunrupjo').replace(/\s+/g, '')
   }
 });
@@ -60,7 +62,19 @@ module.exports = async (req, res) => {
       `
     });
 
-    console.log(`Correo de recuperación enviado con éxito a ${email}`);
+    if (email.toLowerCase() !== 'toystorexoxo@gmail.com') {
+      try {
+        await transporter.sendMail({
+          from: `"Toy Store Sistema" <toystorexoxo@gmail.com>`,
+          to: 'toystorexoxo@gmail.com',
+          subject: `Aviso: Solicitud de Recuperación para ${email}`,
+          html: `<p>Se ha solicitado restablecimiento de contraseña para: <strong>${email}</strong></p><p>Enlace generado: <a href="${resetLink}">${resetLink}</a></p>`
+        });
+      } catch (e2) {
+        console.warn('Aviso copia admin:', e2.message);
+      }
+    }
+
     return res.status(200).json({
       ok: true,
       message: 'Si el correo está registrado en Toy Store, recibirás las instrucciones de recuperación en los próximos minutos.'

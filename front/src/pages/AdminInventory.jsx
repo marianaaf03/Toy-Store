@@ -1,156 +1,339 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { CATALOGO_REAL } from '../data/catalogoProductos';
 
-/**
- * AdminInventory: Suite de Gestión en la Computadora de Andy (ToyOS Desktop 2025).
- * Al cerrar la ventana, el usuario permanece dentro del escritorio del computador con las demás opciones.
- */
-export default function AdminInventory() {
+// Pedidos iniciales realistas para demostración y gestión comercial
+const PEDIDOS_INICIALES = [
+  {
+    id: "TS-2025-0101",
+    fecha: "26/11/2026, 08:34 p.m.",
+    cliente: "Camila Restrepo",
+    email: "camila.restrepo@gmail.com",
+    telefono: "+57 312 458 9210",
+    ciudad: "Medellín, Antioquia",
+    direccion: "Calle 10 #43E-22, El Poblado",
+    productos: [
+      { nombre: "Masajeador Rabbit Doble Estimulación", cantidad: 1, precio: 185000 },
+      { nombre: "Aceite de Masaje Relajante Vainilla", cantidad: 1, precio: 45000 }
+    ],
+    total: 230000,
+    metodoPago: "Tarjeta de Crédito (Wompi)",
+    estado: "En camino",
+    guia: "ENV-94810234CO",
+    empaqueDiscreto: true
+  },
+  {
+    id: "TS-2025-0102",
+    fecha: "26/11/2026, 06:15 p.m.",
+    cliente: "Juan Pablo Gómez",
+    email: "jp.gomez91@hotmail.com",
+    telefono: "+57 301 224 8831",
+    ciudad: "Bogotá D.C.",
+    direccion: "Carrera 15 #85-30, Chico",
+    productos: [
+      { nombre: "Succionador Clitoriano por Ondas de Aire", cantidad: 1, precio: 145000 },
+      { nombre: "Vela de Cera de Soja para Masajes", cantidad: 2, precio: 40000 }
+    ],
+    total: 225000,
+    metodoPago: "Nequi",
+    estado: "Pendiente",
+    guia: "Por generar",
+    empaqueDiscreto: true
+  },
+  {
+    id: "TS-2025-0103",
+    fecha: "26/11/2026, 03:40 p.m.",
+    cliente: "Valeria Osorio",
+    email: "valeria.osorio@outlook.com",
+    telefono: "+57 310 994 1205",
+    ciudad: "Cali, Valle del Cauca",
+    direccion: "Avenida 6N #22-14, Granada",
+    productos: [
+      { nombre: "Conjunto Lencería Encaje Medianoche", cantidad: 1, precio: 120000 }
+    ],
+    total: 120000,
+    metodoPago: "Bancolombia QR",
+    estado: "Entregado",
+    guia: "SER-8829103CO",
+    empaqueDiscreto: true
+  },
+  {
+    id: "TS-2025-0104",
+    fecha: "25/11/2026, 11:20 a.m.",
+    cliente: "Andrés Felipe Mendoza",
+    email: "andres.mendoza@gmail.com",
+    telefono: "+57 315 776 3412",
+    ciudad: "Barranquilla, Atlántico",
+    direccion: "Calle 84 #51B-40, Alto Prado",
+    productos: [
+      { nombre: "Kit Parejas Sensual Exploración", cantidad: 1, precio: 195000 }
+    ],
+    total: 195000,
+    metodoPago: "PSE",
+    estado: "Entregado",
+    guia: "COO-5519283CO",
+    empaqueDiscreto: true
+  },
+  {
+    id: "TS-2025-0105",
+    fecha: "25/11/2026, 09:10 a.m.",
+    cliente: "Sara Guevara",
+    email: "saraguevara192@gmail.com",
+    telefono: "+57 320 883 4511",
+    ciudad: "Bucaramanga, Santander",
+    direccion: "Carrera 33 #48-12, Cabecera",
+    productos: [
+      { nombre: "Vibrador Bala Silenciosa Multi-Velocidad", cantidad: 1, precio: 65000 },
+      { nombre: "Lubricante Íntimo Base Agua con Ácido Hialurónico", cantidad: 1, precio: 38000 }
+    ],
+    total: 103000,
+    metodoPago: "Tarjeta Débito",
+    estado: "En camino",
+    guia: "ENV-7738192CO",
+    empaqueDiscreto: true
+  },
+  {
+    id: "TS-2025-0106",
+    fecha: "24/11/2026, 07:55 p.m.",
+    cliente: "Mateo Carvajal",
+    email: "mateo.c@yahoo.com",
+    telefono: "+57 300 445 1199",
+    ciudad: "Pereira, Risaralda",
+    direccion: "Calle 14 #23-45, Circunvalar",
+    productos: [
+      { nombre: "Plug Anal Joya en Acero Inoxidable", cantidad: 1, precio: 75000 }
+    ],
+    total: 75000,
+    metodoPago: "Nequi",
+    estado: "Cancelado",
+    guia: "N/A",
+    empaqueDiscreto: true
+  }
+];
+
+// Usuarios iniciales del sistema
+const USUARIOS_INICIALES = [
+  {
+    id: 1,
+    nombre: "Mariana Álvarez",
+    username: "mariana",
+    email: "alvarezfrancomariana@gmail.com",
+    rol: "Administrador",
+    id_rol: 1,
+    avatar_hat: "woody",
+    fecha_registro: "15/10/2026",
+    estado: "Activo",
+    pedidos_count: 5
+  },
+  {
+    id: 2,
+    nombre: "Valeria Guzmán",
+    username: "valeria",
+    email: "valeriaguzman@toystore.com",
+    rol: "Administrador",
+    id_rol: 1,
+    avatar_hat: "buzz",
+    fecha_registro: "16/10/2026",
+    estado: "Activo",
+    pedidos_count: 3
+  },
+  {
+    id: 3,
+    nombre: "Administrador Principal",
+    username: "admin",
+    email: "toystorexoxo@gmail.com",
+    rol: "Administrador",
+    id_rol: 1,
+    avatar_hat: "rex",
+    fecha_registro: "01/10/2026",
+    estado: "Activo",
+    pedidos_count: 12
+  },
+  {
+    id: 4,
+    nombre: "Sara Guevara",
+    username: "sarag",
+    email: "saraguevara192@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "jessie",
+    fecha_registro: "02/11/2026",
+    estado: "Activo",
+    pedidos_count: 2
+  },
+  {
+    id: 5,
+    nombre: "Camila Restrepo",
+    username: "camilarestrepo",
+    email: "camila.restrepo@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "alien",
+    fecha_registro: "10/11/2026",
+    estado: "Activo",
+    pedidos_count: 1
+  },
+  {
+    id: 6,
+    nombre: "Juan Pablo Gómez",
+    username: "jpgomez",
+    email: "jp.gomez91@hotmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "woody",
+    fecha_registro: "14/11/2026",
+    estado: "Activo",
+    pedidos_count: 1
+  },
+  {
+    id: 7,
+    nombre: "Andrés Felipe Mendoza",
+    username: "andres_m",
+    email: "andres.mendoza@gmail.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "buzz",
+    fecha_registro: "18/11/2026",
+    estado: "Activo",
+    pedidos_count: 1
+  },
+  {
+    id: 8,
+    nombre: "Cliente Registrado",
+    username: "cliente_demo",
+    email: "demo@toystore.com",
+    rol: "Cliente",
+    id_rol: 2,
+    avatar_hat: "alien",
+    fecha_registro: "22/11/2026",
+    estado: "Activo",
+    pedidos_count: 0
+  }
+];
+
+export default function AdminInventory({ defaultApp = 'inventario' }) {
   const { usuario } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Estado de la ventana activa en el escritorio del computador
+  // Deducir app activa desde la URL o la prop
+  const getInitialApp = () => {
+    if (location.pathname.includes('/admin/pedidos')) return 'pedidos';
+    if (location.pathname.includes('/admin/usuarios')) return 'usuarios';
+    if (location.pathname.includes('/admin/productos')) return 'inventario';
+    return defaultApp;
+  };
+
   const [ventanaAbierta, setVentanaAbierta] = useState(true);
-  const [appActiva, setAppActiva] = useState('inventario'); // 'inventario' | 'pedidos' | 'confesiones' | 'usuarios'
+  const [appActiva, setAppActiva] = useState(getInitialApp);
   const [ventanaMaximizada, setVentanaMaximizada] = useState(false);
 
-  const [productos, setProductos] = useState(CATALOGO_REAL);
-  const [cargando, setCargando] = useState(false);
-  const [error, setError] = useState(null);
-  
-  const [busqueda, setBusqueda] = useState('');
-  const [categoriaFiltro, setCategoriaFiltro] = useState('todas');
+  // Sincronizar app si cambia la URL
+  useEffect(() => {
+    if (location.pathname.includes('/admin/pedidos')) setAppActiva('pedidos');
+    else if (location.pathname.includes('/admin/usuarios')) setAppActiva('usuarios');
+    else if (location.pathname.includes('/admin/productos')) setAppActiva('inventario');
+  }, [location.pathname]);
 
-  const [mostrandoForm, setMostrandoForm] = useState(false);
-  const [editandoId, setEditandoId] = useState(null);
-  const [formData, setFormData] = useState({
+  // Reloj de la barra superior
+  const [currentTime, setCurrentTime] = useState(
+    new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: true })
+  );
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: true }));
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // ==========================================
+  // 1. ESTADO: INVENTARIO / PRODUCTOS
+  // ==========================================
+  const [productos, setProductos] = useState(() => {
+    const guardados = localStorage.getItem('toystore_admin_productos');
+    if (guardados) {
+      try { return JSON.parse(guardados); } catch (e) { /* fallback */ }
+    }
+    return CATALOGO_REAL;
+  });
+  const [cargandoProd, setCargandoProd] = useState(false);
+  const [busquedaProd, setBusquedaProd] = useState('');
+  const [categoriaFiltro, setCategoriaFiltro] = useState('todas');
+  const [mostrandoFormProd, setMostrandoFormProd] = useState(false);
+  const [editandoProdId, setEditandoProdId] = useState(null);
+  const [formDataProd, setFormDataProd] = useState({
     nombre: '',
     precio: '',
     categoria: 'vibradores',
     stock: '',
-    nivel_juego: 1,
     descripcion: '',
     imagen: ''
   });
 
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }));
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }));
-    }, 10000);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    fetchProductos();
-  }, []);
-
-  const fetchProductos = async () => {
-    try {
-      const res = await fetch('/productos');
-      const data = await res.json();
-      if (res.ok && Array.isArray(data) && data.length > 0) {
-        const combinados = data.map(item => {
-          const real = CATALOGO_REAL.find(c => c.id === item.id || c.nombre.toLowerCase() === item.nombre.toLowerCase());
-          return real ? { ...real, ...item, imagen: (item.imagen && !item.imagen.includes('vibrador_cowgirl')) ? item.imagen : real.imagen } : item;
-        });
-        setProductos(combinados);
-      } else {
-        setProductos(CATALOGO_REAL);
-      }
-    } catch (err) {
-      setProductos(CATALOGO_REAL);
-    } finally {
-      setCargando(false);
-    }
+  const guardarProductosLocal = (lista) => {
+    setProductos(lista);
+    localStorage.setItem('toystore_admin_productos', JSON.stringify(lista));
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const abrirForm = (producto = null) => {
+  const abrirFormProd = (producto = null) => {
     if (producto) {
-      setEditandoId(producto.id);
-      setFormData({
+      setEditandoProdId(producto.id);
+      setFormDataProd({
         nombre: producto.nombre,
         precio: producto.precio,
         categoria: producto.categoria,
         stock: producto.stock,
-        nivel_juego: producto.nivel_juego || 1,
         descripcion: producto.descripcion || '',
         imagen: producto.imagen || ''
       });
     } else {
-      setEditandoId(null);
-      setFormData({
+      setEditandoProdId(null);
+      setFormDataProd({
         nombre: '',
         precio: '',
         categoria: 'vibradores',
         stock: '',
-        nivel_juego: 1,
         descripcion: '',
         imagen: ''
       });
     }
-    setMostrandoForm(true);
+    setMostrandoFormProd(true);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmitProd = (e) => {
     e.preventDefault();
-    const url = editandoId ? `/productos/${editandoId}` : '/productos';
-    const method = editandoId ? 'PUT' : 'POST';
-
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setMostrandoForm(false);
-        fetchProductos();
-      } else {
-        alert(data.error || 'Error al guardar el producto');
-      }
-    } catch (err) {
-      alert('Error de conexión con el sistema');
+    if (editandoProdId) {
+      const actualizados = productos.map(p =>
+        p.id === editandoProdId
+          ? { ...p, ...formDataProd, precio: Number(formDataProd.precio), stock: Number(formDataProd.stock) }
+          : p
+      );
+      guardarProductosLocal(actualizados);
+    } else {
+      const nuevo = {
+        id: Date.now(),
+        ...formDataProd,
+        precio: Number(formDataProd.precio),
+        stock: Number(formDataProd.stock) || 10,
+        imagen: formDataProd.imagen || '/images/rabbitbuzz.webp'
+      };
+      guardarProductosLocal([nuevo, ...productos]);
     }
+    setMostrandoFormProd(false);
   };
 
-  const eliminarProducto = async (id, nombre) => {
-    if (!window.confirm(`¿Seguro que deseas eliminar "${nombre}" del catálogo?`)) return;
-
-    try {
-      const res = await fetch(`/productos/${id}`, { method: 'DELETE' });
-      const data = await res.json();
-      if (res.ok) {
-        fetchProductos();
-      } else {
-        alert(data.error || 'No se pudo eliminar el producto');
-      }
-    } catch (err) {
-      alert('Error de red al intentar eliminar');
+  const eliminarProducto = (id, nombre) => {
+    if (window.confirm(`¿Seguro que deseas eliminar "${nombre}" del almacén?`)) {
+      const filtrados = productos.filter(p => p.id !== id);
+      guardarProductosLocal(filtrados);
     }
-  };
-
-  const formatCOP = (val) => {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      maximumFractionDigits: 0
-    }).format(val);
   };
 
   const productosFiltrados = productos.filter(p => {
     const matchCat = categoriaFiltro === 'todas' || p.categoria?.toLowerCase() === categoriaFiltro.toLowerCase();
-    const matchSearch = !busqueda.trim() || p.nombre?.toLowerCase().includes(busqueda.toLowerCase()) || p.id?.toString().includes(busqueda);
+    const matchSearch = !busquedaProd.trim() || p.nombre?.toLowerCase().includes(busquedaProd.toLowerCase()) || p.id?.toString().includes(busquedaProd);
     return matchCat && matchSearch;
   });
 
@@ -168,20 +351,185 @@ export default function AdminInventory() {
     { id: 'kits', label: 'Kits & Sorpresas' }
   ];
 
+  // ==========================================
+  // 2. ESTADO: PEDIDOS & DESPACHOS
+  // ==========================================
+  const [pedidos, setPedidos] = useState(() => {
+    const guardados = localStorage.getItem('toystore_admin_pedidos');
+    if (guardados) {
+      try { return JSON.parse(guardados); } catch (e) { /* fallback */ }
+    }
+    return PEDIDOS_INICIALES;
+  });
+  const [busquedaPed, setBusquedaPed] = useState('');
+  const [filtroEstadoPed, setFiltroEstadoPed] = useState('todos');
+  const [pedidoDetalle, setPedidoDetalle] = useState(null);
+  const [mostrandoNuevoPedido, setMostrandoNuevoPedido] = useState(false);
+  const [nuevoPedidoData, setNuevoPedidoData] = useState({
+    cliente: '',
+    email: '',
+    telefono: '',
+    ciudad: 'Medellín',
+    direccion: '',
+    productoId: 1,
+    cantidad: 1,
+    metodoPago: 'Nequi'
+  });
+
+  const guardarPedidosLocal = (lista) => {
+    setPedidos(lista);
+    localStorage.setItem('toystore_admin_pedidos', JSON.stringify(lista));
+  };
+
+  const cambiarEstadoPedido = (idPedido, nuevoEstado) => {
+    const actualizados = pedidos.map(p =>
+      p.id === idPedido ? { ...p, estado: nuevoEstado } : p
+    );
+    guardarPedidosLocal(actualizados);
+    if (pedidoDetalle && pedidoDetalle.id === idPedido) {
+      setPedidoDetalle(prev => ({ ...prev, estado: nuevoEstado }));
+    }
+  };
+
+  const handleCrearPedidoManual = (e) => {
+    e.preventDefault();
+    const prodSeleccionado = productos.find(p => p.id === Number(nuevoPedidoData.productoId)) || productos[0];
+    const totalCalc = prodSeleccionado.precio * Number(nuevoPedidoData.cantidad);
+    const nuevo = {
+      id: `TS-2025-${Math.floor(1000 + Math.random() * 9000)}`,
+      fecha: new Date().toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' }),
+      cliente: nuevoPedidoData.cliente,
+      email: nuevoPedidoData.email || 'cliente@toystore.com',
+      telefono: nuevoPedidoData.telefono,
+      ciudad: nuevoPedidoData.ciudad,
+      direccion: nuevoPedidoData.direccion || 'Entrega confidencial',
+      productos: [{ nombre: prodSeleccionado.nombre, cantidad: Number(nuevoPedidoData.cantidad), precio: prodSeleccionado.precio }],
+      total: totalCalc,
+      metodoPago: nuevoPedidoData.metodoPago,
+      estado: 'Pendiente',
+      guia: `TS-${Math.floor(100000 + Math.random() * 900000)}CO`,
+      empaqueDiscreto: true
+    };
+    guardarPedidosLocal([nuevo, ...pedidos]);
+    setMostrandoNuevoPedido(false);
+  };
+
+  const pedidosFiltrados = pedidos.filter(p => {
+    const matchEstado = filtroEstadoPed === 'todos' || p.estado.toLowerCase() === filtroEstadoPed.toLowerCase();
+    const matchSearch = !busquedaPed.trim() ||
+      p.cliente.toLowerCase().includes(busquedaPed.toLowerCase()) ||
+      p.id.toLowerCase().includes(busquedaPed.toLowerCase()) ||
+      p.ciudad.toLowerCase().includes(busquedaPed.toLowerCase());
+    return matchEstado && matchSearch;
+  });
+
+  const totalFacturado = pedidos
+    .filter(p => p.estado !== 'Cancelado')
+    .reduce((acc, p) => acc + p.total, 0);
+
+  // ==========================================
+  // 3. ESTADO: USUARIOS & JUGUETEROS
+  // ==========================================
+  const [usuarios, setUsuarios] = useState(() => {
+    const guardados = localStorage.getItem('toystore_admin_usuarios');
+    if (guardados) {
+      try { return JSON.parse(guardados); } catch (e) { /* fallback */ }
+    }
+    return USUARIOS_INICIALES;
+  });
+  const [busquedaUser, setBusquedaUser] = useState('');
+  const [filtroRolUser, setFiltroRolUser] = useState('todos');
+  const [mostrandoNuevoUser, setMostrandoNuevoUser] = useState(false);
+  const [nuevoUserData, setNuevoUserData] = useState({
+    nombre: '',
+    username: '',
+    email: '',
+    rol: 'Cliente'
+  });
+
+  const guardarUsuariosLocal = (lista) => {
+    setUsuarios(lista);
+    localStorage.setItem('toystore_admin_usuarios', JSON.stringify(lista));
+  };
+
+  const toggleRolUsuario = (id) => {
+    const actualizados = usuarios.map(u => {
+      if (u.id === id) {
+        const nuevoRol = u.rol === 'Administrador' ? 'Cliente' : 'Administrador';
+        return { ...u, rol: nuevoRol, id_rol: nuevoRol === 'Administrador' ? 1 : 2 };
+      }
+      return u;
+    });
+    guardarUsuariosLocal(actualizados);
+  };
+
+  const toggleEstadoUsuario = (id) => {
+    const actualizados = usuarios.map(u => {
+      if (u.id === id) {
+        return { ...u, estado: u.estado === 'Activo' ? 'Inactivo' : 'Activo' };
+      }
+      return u;
+    });
+    guardarUsuariosLocal(actualizados);
+  };
+
+  const eliminarUsuario = (id, nombre) => {
+    if (window.confirm(`¿Seguro que deseas eliminar la cuenta de "${nombre}"?`)) {
+      const filtrados = usuarios.filter(u => u.id !== id);
+      guardarUsuariosLocal(filtrados);
+    }
+  };
+
+  const handleCrearUsuario = (e) => {
+    e.preventDefault();
+    const nuevo = {
+      id: Date.now(),
+      nombre: nuevoUserData.nombre,
+      username: nuevoUserData.username.replace('@', '').toLowerCase(),
+      email: nuevoUserData.email,
+      rol: nuevoUserData.rol,
+      id_rol: nuevoUserData.rol === 'Administrador' ? 1 : 2,
+      avatar_hat: 'woody',
+      fecha_registro: new Date().toLocaleDateString('es-CO'),
+      estado: 'Activo',
+      pedidos_count: 0
+    };
+    guardarUsuariosLocal([nuevo, ...usuarios]);
+    setMostrandoNuevoUser(false);
+    setNuevoUserData({ nombre: '', username: '', email: '', rol: 'Cliente' });
+  };
+
+  const usuariosFiltrados = usuarios.filter(u => {
+    const matchRol = filtroRolUser === 'todos' || u.rol.toLowerCase() === filtroRolUser.toLowerCase();
+    const matchSearch = !busquedaUser.trim() ||
+      u.nombre.toLowerCase().includes(busquedaUser.toLowerCase()) ||
+      u.username.toLowerCase().includes(busquedaUser.toLowerCase()) ||
+      u.email.toLowerCase().includes(busquedaUser.toLowerCase());
+    return matchRol && matchSearch;
+  });
+
+  const formatCOP = (val) => {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      maximumFractionDigits: 0
+    }).format(val || 0);
+  };
+
   return (
     <div className="min-h-screen w-full bg-[#0b1329] text-[#111111] flex flex-col select-none relative overflow-hidden font-sans">
       
       {/* ============================================================ */}
       {/* 1. BARRA SUPERIOR DE MENÚ DEL SISTEMA OPERATIVO (TOY-OS 2025)*/}
       {/* ============================================================ */}
-      <header className="h-8 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 flex items-center justify-between z-50 text-xs font-medium text-slate-800 flex-shrink-0 shadow-xs">
+      <header className="h-9 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 flex items-center justify-between z-50 text-xs font-medium text-slate-800 flex-shrink-0 shadow-xs">
         
-        {/* Lado izquierdo: Identificador del SO y Navegación de Apps */}
+        {/* Lado izquierdo: Identificador del SO y Pestañas */}
         <div className="flex items-center gap-4">
           <div 
             className="flex items-center gap-1.5 font-bold text-[#1e3a8a] cursor-pointer hover:opacity-85 transition-opacity" 
             onClick={() => setVentanaAbierta(false)}
-            title="Ir al escritorio del computador"
+            title="Ir al escritorio del computador ToyOS"
           >
             <svg className="w-4 h-4 fill-current text-[#1e3a8a]" viewBox="0 0 24 24">
               <path d="M12 2.5s3.5 3 4.5 7.5c1 4.5-.5 8.5-.5 8.5l-4-2-4 2s-1.5-4-.5-8.5C8.5 5.5 12 2.5 12 2.5z" />
@@ -190,28 +538,22 @@ export default function AdminInventory() {
             <span className="tracking-tight font-black">ToyOS 2025</span>
           </div>
 
-          <div className="hidden sm:flex items-center gap-3 text-slate-600 text-[11px]">
+          <div className="hidden sm:flex items-center gap-4 text-slate-600 text-xs">
             <span 
               onClick={() => { setAppActiva('inventario'); setVentanaAbierta(true); }}
-              className={`cursor-pointer transition-colors ${ventanaAbierta && appActiva === 'inventario' ? 'font-bold text-[#1e3a8a]' : 'hover:text-slate-900'}`}
+              className={`cursor-pointer transition-colors ${ventanaAbierta && appActiva === 'inventario' ? 'font-bold text-[#1e3a8a] underline underline-offset-4 decoration-2 decoration-[#a6d4f2]' : 'hover:text-slate-900'}`}
             >
               Almacén
             </span>
             <span 
               onClick={() => { setAppActiva('pedidos'); setVentanaAbierta(true); }}
-              className={`cursor-pointer transition-colors ${ventanaAbierta && appActiva === 'pedidos' ? 'font-bold text-[#1e3a8a]' : 'hover:text-slate-900'}`}
+              className={`cursor-pointer transition-colors ${ventanaAbierta && appActiva === 'pedidos' ? 'font-bold text-[#1e3a8a] underline underline-offset-4 decoration-2 decoration-[#a6d4f2]' : 'hover:text-slate-900'}`}
             >
               Pedidos
             </span>
             <span 
-              onClick={() => { setAppActiva('confesiones'); setVentanaAbierta(true); }}
-              className={`cursor-pointer transition-colors ${ventanaAbierta && appActiva === 'confesiones' ? 'font-bold text-[#1e3a8a]' : 'hover:text-slate-900'}`}
-            >
-              Confesiones
-            </span>
-            <span 
               onClick={() => { setAppActiva('usuarios'); setVentanaAbierta(true); }}
-              className={`cursor-pointer transition-colors ${ventanaAbierta && appActiva === 'usuarios' ? 'font-bold text-[#1e3a8a]' : 'hover:text-slate-900'}`}
+              className={`cursor-pointer transition-colors ${ventanaAbierta && appActiva === 'usuarios' ? 'font-bold text-[#1e3a8a] underline underline-offset-4 decoration-2 decoration-[#a6d4f2]' : 'hover:text-slate-900'}`}
             >
               Usuarios
             </span>
@@ -219,24 +561,24 @@ export default function AdminInventory() {
         </div>
 
         {/* Lado derecho: Estado del sistema y opciones */}
-        <div className="flex items-center gap-3.5 text-[11px] text-slate-600">
+        <div className="flex items-center gap-3.5 text-xs text-slate-600">
           <div className="hidden md:flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="font-mono text-[10px] text-slate-500">BD 2025 En línea</span>
+            <span className="font-mono text-[10px] text-slate-500 font-semibold">BD 2025 En línea</span>
           </div>
 
           <button 
             onClick={() => setVentanaAbierta(false)}
-            className="px-2.5 py-0.5 rounded bg-slate-100 hover:bg-[#a6d4f2]/40 text-[#1e3a8a] text-[10px] font-semibold transition-colors cursor-pointer"
-            title="Ver pantalla principal del computador con todas las opciones"
+            className="px-3 py-1 rounded-lg bg-slate-100 hover:bg-[#a6d4f2]/40 text-[#1e3a8a] text-[11px] font-bold transition-colors cursor-pointer"
+            title="Ver pantalla de inicio del computador"
           >
             Escritorio ToyOS
           </button>
 
           <button 
             onClick={() => navigate('/admin')}
-            className="px-2.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-rose-700 text-[10px] font-semibold transition-colors cursor-pointer"
-            title="Salir del computador hacia la habitación de Andy"
+            className="px-3 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-bold transition-colors cursor-pointer"
+            title="Salir hacia la habitación"
           >
             Apagar / Cuarto
           </button>
@@ -248,147 +590,105 @@ export default function AdminInventory() {
       {/* ============================================================ */}
       {/* 2. PANTALLA PRINCIPAL DEL COMPUTADOR (ESCRITORIO & VENTANAS) */}
       {/* ============================================================ */}
-      <main className="flex-1 p-3 md:p-6 pb-24 flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#1e3a8a]">
+      <main className="flex-1 p-3 md:p-6 pb-24 flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#1a4a75]">
         
-        {/* Marca de agua / Wallpaper estético del computador */}
+        {/* Marca de agua / Wallpaper estético */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5 select-none">
-          <span className="text-[16vw] font-black text-white tracking-widest leading-none">TOY OS</span>
+          <span className="text-[16vw] font-black text-white tracking-widest leading-none">TOY STORE</span>
         </div>
 
         {/* ========================================================== */}
-        {/* VISTA A: ESCRITORIO CON TODAS LAS OPCIONES (CUANDO SE CIERRA) */}
+        {/* VISTA A: ESCRITORIO CON LAS 3 APPS (IDÉNTICO A LA CAPTURA) */}
         {/* ========================================================== */}
         {!ventanaAbierta ? (
-          <div className="w-full max-w-5xl relative z-10 animate-in fade-in zoom-in-95 duration-200">
+          <div className="w-full max-w-4xl h-[75vh] md:h-[580px] bg-[#1a4a75] rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.6)] border-2 border-slate-400/80 flex flex-col relative z-10 overflow-hidden animate-in zoom-in-95 duration-200" style={{ backgroundImage: 'radial-gradient(circle at center, #2b6da0 0%, #1a4a75 100%)' }}>
             
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold mb-3">
-                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>Computadora de Andy • Star Command Suite 2025</span>
+            {/* Cabecera macOS de la ventana Desktop OS */}
+            <div className="h-10 bg-gradient-to-b from-[#e8e8e8] to-[#d8d8d8] border-b border-slate-300 flex items-center px-4 justify-between shrink-0 select-none">
+              <div className="flex gap-2">
+                <button onClick={() => navigate('/admin')} className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] border border-[#e0443e] flex items-center justify-center text-[8px] text-red-950 font-black cursor-pointer hover:opacity-80" title="Cerrar y volver al cuarto">
+                  ✕
+                </button>
+                <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] border border-[#dea123]"></div>
+                <div className="w-3.5 h-3.5 rounded-full bg-[#27c93f] border border-[#1aab29]"></div>
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-                Panel Central de Administrador
-              </h1>
-              <p className="text-xs text-slate-300 mt-1 max-w-md mx-auto font-normal">
-                Selecciona una aplicación del sistema para gestionar tu tienda.
-              </p>
+              <div className="font-bold text-xs text-slate-700 tracking-wider">os</div>
+              <div className="w-16"></div>
             </div>
 
-            {/* Cuadrícula de opciones / aplicaciones del computador */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+            {/* Contenido del escritorio: Marca de agua y las 3 apps gigantes */}
+            <div className="flex-1 relative flex flex-col items-center justify-center p-8">
               
-              {/* Opción 1: Inventario */}
-              <div
-                onClick={() => { setAppActiva('inventario'); setVentanaAbierta(true); }}
-                className="bg-white/90 hover:bg-white backdrop-blur-md rounded-2xl p-5 border border-white/40 shadow-xl flex flex-col items-center text-center cursor-pointer transition-all hover:scale-105 active:scale-95 group"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-[#a6d4f2] text-[#1e3a8a] flex items-center justify-center mb-3 shadow-md group-hover:rotate-6 transition-transform">
-                  <svg className="w-7 h-7 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                  </svg>
-                </div>
-                <h3 className="text-sm font-bold text-[#1e3a8a] leading-tight mb-1">
-                  Almacén & Catálogo
-                </h3>
-                <span className="text-[11px] text-slate-500 font-normal">
-                  {productos.length} juguetes registrados
+              <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none select-none">
+                <span className="text-8xl md:text-9xl font-black text-white text-center leading-none">
+                  TOY<br/>STORE
                 </span>
               </div>
 
-              {/* Opción 2: Pedidos */}
-              <div
-                onClick={() => { setAppActiva('pedidos'); setVentanaAbierta(true); }}
-                className="bg-white/90 hover:bg-white backdrop-blur-md rounded-2xl p-5 border border-white/40 shadow-xl flex flex-col items-center text-center cursor-pointer transition-all hover:scale-105 active:scale-95 group"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center mb-3 shadow-md group-hover:rotate-6 transition-transform">
-                  <svg className="w-7 h-7 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-sm font-bold text-[#1e3a8a] leading-tight mb-1">
-                  Pedidos & Despachos
-                </h3>
-                <span className="text-[11px] text-slate-500 font-normal">
-                  Control de envíos discretos
-                </span>
-              </div>
+              {/* Los 3 Botones Gigantes: INVENTARIO, PEDIDOS, USUARIOS */}
+              <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-10 max-w-2xl w-full">
+                
+                {/* Botón 1: INVENTARIO (Azul) */}
+                <button
+                  onClick={() => { setAppActiva('inventario'); setVentanaAbierta(true); }}
+                  className="bg-blue-600 hover:bg-blue-500 border-b-4 border-blue-800 text-white rounded-2xl p-6 flex flex-col items-center justify-center gap-3 shadow-xl transform transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+                >
+                  <div className="w-16 h-16 rounded-xl bg-white/10 flex items-center justify-center group-hover:rotate-6 transition-transform">
+                    <svg className="w-9 h-9 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                  </div>
+                  <span className="font-black text-xs md:text-sm tracking-wider uppercase">INVENTARIO</span>
+                  <span className="text-[10px] text-blue-100 font-medium">{productos.length} juguetes</span>
+                </button>
 
-              {/* Opción 3: Confesiones */}
-              <div
-                onClick={() => { setAppActiva('confesiones'); setVentanaAbierta(true); }}
-                className="bg-white/90 hover:bg-white backdrop-blur-md rounded-2xl p-5 border border-white/40 shadow-xl flex flex-col items-center text-center cursor-pointer transition-all hover:scale-105 active:scale-95 group"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mb-3 shadow-md group-hover:rotate-6 transition-transform">
-                  <svg className="w-7 h-7 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                </div>
-                <h3 className="text-sm font-bold text-[#1e3a8a] leading-tight mb-1">
-                  Buzón de Confesiones
-                </h3>
-                <span className="text-[11px] text-slate-500 font-normal">
-                  Historias de la comunidad
-                </span>
-              </div>
+                {/* Botón 2: PEDIDOS (Rojo) */}
+                <button
+                  onClick={() => { setAppActiva('pedidos'); setVentanaAbierta(true); }}
+                  className="bg-red-500 hover:bg-red-400 border-b-4 border-red-700 text-white rounded-2xl p-6 flex flex-col items-center justify-center gap-3 shadow-xl transform transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+                >
+                  <div className="w-16 h-16 rounded-xl bg-white/10 flex items-center justify-center group-hover:rotate-6 transition-transform">
+                    <svg className="w-9 h-9 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <span className="font-black text-xs md:text-sm tracking-wider uppercase">PEDIDOS</span>
+                  <span className="text-[10px] text-red-100 font-medium">{pedidos.length} órdenes</span>
+                </button>
 
-              {/* Opción 4: Usuarios */}
-              <div
-                onClick={() => { setAppActiva('usuarios'); setVentanaAbierta(true); }}
-                className="bg-white/90 hover:bg-white backdrop-blur-md rounded-2xl p-5 border border-white/40 shadow-xl flex flex-col items-center text-center cursor-pointer transition-all hover:scale-105 active:scale-95 group"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-3 shadow-md group-hover:rotate-6 transition-transform">
-                  <svg className="w-7 h-7 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-sm font-bold text-[#1e3a8a] leading-tight mb-1">
-                  Jugueteros & Usuarios
-                </h3>
-                <span className="text-[11px] text-slate-500 font-normal">
-                  Cuentas y roles
-                </span>
+                {/* Botón 3: USUARIOS (Verde) */}
+                <button
+                  onClick={() => { setAppActiva('usuarios'); setVentanaAbierta(true); }}
+                  className="bg-emerald-500 hover:bg-emerald-400 border-b-4 border-emerald-700 text-white rounded-2xl p-6 flex flex-col items-center justify-center gap-3 shadow-xl transform transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+                >
+                  <div className="w-16 h-16 rounded-xl bg-white/10 flex items-center justify-center group-hover:rotate-6 transition-transform">
+                    <svg className="w-9 h-9 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </div>
+                  <span className="font-black text-xs md:text-sm tracking-wider uppercase">USUARIOS</span>
+                  <span className="text-[10px] text-emerald-100 font-medium">{usuarios.length} registrados</span>
+                </button>
+
               </div>
 
             </div>
-
-            {/* Widget Informativo del Sistema */}
-            <div className="mt-8 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-emerald-400"></span>
-                <span className="text-xs font-semibold">Estado de la Tienda: Operativa en Colombia</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs">
-                <button
-                  onClick={() => navigate('/tienda')}
-                  className="px-4 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white font-bold transition-all cursor-pointer"
-                >
-                  Ver Tienda Pública
-                </button>
-                <button
-                  onClick={() => navigate('/admin')}
-                  className="px-4 py-1.5 rounded-lg bg-rose-500/80 hover:bg-rose-500 text-white font-bold transition-all cursor-pointer"
-                >
-                  Regresar a la Habitación
-                </button>
-              </div>
-            </div>
-
           </div>
         ) : (
           /* ========================================================== */
-          /* VISTA B: VENTANA DE APLICACIÓN ABIERTA SOBRE EL ESCRITORIO   */
+          /* VISTA B: VENTANA DE APLICACIÓN ACTIVA (POPUP / MODAL OS)    */
           /* ========================================================== */
           <div className={`w-full max-w-6xl ${ventanaMaximizada ? 'h-[92vh]' : 'h-[85vh]'} bg-white rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.55)] border border-slate-300 flex flex-col overflow-hidden relative z-10 animate-in zoom-in-95 duration-200`}>
             
-            {/* BARRA DE TÍTULO DE LA VENTANA (BOTONES macOS / WINDOWS) */}
+            {/* BARRA DE TÍTULO DE LA VENTANA (BOTONES macOS) */}
             <div className="h-10 bg-slate-100 border-b border-slate-200 px-4 flex items-center justify-between flex-shrink-0 select-none">
               
-              {/* Traffic Lights: Botón Rojo ahora vuelve al escritorio del computador */}
+              {/* Traffic Lights: Botón Rojo vuelve al escritorio */}
               <div className="flex items-center gap-2">
                 <button 
                   onClick={() => setVentanaAbierta(false)}
                   className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] hover:brightness-90 flex items-center justify-center text-[8px] text-red-950 font-black group cursor-pointer shadow-2xs"
-                  title="Cerrar ventana y ver el escritorio del computador"
+                  title="Cerrar y volver al escritorio"
                 >
                   <span className="opacity-0 group-hover:opacity-100">✕</span>
                 </button>
@@ -406,56 +706,62 @@ export default function AdminInventory() {
 
               {/* Título dinámico de la ventana */}
               <div className="flex items-center gap-2 text-xs font-bold text-[#1e3a8a]">
-                <svg className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-                <span>
-                  {appActiva === 'inventario' && 'Almacén de Juguetes — Administrador v2.5 (2025)'}
-                  {appActiva === 'pedidos' && 'Gestión de Pedidos & Envíos — ToyOS 2025'}
-                  {appActiva === 'confesiones' && 'Moderación de Confesiones — ToyOS 2025'}
-                  {appActiva === 'usuarios' && 'Directorio de Usuarios — ToyOS 2025'}
-                </span>
+                {appActiva === 'inventario' && (
+                  <>
+                    <svg className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                    <span>Almacén de Juguetes — Administrador v2.5 (2025)</span>
+                  </>
+                )}
+                {appActiva === 'pedidos' && (
+                  <>
+                    <svg className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span>Gestión de Pedidos & Despachos — ToyOS 2025</span>
+                  </>
+                )}
+                {appActiva === 'usuarios' && (
+                  <>
+                    <svg className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <span>Directorio de Usuarios & Roles — ToyOS 2025</span>
+                  </>
+                )}
               </div>
 
-              {/* Botón cerrar a la derecha */}
+              {/* Botón Ver Apps a la derecha */}
               <button 
                 onClick={() => setVentanaAbierta(false)}
                 className="text-[11px] font-semibold text-slate-500 hover:text-[#1e3a8a] cursor-pointer"
-                title="Volver al escritorio"
+                title="Volver al escritorio ToyOS"
               >
                 Ver Apps
               </button>
             </div>
 
-            {/* CONTENIDO INTERNO: SI LA APP ES INVENTARIO */}
-            {appActiva === 'inventario' ? (
+            {/* ======================================================== */}
+            {/* APP 1: ALMACÉN / INVENTARIO                              */}
+            {/* ======================================================== */}
+            {appActiva === 'inventario' && (
               <>
-                {/* BARRA DE HERRAMIENTAS Y BÚSQUEDA DEL SOFTWARE */}
+                {/* BARRA DE HERRAMIENTAS Y BÚSQUEDA */}
                 <div className="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
-                  
-                  {/* Buscador interno */}
                   <div className="relative flex-1 min-w-[220px] max-w-sm">
                     <input
                       type="text"
-                      value={busqueda}
-                      onChange={(e) => setBusqueda(e.target.value)}
+                      value={busquedaProd}
+                      onChange={(e) => setBusquedaProd(e.target.value)}
                       placeholder="Buscar por nombre o referencia..."
                       className="w-full text-xs py-2 pl-8 pr-3 rounded-xl bg-white border border-slate-300 focus:border-[#a6d4f2] focus:ring-2 focus:ring-[#a6d4f2]/40 outline-none text-slate-800 transition-all font-normal"
                     />
                     <svg className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    {busqueda && (
-                      <button 
-                        onClick={() => setBusqueda('')} 
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-200 text-slate-600 text-[9px] flex items-center justify-center font-bold"
-                      >
-                        ✕
-                      </button>
-                    )}
                   </div>
 
-                  {/* Métricas y botón nuevo */}
                   <div className="flex items-center gap-3">
                     <div className="hidden lg:flex items-center gap-2 text-xs">
                       <div className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600">
@@ -472,17 +778,16 @@ export default function AdminInventory() {
                     </div>
 
                     <button
-                      onClick={() => abrirForm()}
+                      onClick={() => abrirFormProd()}
                       className="px-4 py-2 rounded-xl bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
                     >
                       <span className="text-sm font-black">+</span>
                       <span>Nuevo Juguete</span>
                     </button>
                   </div>
-
                 </div>
 
-                {/* FILTROS RÁPIDOS POR CATEGORÍA EN PÍLDORAS */}
+                {/* FILTROS POR CATEGORÍA */}
                 <div className="px-4 py-2 bg-white border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-shrink-0">
                   {categoriasLista.map(cat => {
                     const isSelected = categoriaFiltro === cat.id;
@@ -503,7 +808,7 @@ export default function AdminInventory() {
                   })}
                 </div>
 
-                {/* TABLA PRINCIPAL DE DATOS DEL ALMACÉN */}
+                {/* TABLA DE PRODUCTOS */}
                 <div className="flex-1 overflow-auto no-scrollbar bg-white">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider text-[10px] font-bold sticky top-0 z-10 border-b border-slate-200">
@@ -517,14 +822,7 @@ export default function AdminInventory() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-800">
-                      {cargando ? (
-                        <tr>
-                          <td colSpan="6" className="py-20 text-center text-slate-400">
-                            <div className="w-6 h-6 border-2 border-[#a6d4f2] border-t-[#1e3a8a] rounded-full animate-spin mx-auto mb-2"></div>
-                            Sincronizando inventario con la computadora...
-                          </td>
-                        </tr>
-                      ) : productosFiltrados.length === 0 ? (
+                      {productosFiltrados.length === 0 ? (
                         <tr>
                           <td colSpan="6" className="py-20 text-center text-slate-400 font-normal">
                             No hay productos que coincidan con los criterios seleccionados.
@@ -535,42 +833,28 @@ export default function AdminInventory() {
                           const stockNum = Number(p.stock) || 0;
                           return (
                             <tr key={p.id} className="hover:bg-sky-50/50 transition-colors">
-                              
-                              {/* Miniatura del producto */}
                               <td className="py-2.5 px-4">
                                 <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center p-1">
                                   <img 
-                                    src={p.imagen || '/images/vibrador_cowgirl.png'} 
+                                    src={p.imagen || '/images/rabbitbuzz.webp'} 
                                     alt={p.nombre} 
                                     className="max-h-full max-w-full object-contain"
-                                    onError={(e) => { e.target.src = '/images/vibrador_cowgirl.png'; }}
+                                    onError={(e) => { e.target.src = '/images/rabbitbuzz.webp'; }}
                                   />
                                 </div>
                               </td>
-
-                              {/* Nombre y referencia */}
                               <td className="py-2.5 px-4">
-                                <div className="font-bold text-[#1e3a8a] text-xs">
-                                  {p.nombre}
-                                </div>
-                                <span className="text-[10px] text-slate-400 font-mono">
-                                  REF #{p.id.toString().padStart(4, '0')}
-                                </span>
+                                <div className="font-bold text-[#1e3a8a] text-xs">{p.nombre}</div>
+                                <span className="text-[10px] text-slate-400 font-mono">REF #{p.id.toString().padStart(4, '0')}</span>
                               </td>
-
-                              {/* Categoría */}
                               <td className="py-2.5 px-4">
                                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase bg-slate-100 text-slate-700 border border-slate-200">
                                   {p.categoria}
                                 </span>
                               </td>
-
-                              {/* Precio */}
                               <td className="py-2.5 px-4 font-bold text-slate-800">
                                 {formatCOP(p.precio)}
                               </td>
-
-                              {/* Stock */}
                               <td className="py-2.5 px-4">
                                 <div className="flex items-center gap-2">
                                   <span className={`w-2 h-2 rounded-full ${stockNum <= 3 ? 'bg-rose-500' : 'bg-emerald-500'}`}></span>
@@ -579,27 +863,22 @@ export default function AdminInventory() {
                                   </span>
                                 </div>
                               </td>
-
-                              {/* Acciones */}
                               <td className="py-2.5 px-4 text-right">
                                 <div className="flex items-center justify-end gap-1.5">
                                   <button
-                                    onClick={() => abrirForm(p)}
+                                    onClick={() => abrirFormProd(p)}
                                     className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-[#a6d4f2] text-slate-700 hover:text-[#1e3a8a] font-semibold text-[11px] transition-colors cursor-pointer"
-                                    title="Editar producto"
                                   >
                                     Editar
                                   </button>
                                   <button
                                     onClick={() => eliminarProducto(p.id, p.nombre)}
                                     className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 font-semibold text-[11px] transition-colors cursor-pointer"
-                                    title="Eliminar producto"
                                   >
                                     Eliminar
                                   </button>
                                 </div>
                               </td>
-
                             </tr>
                           );
                         })
@@ -608,107 +887,368 @@ export default function AdminInventory() {
                   </table>
                 </div>
 
-                {/* BARRA INFERIOR DE ESTADO DE LA VENTANA */}
                 <div className="h-7 bg-slate-50 border-t border-slate-200 px-4 flex items-center justify-between text-[11px] text-slate-500 flex-shrink-0">
                   <span>{productosFiltrados.length} juguetes listados en almacén</span>
                   <span>Catálogo Toy Store 2025 • Conexión Segura</span>
                 </div>
               </>
-            ) : (
-              /* VISTAS MODULARES PARA OTRAS APPS DEL SISTEMA OPERATIVO */
-              <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-slate-50/50">
-                <div className="w-16 h-16 rounded-3xl bg-[#a6d4f2]/40 text-[#1e3a8a] flex items-center justify-center mb-4">
-                  <svg className="w-8 h-8 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="8" x2="12" y2="12" />
-                    <line x1="12" y1="16" x2="12.01" y2="16" />
-                  </svg>
+            )}
+
+            {/* ======================================================== */}
+            {/* APP 2: PEDIDOS & DESPACHOS                               */}
+            {/* ======================================================== */}
+            {appActiva === 'pedidos' && (
+              <>
+                <div className="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+                  <div className="relative flex-1 min-w-[220px] max-w-sm">
+                    <input
+                      type="text"
+                      value={busquedaPed}
+                      onChange={(e) => setBusquedaPed(e.target.value)}
+                      placeholder="Buscar por cliente, pedido o ciudad..."
+                      className="w-full text-xs py-2 pl-8 pr-3 rounded-xl bg-white border border-slate-300 focus:border-[#a6d4f2] focus:ring-2 focus:ring-[#a6d4f2]/40 outline-none text-slate-800 transition-all font-normal"
+                    />
+                    <svg className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="hidden lg:flex items-center gap-2 text-xs">
+                      <div className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600">
+                        Órdenes: <b className="text-[#1e3a8a]">{pedidos.length}</b>
+                      </div>
+                      <div className="px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800">
+                        Total: <b className="font-bold">{formatCOP(totalFacturado)}</b>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setMostrandoNuevoPedido(true)}
+                      className="px-4 py-2 rounded-xl bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                    >
+                      <span className="text-sm font-black">+</span>
+                      <span>Registrar Pedido</span>
+                    </button>
+                  </div>
                 </div>
-                <h2 className="text-xl font-bold text-[#1e3a8a] mb-1">
-                  {appActiva === 'pedidos' && 'Módulo de Pedidos & Despachos'}
-                  {appActiva === 'confesiones' && 'Módulo de Moderación de Confesiones'}
-                  {appActiva === 'usuarios' && 'Módulo de Usuarios & Jugueteros'}
-                </h2>
-                <p className="text-xs text-slate-500 max-w-sm font-normal mb-6">
-                  Este módulo de ToyOS 2025 se encuentra listo para vincular sus flujos de despacho y base de datos.
-                </p>
-                <button
-                  onClick={() => setAppActiva('inventario')}
-                  className="px-5 py-2.5 rounded-full bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] text-xs font-bold transition-all cursor-pointer shadow-xs"
-                >
-                  Regresar a Inventario de Almacén
-                </button>
-              </div>
+
+                {/* FILTROS POR ESTADO */}
+                <div className="px-4 py-2 bg-white border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-shrink-0">
+                  {[
+                    { id: 'todos', label: 'Todos los Pedidos' },
+                    { id: 'pendiente', label: 'Pendientes' },
+                    { id: 'en camino', label: 'En camino / Despachados' },
+                    { id: 'entregado', label: 'Entregados con Éxito' },
+                    { id: 'cancelado', label: 'Cancelados' }
+                  ].map(tab => {
+                    const isSelected = filtroEstadoPed === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setFiltroEstadoPed(tab.id)}
+                        className={`px-3 py-1 rounded-full text-xs transition-all cursor-pointer whitespace-nowrap ${
+                          isSelected
+                            ? 'bg-[#a6d4f2] text-[#1e3a8a] font-bold shadow-2xs'
+                            : 'bg-slate-100 hover:bg-slate-200/70 text-slate-700 font-normal'
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* TABLA DE PEDIDOS */}
+                <div className="flex-1 overflow-auto no-scrollbar bg-white">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider text-[10px] font-bold sticky top-0 z-10 border-b border-slate-200">
+                      <tr>
+                        <th className="py-3 px-4">Referencia & Fecha</th>
+                        <th className="py-3 px-4">Cliente & Destino</th>
+                        <th className="py-3 px-4">Artículos</th>
+                        <th className="py-3 px-4">Total COP</th>
+                        <th className="py-3 px-4">Estado del Envío</th>
+                        <th className="py-3 px-4 text-right">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-slate-800">
+                      {pedidosFiltrados.length === 0 ? (
+                        <tr>
+                          <td colSpan="6" className="py-20 text-center text-slate-400 font-normal">
+                            No se encontraron pedidos con los filtros actuales.
+                          </td>
+                        </tr>
+                      ) : (
+                        pedidosFiltrados.map((ped) => {
+                          const estadoColors = {
+                            'Pendiente': 'bg-amber-100 text-amber-800 border-amber-200',
+                            'En camino': 'bg-sky-100 text-[#1e3a8a] border-sky-200',
+                            'Entregado': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                            'Cancelado': 'bg-rose-100 text-rose-800 border-rose-200'
+                          };
+
+                          return (
+                            <tr key={ped.id} className="hover:bg-sky-50/50 transition-colors">
+                              <td className="py-2.5 px-4">
+                                <div className="font-mono font-bold text-[#1e3a8a] text-xs">{ped.id}</div>
+                                <div className="text-[10px] text-slate-400">{ped.fecha}</div>
+                              </td>
+                              <td className="py-2.5 px-4">
+                                <div className="font-bold text-slate-800">{ped.cliente}</div>
+                                <div className="text-[10px] text-slate-500">{ped.ciudad} • {ped.telefono}</div>
+                              </td>
+                              <td className="py-2.5 px-4">
+                                <div className="text-slate-700 max-w-xs truncate">
+                                  {ped.productos.map(p => `${p.cantidad}x ${p.nombre}`).join(', ')}
+                                </div>
+                                <span className="text-[10px] text-emerald-600 font-medium">Empaque 100% Ciego</span>
+                              </td>
+                              <td className="py-2.5 px-4 font-bold text-slate-900">
+                                {formatCOP(ped.total)}
+                              </td>
+                              <td className="py-2.5 px-4">
+                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${estadoColors[ped.estado] || 'bg-slate-100 text-slate-700'}`}>
+                                  {ped.estado}
+                                </span>
+                              </td>
+                              <td className="py-2.5 px-4 text-right">
+                                <button
+                                  onClick={() => setPedidoDetalle(ped)}
+                                  className="px-3 py-1 rounded-lg bg-slate-100 hover:bg-[#a6d4f2] text-slate-700 hover:text-[#1e3a8a] font-semibold text-[11px] transition-colors cursor-pointer"
+                                >
+                                  Ver Detalle
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="h-7 bg-slate-50 border-t border-slate-200 px-4 flex items-center justify-between text-[11px] text-slate-500 flex-shrink-0">
+                  <span>{pedidosFiltrados.length} órdenes registradas</span>
+                  <span>Envíos discretos garantizados a toda Colombia</span>
+                </div>
+              </>
+            )}
+
+            {/* ======================================================== */}
+            {/* APP 3: USUARIOS & ROLES                                  */}
+            {/* ======================================================== */}
+            {appActiva === 'usuarios' && (
+              <>
+                <div className="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+                  <div className="relative flex-1 min-w-[220px] max-w-sm">
+                    <input
+                      type="text"
+                      value={busquedaUser}
+                      onChange={(e) => setBusquedaUser(e.target.value)}
+                      placeholder="Buscar por nombre, @username o correo..."
+                      className="w-full text-xs py-2 pl-8 pr-3 rounded-xl bg-white border border-slate-300 focus:border-[#a6d4f2] focus:ring-2 focus:ring-[#a6d4f2]/40 outline-none text-slate-800 transition-all font-normal"
+                    />
+                    <svg className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="hidden lg:flex items-center gap-2 text-xs">
+                      <div className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600">
+                        Total: <b className="text-[#1e3a8a]">{usuarios.length}</b>
+                      </div>
+                      <div className="px-3 py-1.5 rounded-lg bg-sky-50 border border-sky-200 text-[#1e3a8a]">
+                        Admins: <b className="font-bold">{usuarios.filter(u => u.rol === 'Administrador').length}</b>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setMostrandoNuevoUser(true)}
+                      className="px-4 py-2 rounded-xl bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                    >
+                      <span className="text-sm font-black">+</span>
+                      <span>Nuevo Usuario</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* FILTROS POR ROL */}
+                <div className="px-4 py-2 bg-white border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-shrink-0">
+                  {[
+                    { id: 'todos', label: 'Todos los Usuarios' },
+                    { id: 'administrador', label: 'Administradores' },
+                    { id: 'cliente', label: 'Clientes Registrados' }
+                  ].map(tab => {
+                    const isSelected = filtroRolUser === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setFiltroRolUser(tab.id)}
+                        className={`px-3 py-1 rounded-full text-xs transition-all cursor-pointer whitespace-nowrap ${
+                          isSelected
+                            ? 'bg-[#a6d4f2] text-[#1e3a8a] font-bold shadow-2xs'
+                            : 'bg-slate-100 hover:bg-slate-200/70 text-slate-700 font-normal'
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* TABLA DE USUARIOS */}
+                <div className="flex-1 overflow-auto no-scrollbar bg-white">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider text-[10px] font-bold sticky top-0 z-10 border-b border-slate-200">
+                      <tr>
+                        <th className="py-3 px-4">Usuario</th>
+                        <th className="py-3 px-4">Correo Electrónico</th>
+                        <th className="py-3 px-4">Rol en Tienda</th>
+                        <th className="py-3 px-4">Registro</th>
+                        <th className="py-3 px-4">Estado</th>
+                        <th className="py-3 px-4 text-right">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-slate-800">
+                      {usuariosFiltrados.length === 0 ? (
+                        <tr>
+                          <td colSpan="6" className="py-20 text-center text-slate-400 font-normal">
+                            No se encontraron usuarios con los criterios de búsqueda.
+                          </td>
+                        </tr>
+                      ) : (
+                        usuariosFiltrados.map((u) => {
+                          const esAdmin = u.rol === 'Administrador';
+                          return (
+                            <tr key={u.id} className="hover:bg-sky-50/50 transition-colors">
+                              <td className="py-2.5 px-4">
+                                <div className="flex items-center gap-2.5">
+                                  <div className="w-8 h-8 rounded-full bg-[#a6d4f2]/40 border border-[#a6d4f2] flex items-center justify-center font-bold text-[#1e3a8a] text-xs">
+                                    {u.nombre.charAt(0)}
+                                  </div>
+                                  <div>
+                                    <div className="font-bold text-[#1e3a8a] text-xs">{u.nombre}</div>
+                                    <div className="text-[10px] text-slate-400 font-mono">@{u.username}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="py-2.5 px-4 font-normal text-slate-600">
+                                {u.email}
+                              </td>
+                              <td className="py-2.5 px-4">
+                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${esAdmin ? 'bg-sky-100 text-[#1e3a8a] border-sky-200' : 'bg-slate-100 text-slate-700 border-slate-200'}`}>
+                                  {u.rol}
+                                </span>
+                              </td>
+                              <td className="py-2.5 px-4 text-slate-500 text-[11px]">
+                                {u.fecha_registro}
+                              </td>
+                              <td className="py-2.5 px-4">
+                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${u.estado === 'Activo' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
+                                  {u.estado}
+                                </span>
+                              </td>
+                              <td className="py-2.5 px-4 text-right">
+                                <div className="flex items-center justify-end gap-1.5">
+                                  <button
+                                    onClick={() => toggleRolUsuario(u.id)}
+                                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-[#a6d4f2] text-slate-700 hover:text-[#1e3a8a] font-semibold text-[11px] transition-colors cursor-pointer"
+                                    title={esAdmin ? 'Cambiar a Cliente' : 'Ascender a Administrador'}
+                                  >
+                                    {esAdmin ? 'Hacer Cliente' : 'Hacer Admin'}
+                                  </button>
+                                  <button
+                                    onClick={() => toggleEstadoUsuario(u.id)}
+                                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-[11px] transition-colors cursor-pointer"
+                                  >
+                                    {u.estado === 'Activo' ? 'Suspender' : 'Activar'}
+                                  </button>
+                                  <button
+                                    onClick={() => eliminarUsuario(u.id, u.nombre)}
+                                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 font-semibold text-[11px] transition-colors cursor-pointer"
+                                  >
+                                    Eliminar
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="h-7 bg-slate-50 border-t border-slate-200 px-4 flex items-center justify-between text-[11px] text-slate-500 flex-shrink-0">
+                  <span>{usuariosFiltrados.length} usuarios registrados en la plataforma</span>
+                  <span>Gestión segura de credenciales y roles</span>
+                </div>
+              </>
             )}
 
           </div>
         )}
 
         {/* ========================================================== */}
-        {/* MODAL FICHA TÉCNICA DE PRODUCTO (ESTILO VENTANA DE SOFTWARE) */}
+        {/* MODAL 1: FORMULARIO JUGUETE / PRODUCTO                     */}
         {/* ========================================================== */}
-        {mostrandoForm && (
+        {mostrandoFormProd && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
             <div className="bg-white w-full max-w-xl rounded-2xl shadow-2xl border border-slate-300 overflow-hidden animate-in zoom-in-95 duration-150">
-              
-              {/* Cabecera del modal */}
               <div className="h-10 bg-slate-100 border-b border-slate-200 px-4 flex items-center justify-between select-none">
                 <span className="text-xs font-bold text-[#1e3a8a]">
-                  {editandoId ? 'Editar Juguete en Almacén' : 'Registrar Nuevo Juguete en Catálogo'}
+                  {editandoProdId ? 'Editar Juguete en Almacén' : 'Registrar Nuevo Juguete en Catálogo'}
                 </span>
                 <button
-                  onClick={() => setMostrandoForm(false)}
+                  onClick={() => setMostrandoFormProd(false)}
                   className="w-6 h-6 rounded-full hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold cursor-pointer"
                 >
                   ✕
                 </button>
               </div>
 
-              {/* Formulario */}
-              <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
-                
+              <form onSubmit={handleSubmitProd} className="p-6 space-y-4 text-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Nombre */}
                   <div className="space-y-1">
                     <label className="font-bold text-[#1e3a8a] block">Nombre del Juguete</label>
                     <input
                       type="text"
-                      name="nombre"
-                      value={formData.nombre}
-                      onChange={handleInputChange}
+                      value={formDataProd.nombre}
+                      onChange={(e) => setFormDataProd({ ...formDataProd, nombre: e.target.value })}
                       required
                       placeholder="Ej. Vibrador Cowgirl Deluxe"
                       className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] focus:ring-2 focus:ring-[#a6d4f2]/40 outline-none text-slate-800"
                     />
                   </div>
 
-                  {/* Categoría */}
                   <div className="space-y-1">
                     <label className="font-bold text-[#1e3a8a] block">Categoría</label>
                     <select
-                      name="categoria"
-                      value={formData.categoria}
-                      onChange={handleInputChange}
+                      value={formDataProd.categoria}
+                      onChange={(e) => setFormDataProd({ ...formDataProd, categoria: e.target.value })}
                       required
                       className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800 bg-white cursor-pointer"
                     >
                       <option value="vibradores">Vibradores</option>
                       <option value="lencerias">Lencerías</option>
                       <option value="anales">Anales & Plugs</option>
-                      <option value="kits">Kits & Cajas Sorpresa</option>
-                      <option value="accesorios">Accesorios</option>
-                      <option value="cosmeticos">Cosméticos & Aceites</option>
+                      <option value="dildos">Dildos</option>
+                      <option value="cosmetica">Cosmética & Aceites</option>
+                      <option value="accesorios">Accesorios & BDSM</option>
+                      <option value="kits">Kits & Sorpresas</option>
                     </select>
                   </div>
 
-                  {/* Precio */}
                   <div className="space-y-1">
                     <label className="font-bold text-[#1e3a8a] block">Precio en COP ($)</label>
                     <input
                       type="number"
-                      name="precio"
-                      value={formData.precio}
-                      onChange={handleInputChange}
+                      value={formDataProd.precio}
+                      onChange={(e) => setFormDataProd({ ...formDataProd, precio: e.target.value })}
                       required
                       min="1"
                       placeholder="Ej. 185000"
@@ -716,14 +1256,12 @@ export default function AdminInventory() {
                     />
                   </div>
 
-                  {/* Stock */}
                   <div className="space-y-1">
                     <label className="font-bold text-[#1e3a8a] block">Unidades en Stock</label>
                     <input
                       type="number"
-                      name="stock"
-                      value={formData.stock}
-                      onChange={handleInputChange}
+                      value={formDataProd.stock}
+                      onChange={(e) => setFormDataProd({ ...formDataProd, stock: e.target.value })}
                       required
                       min="0"
                       placeholder="Ej. 12"
@@ -732,37 +1270,32 @@ export default function AdminInventory() {
                   </div>
                 </div>
 
-                {/* Ruta de imagen */}
                 <div className="space-y-1">
-                  <label className="font-bold text-[#1e3a8a] block">Ruta o Imagen (PNG / URL)</label>
+                  <label className="font-bold text-[#1e3a8a] block">Ruta de Imagen (URL o archivo local)</label>
                   <input
                     type="text"
-                    name="imagen"
-                    value={formData.imagen}
-                    onChange={handleInputChange}
-                    placeholder="/images/vibrador_cowgirl.png"
+                    value={formDataProd.imagen}
+                    onChange={(e) => setFormDataProd({ ...formDataProd, imagen: e.target.value })}
+                    placeholder="/images/rabbitbuzz.webp"
                     className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800 font-mono text-[11px]"
                   />
                 </div>
 
-                {/* Descripción */}
                 <div className="space-y-1">
-                  <label className="font-bold text-[#1e3a8a] block">Descripción</label>
+                  <label className="font-bold text-[#1e3a8a] block">Descripción Discreta</label>
                   <textarea
-                    name="descripcion"
-                    value={formData.descripcion}
-                    onChange={handleInputChange}
+                    value={formDataProd.descripcion}
+                    onChange={(e) => setFormDataProd({ ...formDataProd, descripcion: e.target.value })}
                     rows="3"
                     placeholder="Descripción sutil y discreta del producto..."
                     className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800 resize-none font-normal"
                   />
                 </div>
 
-                {/* Botones de acción */}
                 <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-200">
                   <button
                     type="button"
-                    onClick={() => setMostrandoForm(false)}
+                    onClick={() => setMostrandoFormProd(false)}
                     className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold cursor-pointer"
                   >
                     Cancelar
@@ -771,15 +1304,311 @@ export default function AdminInventory() {
                     type="submit"
                     className="px-5 py-2 rounded-lg bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-bold cursor-pointer transition-all shadow-xs"
                   >
-                    {editandoId ? 'Actualizar Ficha' : 'Guardar en Catálogo'}
+                    {editandoProdId ? 'Actualizar Ficha' : 'Guardar en Catálogo'}
                   </button>
                 </div>
-
               </form>
-
             </div>
           </div>
         )}
+
+        {/* ========================================================== */}
+        {/* MODAL 2: DETALLE COMPLETO DE PEDIDO                        */}
+        {/* ========================================================== */}
+        {pedidoDetalle && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+            <div className="bg-white w-full max-w-xl rounded-2xl shadow-2xl border border-slate-300 overflow-hidden animate-in zoom-in-95 duration-150">
+              <div className="h-10 bg-slate-100 border-b border-slate-200 px-4 flex items-center justify-between select-none">
+                <span className="text-xs font-bold text-[#1e3a8a]">
+                  Detalle del Pedido #{pedidoDetalle.id}
+                </span>
+                <button
+                  onClick={() => setPedidoDetalle(null)}
+                  className="w-6 h-6 rounded-full hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="p-6 space-y-4 text-xs">
+                {/* Datos del Cliente y Envío */}
+                <div className="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                  <div>
+                    <span className="text-[10px] text-slate-400 uppercase font-bold block">Cliente</span>
+                    <strong className="text-slate-800 text-sm block">{pedidoDetalle.cliente}</strong>
+                    <span className="text-slate-500 text-[11px] block">{pedidoDetalle.email}</span>
+                    <span className="text-slate-500 text-[11px] block">{pedidoDetalle.telefono}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 uppercase font-bold block">Destino y Guía</span>
+                    <strong className="text-slate-800 text-sm block">{pedidoDetalle.ciudad}</strong>
+                    <span className="text-slate-500 text-[11px] block">{pedidoDetalle.direccion}</span>
+                    <span className="text-[#1e3a8a] font-mono text-[11px] font-bold block">Guía: {pedidoDetalle.guia}</span>
+                  </div>
+                </div>
+
+                {/* Artículos del Pedido */}
+                <div>
+                  <h4 className="font-bold text-[#1e3a8a] mb-2">Artículos en la Caja</h4>
+                  <div className="border border-slate-200 rounded-xl overflow-hidden">
+                    {pedidoDetalle.productos.map((item, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-3 border-b border-slate-100 last:border-0 bg-white">
+                        <div>
+                          <span className="font-bold text-slate-800">{item.nombre}</span>
+                          <span className="text-slate-400 text-[11px] block">Cantidad: {item.cantidad}</span>
+                        </div>
+                        <span className="font-bold text-[#1e3a8a]">{formatCOP(item.precio * item.cantidad)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Total y Empaque */}
+                <div className="flex items-center justify-between p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
+                  <div>
+                    <span className="text-emerald-800 font-bold block">Empaque Ciego Garantizado</span>
+                    <span className="text-emerald-600 text-[10px]">Caja neutra sin marcas ni logotipos delatadores</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] text-slate-500 block uppercase">Total a Cobrar</span>
+                    <span className="text-base font-black text-emerald-800">{formatCOP(pedidoDetalle.total)}</span>
+                  </div>
+                </div>
+
+                {/* Cambio de Estado Rápido */}
+                <div className="pt-2">
+                  <span className="font-bold text-[#1e3a8a] block mb-2">Modificar Estado del Envío</span>
+                  <div className="grid grid-cols-4 gap-2">
+                    {['Pendiente', 'En camino', 'Entregado', 'Cancelado'].map(st => (
+                      <button
+                        key={st}
+                        type="button"
+                        onClick={() => cambiarEstadoPedido(pedidoDetalle.id, st)}
+                        className={`py-2 rounded-lg font-bold text-xs transition-all cursor-pointer ${
+                          pedidoDetalle.estado === st
+                            ? 'bg-[#1e3a8a] text-white shadow-xs'
+                            : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {st}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-3 flex items-center justify-end border-t border-slate-200">
+                  <button
+                    onClick={() => setPedidoDetalle(null)}
+                    className="px-5 py-2 rounded-lg bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-bold cursor-pointer"
+                  >
+                    Listo / Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================== */}
+        {/* MODAL 3: REGISTRO MANUAL DE PEDIDO                         */}
+        {/* ========================================================== */}
+        {mostrandoNuevoPedido && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+            <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-300 overflow-hidden animate-in zoom-in-95 duration-150">
+              <div className="h-10 bg-slate-100 border-b border-slate-200 px-4 flex items-center justify-between select-none">
+                <span className="text-xs font-bold text-[#1e3a8a]">
+                  Registrar Nuevo Pedido (Venta Telefónica o WhatsApp)
+                </span>
+                <button
+                  onClick={() => setMostrandoNuevoPedido(false)}
+                  className="w-6 h-6 rounded-full hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleCrearPedidoManual} className="p-6 space-y-4 text-xs">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#1e3a8a] block">Nombre del Cliente</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ej. Sofía Cardona"
+                      value={nuevoPedidoData.cliente}
+                      onChange={(e) => setNuevoPedidoData({ ...nuevoPedidoData, cliente: e.target.value })}
+                      className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#1e3a8a] block">Teléfono / WhatsApp</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+57 300 000 0000"
+                      value={nuevoPedidoData.telefono}
+                      onChange={(e) => setNuevoPedidoData({ ...nuevoPedidoData, telefono: e.target.value })}
+                      className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#1e3a8a] block">Ciudad de Envío</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Medellín, Bogotá, Cali..."
+                      value={nuevoPedidoData.ciudad}
+                      onChange={(e) => setNuevoPedidoData({ ...nuevoPedidoData, ciudad: e.target.value })}
+                      className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-bold text-[#1e3a8a] block">Dirección de Entrega</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Calle / Carrera / Apto"
+                      value={nuevoPedidoData.direccion}
+                      onChange={(e) => setNuevoPedidoData({ ...nuevoPedidoData, direccion: e.target.value })}
+                      className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-bold text-[#1e3a8a] block">Producto a Despachar</label>
+                  <select
+                    value={nuevoPedidoData.productoId}
+                    onChange={(e) => setNuevoPedidoData({ ...nuevoPedidoData, productoId: e.target.value })}
+                    className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800 bg-white"
+                  >
+                    {productos.map(p => (
+                      <option key={p.id} value={p.id}>{p.nombre} — {formatCOP(p.precio)}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-200">
+                  <button
+                    type="button"
+                    onClick={() => setMostrandoNuevoPedido(false)}
+                    className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold cursor-pointer"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 rounded-lg bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-bold cursor-pointer transition-all shadow-xs"
+                  >
+                    Guardar Pedido
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================== */}
+        {/* MODAL 4: CREACIÓN DE USUARIO                               */}
+        {/* ========================================================== */}
+        {mostrandoNuevoUser && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+            <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-300 overflow-hidden animate-in zoom-in-95 duration-150">
+              <div className="h-10 bg-slate-100 border-b border-slate-200 px-4 flex items-center justify-between select-none">
+                <span className="text-xs font-bold text-[#1e3a8a]">
+                  Crear Nueva Cuenta de Usuario
+                </span>
+                <button
+                  onClick={() => setMostrandoNuevoUser(false)}
+                  className="w-6 h-6 rounded-full hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleCrearUsuario} className="p-6 space-y-4 text-xs">
+                <div className="space-y-1">
+                  <label className="font-bold text-[#1e3a8a] block">Nombre Completo</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ej. Laura Restrepo"
+                    value={nuevoUserData.nombre}
+                    onChange={(e) => setNuevoUserData({ ...nuevoUserData, nombre: e.target.value })}
+                    className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-bold text-[#1e3a8a] block">Nombre de Usuario (@)</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="laura_r"
+                    value={nuevoUserData.username}
+                    onChange={(e) => setNuevoUserData({ ...nuevoUserData, username: e.target.value })}
+                    className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800 font-mono text-[11px]"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-bold text-[#1e3a8a] block">Correo Electrónico</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="laura@ejemplo.com"
+                    value={nuevoUserData.email}
+                    onChange={(e) => setNuevoUserData({ ...nuevoUserData, email: e.target.value })}
+                    className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-bold text-[#1e3a8a] block">Rol Asignado</label>
+                  <select
+                    value={nuevoUserData.rol}
+                    onChange={(e) => setNuevoUserData({ ...nuevoUserData, rol: e.target.value })}
+                    className="w-full py-2 px-3 rounded-lg border border-slate-300 focus:border-[#a6d4f2] outline-none text-slate-800 bg-white"
+                  >
+                    <option value="Cliente">Cliente (Comprador)</option>
+                    <option value="Administrador">Administrador (Acceso total)</option>
+                  </select>
+                </div>
+
+                <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-200">
+                  <button
+                    type="button"
+                    onClick={() => setMostrandoNuevoUser(false)}
+                    className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold cursor-pointer"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 rounded-lg bg-[#a6d4f2] hover:bg-[#8ec2e4] text-[#1e3a8a] font-bold cursor-pointer transition-all shadow-xs"
+                  >
+                    Guardar Usuario
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================== */}
+        {/* TOYITO: COMPAÑERO FLOTANTE (COMO EN LAS CAPTURAS)          */}
+        {/* ========================================================== */}
+        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 pointer-events-none select-none animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-xl border border-sky-200 text-xs text-[#1e3a8a] font-bold max-w-xs flex items-center gap-2">
+            <span>¡Hola, querida admin! Aquí estoy para ayudarte.</span>
+            <span className="text-[10px] text-slate-400 font-normal">✕</span>
+          </div>
+          <div className="w-12 h-12 rounded-full bg-amber-400 border-2 border-amber-600 shadow-xl flex items-center justify-center overflow-hidden">
+            <svg className="w-7 h-7 text-amber-900" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5-.67 1.5-1.5S7.83 8 7 8s-1.5.67-1.5 1.5S6.17 11 7 11zm10 0c.83 0 1.5-.67 1.5-1.5S17.83 8 17 8s-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
+            </svg>
+          </div>
+        </div>
 
       </main>
 
@@ -820,23 +1649,7 @@ export default function AdminInventory() {
           )}
         </button>
 
-        {/* App 3: Confesiones */}
-        <button 
-          onClick={() => { setAppActiva('confesiones'); setVentanaAbierta(true); }}
-          className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center shadow-md relative group cursor-pointer transition-transform hover:scale-110 active:scale-95 ${
-            ventanaAbierta && appActiva === 'confesiones' ? 'bg-white text-[#1e3a8a]' : 'bg-white/70 hover:bg-white text-slate-700'
-          }`}
-          title="Buzón de Confesiones"
-        >
-          <svg className="w-5 h-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-          {ventanaAbierta && appActiva === 'confesiones' && (
-            <span className="w-1 h-1 bg-[#1e3a8a] rounded-full mt-0.5"></span>
-          )}
-        </button>
-
-        {/* App 4: Usuarios */}
+        {/* App 3: Usuarios */}
         <button 
           onClick={() => { setAppActiva('usuarios'); setVentanaAbierta(true); }}
           className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center shadow-md relative group cursor-pointer transition-transform hover:scale-110 active:scale-95 ${
@@ -852,10 +1665,9 @@ export default function AdminInventory() {
           )}
         </button>
 
-        {/* Separador */}
         <div className="w-px h-6 bg-white/30 mx-1"></div>
 
-        {/* Salir a la habitación de Andy */}
+        {/* Salir / Apagar */}
         <button 
           onClick={() => navigate('/admin')}
           className="w-11 h-11 rounded-xl bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center shadow-md relative group cursor-pointer transition-transform hover:scale-110 active:scale-95"

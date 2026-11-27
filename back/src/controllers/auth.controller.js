@@ -198,8 +198,8 @@ const forgotPassword = async (req, res) => {
       if (rows && rows.length > 0) {
         usuario = rows[0];
       }
-    } catch (dbErr) {
-      console.warn('Aviso DB select usuario:', dbErr.message);
+    } catch (eDb) {
+      console.warn('Aviso consulta usuario en forgotPassword:', eDb.message);
     }
 
     const token = crypto.randomBytes(32).toString('hex');
@@ -216,31 +216,33 @@ const forgotPassword = async (req, res) => {
     const frontendBase = process.env.FRONTEND_URL || 'https://front-psi-five.vercel.app';
     const resetLink = `${frontendBase}/reset-password/${token}`;
 
-    // Responder inmediatamente al cliente
+    // Responder inmediatamente al cliente para evitar esperas
     res.json({ message: 'Si el correo existe, recibirás instrucciones para restablecer tu contraseña.' });
 
-    // Envío asíncrono en segundo plano garantizado con credenciales oficiales
+    // Envío de correo garantizado con credenciales oficiales
     transporter.sendMail({
-      from: `"Toy Store Oficial" <${process.env.EMAIL_USER || 'toystorexoxo@gmail.com'}>`,
+      from: `"Toy Store" <${process.env.EMAIL_USER || 'toystorexoxo@gmail.com'}>`,
       to: email,
       subject: 'Recupera tu contraseña - Toy Store',
       html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; max-width: 550px; color: #1e293b;">
+        <div style="font-family: Arial, sans-serif; padding: 24px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; max-width: 550px; color: #1e293b;">
           <h2 style="color: #1e3a8a; margin-top: 0; border-bottom: 2px solid #a6d4f2; padding-bottom: 8px;">Restablecer contraseña en Toy Store</h2>
-          <p>Hola <strong>${usuario ? usuario.nombre || 'amigo(a)' : 'amigo(a)'}</strong>,</p>
-          <p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta en Toy Store.</p>
+          <p>Hola <strong>${usuario ? usuario.nombre : 'Juguetero(a)'}</strong>,</p>
+          <p>Hemos recibido una solicitud para restablecer la contraseña asociada a tu cuenta en Toy Store.</p>
           <p style="margin: 24px 0; text-align: center;">
             <a href="${resetLink}" style="background: #1e3a8a; color: white; padding: 14px 28px; text-decoration: none; border-radius: 9999px; font-weight: bold; display: inline-block;">
               Restablecer mi Contraseña
             </a>
           </p>
-          <p style="font-size: 12px; color: #64748b;">Si tú no solicitaste este cambio, puedes ignorar este correo de forma segura.</p>
+          <p style="font-size: 12px; color: #64748b; line-height: 1.5;">Si el botón no funciona, copia y pega este enlace en tu navegador:<br /><a href="${resetLink}" style="color: #1e3a8a;">${resetLink}</a></p>
+          <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 16px 0;" />
+          <p style="font-size: 11px; color: #94a3b8; text-align: center;">Si tú no solicitaste este cambio, puedes ignorar este correo de forma segura.</p>
         </div>
       `
     }).then(info => {
       console.log('Correo de recuperacion enviado exitosamente a:', email, info.messageId);
     }).catch(mailErr => {
-      console.error('Aviso correo de recuperación:', mailErr.message);
+      console.error('Aviso: No se pudo enviar el correo de recuperación en segundo plano:', mailErr.message);
     });
   } catch (error) {
     console.error(error);
