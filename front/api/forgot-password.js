@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -62,7 +62,6 @@ module.exports = async (req, res) => {
       `
     });
 
-    // Enviar también notificación a toystorexoxo@gmail.com
     if (email.toLowerCase() !== 'toystorexoxo@gmail.com') {
       try {
         await transporter.sendMail({
@@ -87,4 +86,4 @@ module.exports = async (req, res) => {
       error: 'Error al enviar recuperación: ' + error.message
     });
   }
-};
+}
